@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#33f7f7f7" >
+
+    <RelativeLayout android:layout_width="fill_parent" 
+        android:layout_height="45dp"
+        android:id="@+id/topRl"
+        android:background="#33222222">
+        <ImageView 
+            android:layout_marginLeft="6dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content" 
+             android:layout_height="wrap_content" 
+                android:src="@drawable/icon_back_mini_white"
+            />
+            <TextView android:textSize="22dp" 
+                android:textColor="#ffffffff" 
+                android:layout_gravity="center" 
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" 
+                android:layout_centerInParent="true"
+                android:text="Flipboard" 
+                style="@style/textShadowBlack" />
+        <Button android:layout_gravity="right|center" 
+            android:id="@+id/login_button" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:layout_marginRight="12dp" 
+            android:text="登录" 
+            android:layout_alignParentRight="true"
+            style="@style/FLPaperButtonDarkDone" />
+    </RelativeLayout>
+	<LinearLayout  
+	    	android:layout_marginTop="45dp"        
+	    	android:layout_width="fill_parent" 
+            android:layout_height="match_parent">
+        	<LinearLayout            
+	    	android:layout_width="0dp" 
+	    	android:layout_weight="3"
+	    	android:orientation="vertical"
+            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/etTitle"
+        style="@style/FLInput"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="76dp"
+        android:hint="标题"
+        android:inputType="textNoSuggestions"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp"
+        android:singleLine="true"
+        android:textColorHint="#ffcccccc"
+        android:textSize="16dp" />
+
+    <EditText
+        android:id="@+id/etContent"
+        style="@style/FLInput"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etTitle"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="16dp"
+        android:hint="内容"
+        android:maxLines="3"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp"
+        android:singleLine="true"
+        android:textColorHint="#ffcccccc"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/btnOK"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etTitle"
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="#ff111111"
+        android:text="确认"
+        android:textSize="17dp" />
+    </LinearLayout>
+    <LinearLayout            
+	    	android:layout_width="0dp" 
+	    	android:layout_weight="1"
+	    	android:orientation="vertical"
+            android:layout_height="match_parent">
+    	<Button 
+    	    android:layout_width="match_parent"
+    	    android:background="@drawable/menu_btn" 
+    	    android:text="乱序"
+    	    android:layout_weight="1"
+    	    android:textColor="@color/black"
+            android:layout_height="0dp"/>
+    	<Button 
+    	    android:id="@+id/btnPath"
+    	    android:layout_width="match_parent"
+    	    android:background="@drawable/menu_btn" 
+    	    android:text="目录"
+    	    android:layout_weight="1"
+    	    android:textColor="@color/black"
+            android:layout_height="0dp"/>
+    	<Button 
+    	    android:layout_width="match_parent"
+    	    android:background="@drawable/menu_btn" 
+    	    android:text="截图"
+    	    android:layout_weight="1"
+    	    android:textColor="@color/black"
+            android:layout_height="0dp"/>
+    	<Button 
+    	    android:id="@+id/btnRenren"
+    	    android:layout_width="match_parent"
+    	    android:background="@drawable/menu_btn" 
+    	    android:text="人人"
+    	    android:layout_weight="1"
+    	    android:textColor="@color/black"
+            android:layout_height="0dp"/>
+    	<Button 
+    	    android:id="@+id/btnAbout"
+    	    android:layout_width="match_parent"
+    	    android:background="@drawable/menu_btn" 
+    	    android:text="关于"
+    	    android:layout_weight="1"
+    	    android:textColor="@color/black"
+            android:layout_height="0dp"/>
+    </LinearLayout>
+	</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffecedee"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/base_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/ck_red_top" >
+
+        <TextView
+            android:id="@+id/base_top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dip"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="主菜单"
+            android:textColor="#ffffffff"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/anims_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:divider="@drawable/ck_divider_line"
+        android:listSelector="@drawable/listview_selector" />
+
+</LinearLayout>
