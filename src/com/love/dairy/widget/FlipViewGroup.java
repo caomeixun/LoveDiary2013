@@ -73,7 +73,7 @@ public class FlipViewGroup extends ViewGroup {
 		renderer = new FlipRenderer(this);
 
 		surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-		//surfaceView.setZOrderOnTop(true);
+		surfaceView.setZOrderOnTop(true);
 		surfaceView.setRenderer(renderer);
 		surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 		surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);

@@ -1,19 +1,20 @@
 package com.love.dairy.widget;
 
- import static javax.microedition.khronos.opengles.GL10.GL_RGBA;
-import static javax.microedition.khronos.opengles.GL10.GL_TEXTURE_2D;
-import static javax.microedition.khronos.opengles.GL10.GL_UNSIGNED_BYTE;
-
-import java.util.HashMap;
+ import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLU;
-import android.opengl.GLUtils;
 import android.util.Log;
 import android.view.MotionEvent;
+
+import com.love.dairy.main.MainActivity;
+import com.love.dairy.utils.BitmapWorkerTask;
 
 /*
  Copyright 2012 Aphid Mobile
@@ -34,23 +35,133 @@ import android.view.MotionEvent;
 
 public class FlipCards {
 	private FlipViewGroup flipViewGroup;
+	private static final float ACCELERATION = 0.618f;
+	private static final float TIP_SPEED = 1f;
+	private static final float MOVEMENT_RATE = 1.5f;
+	private static final int MAX_TIP_ANGLE = 60;
 
 	private static final int STATE_TIP = 0;
 	private static final int STATE_TOUCH = 1;
+	private static final int STATE_AUTO_ROTATE = 2;
+	private static final int STATE_STOP = 3;
 
 	private Texture[] textures = new Texture[2];
-	public static HashMap<Integer, Bitmap> dateCache = new HashMap<Integer, Bitmap>();
 	int photoPostion = 0;
+	private boolean isChange = false;
 
 
 	private Card[] topCards = new Card[]{new Card(),new Card()};
+	private Card[] bottomCard = new Card[]{new Card(),new Card()};
+	private String TAG = "imageUtil";
 	
 	
+	public static HashMap<Integer, Bitmap> dateCache = null;
+	//public static HashMap<Integer, SoftReference<Bitmap>> dateCache = null;
+	private void loadBitmap(boolean isNext,int position,int maxSize){
+		Log.e("TAG", "loadBitmap--------------"+position);
+		int loadId = 0;
+		if(!isNext){
+			loadId =position-2;
+		}else{
+			loadId =position+2;
+		}
+			
+		if(loadId < 0){
+			loadId = Math.abs(maxSize)+loadId;
+		}
+		if(loadId >= maxSize){
+			loadId = Math.abs(loadId-maxSize);
+		}
+		if(!dateCache.containsKey(loadId)){
+			final int postion =  loadId;
+			flipViewGroup.context.runOnUiThread( new Runnable() {
+				
+				@Override
+				public void run() {
+					BitmapWorkerTask task = new BitmapWorkerTask(FlipCards.this.context,BitmapWorkerTask.HALF_TYPE);
+					task.execute(postion);
+					Log.e("TAG", "cacheId--------------"+postion);
+				}
+			});
 
-	private float cardAngle = 0f;
-	private float vposAngle = 0f;
-	MyView flipViews = null;
-	MyView flipViewsVpos = null;
+		}
+	}
+	private void releaseBitmap(boolean isNext,int loadId,int maxSize){
+		if(isNext){
+			loadId =loadId-2;
+		}else{
+			loadId =loadId+2;
+		}
+		if(loadId < 0){
+			loadId = Math.abs(maxSize)+loadId;
+		}
+		if(loadId >= maxSize){
+			loadId = Math.abs(loadId-maxSize);
+		}
+
+		//即dataCache中始终只缓存了（M＝6＋Gallery当前可见view的个数）M个bitmap
+		freeBitmapFromIndex(loadId);
+
+		}
+		private Set claPosition(int postion,int maxSize){
+			Set list = new HashSet();
+			for(int i=postion;i <= postion+2;i++){
+				int index = i;
+				if(i >= maxSize){
+					index = Math.abs(i-maxSize);
+				}
+				list.add(index);
+			}
+			for(int i=postion;i > postion-2;i--){
+				int index = i;
+				if(i < 0){
+					index = Math.abs(maxSize)+i;
+				}
+				list.add(index);
+			}
+			list.add(postion);
+			return list;
+		}
+
+
+		/**
+
+		* 从某一位置开始释放bitmap资源
+
+		* @param index
+
+		*/
+
+
+
+		private void freeBitmapFromIndex(int del) {
+			Bitmap delBitmap;
+			if(dateCache.get(del)!=null){
+				delBitmap = dateCache.get(del);
+	
+				if(delBitmap != null){
+			
+					//如果非空则表示有缓存的bitmap，需要清理
+			
+					Log.v(TAG, "release position:"+ del);
+			
+					//从缓存中移除该del->bitmap的映射
+			
+					dateCache.remove(del);
+			
+					delBitmap.recycle();
+					System.gc();
+					delBitmap= null;
+				}
+			}
+		}
+
+	private float angle = 0f;
+	private boolean forward = true;
+	private GL10 gl = null;
+	LinkedList<MyView> flipViews = null;
+	// private boolean animating = false;
+	private int animatedFrame = 0;
 	/**
 	 * 触屏状态
 	 */
@@ -59,11 +170,23 @@ public class FlipCards {
 	public FlipCards(FlipViewGroup flipViewGroup,Context context) {
 		this.flipViewGroup = flipViewGroup;
 		this.context = context;
+		bottomCard[0].setAxis(Card.AXIS_TOP);
+		topCards[0].setAxis(Card.AXIS_BOTTOM);
+		topCards[1].setAxis(Card.AXIS_BOTTOM);
 	}
 
-	public void reloadTexture(MyView flipViews , MyView flipViewsVpos) {
-			this.flipViews =flipViews;
-			this.flipViewsVpos = flipViewsVpos;
+	public void reloadTexture(MyView firstView,MyView secondView) {
+		//Log.e("TAG", "reloadTexture");
+		if(this.flipViews == null){
+			secondView.setViewToBitmap();
+			firstView.setViewToBitmap();
+			this.flipViews = new LinkedList<MyView>();
+			this.flipViews.add(secondView);
+			this.flipViews.add(firstView);
+		}else{
+			//Log.e("TAG", "---------reloadNowImage----------");
+			reloadNowImage();
+		}
 	}
 	private boolean isLoading = false;
 	/**
@@ -74,16 +197,33 @@ public class FlipCards {
 		if(!isLoading){
 			if(flipViews!=null){
 
-					flipViews.setViewToBitmap();
+				for(int i=1;i>=0;i--){
+					flipViews.get(i).reloadInfo();
+					flipViews.get(i).setViewToBitmap();
+				}
 				isLoading = false;
 			}
 		}
 	}
+	public void rotateBy(float delta) {
+		angle += delta;
+		if (angle > 180)
+			angle = 180;
+		else if (angle < -180)
+			angle = -180;
+	}
 
+	public void setState(int state) {
+		if (this.state != state) {
+			this.state = state;
+			animatedFrame = 0;
+		}
+	}
+	private boolean isSetPosition = false;
 	public void draw(GL10 gl) {
-
 		applyTexture(gl);
-		if (textures == null)
+		this.gl = gl;
+		if (textures[0] == null)
 			return;
 		switch (state) {
 		case STATE_TIP: {
@@ -102,44 +242,75 @@ public class FlipCards {
 			break;
 		case STATE_TOUCH:
 			break;
+		case STATE_STOP:
+			if(isSetPosition){
+				if(angle>90)
+					setPosition(getPosition()+1);
+				else if(angle<-90)
+					setPosition(getPosition()-1);
+				angle=0;
+			}
+			isSetPosition=  false;
+			break;
+		case STATE_AUTO_ROTATE: {
+			animatedFrame++;
+			if(angle>0){
+				rotateBy((forward ? ACCELERATION : -ACCELERATION) * animatedFrame);
+			}else{
+				rotateBy((forward ? -ACCELERATION : ACCELERATION) * animatedFrame);
+				if (angle >= 0){
+					setState(STATE_STOP);
+				}
+			}
+			if (angle >= 180 || angle <= -180||angle - 0 == 0){
+				setState(STATE_STOP);
+			}
+		}
+			break;
 		default:
 			break;
 		}
-		lastPage(gl);
+		//Log.e("TAG",getPosition()+ "angle-------------="+angle);
+		if(angle>=0)
+			nextPage(gl);
+		else
+			lastPage(gl);
 	}
 
 	private void lastPage(GL10 gl) {
-				move(gl);
+
+		if (angle >-90) {
+
+				//wu
+				move(gl,topCards[claPostion(getPosition(), -1, flipViews.size())],topCards[claPostion(getPosition(), 0, flipViews.size())],bottomCard[claPostion(getPosition(), 0, flipViews.size())],Math.abs(angle));
+		} else {
+				//tiaozhuan
+
+				move(gl,topCards[claPostion(getPosition(), -1, flipViews.size())],bottomCard[claPostion(getPosition(), -1, flipViews.size())],bottomCard[claPostion(getPosition(), 0, flipViews.size())],180-Math.abs(angle));
+		}
+//		if(angle+180==0 && isDo){
+//			Log.e("TAG", lastUpRotate+"lastUpRotate-lastRotate"+lastRotate);
+//			setPosition(getPosition()-1);
+//			angle=0;
+//		}
 	}
-	
-	private boolean isReplay = false;
-	public void move(GL10 gl){
-//		topBudong.setAngle(angle);
-//		topBudong.draw(gl);
-		if(topCards[1]!=null){
-			cardAngle++;
-			if(cardAngle>900){
-				cardAngle=0;
-			}
-		topCards[1].setAngle(cardAngle);
-		topCards[1].draw(gl);
-		topCards[1].setMoveType();
+	private void nextPage(GL10 gl) {
+
+		if (angle < 90) {
+				//无跳转
+				move(gl,topCards[claPostion(getPosition(), 0, flipViews.size())],bottomCard[claPostion(getPosition(), 0, flipViews.size())],bottomCard[claPostion(getPosition(), 1, flipViews.size())],angle);
+		} else {
+				move(gl,topCards[claPostion(getPosition(), 0, flipViews.size())],topCards[claPostion(getPosition(), 1, flipViews.size())],bottomCard[claPostion(getPosition(), 1, flipViews.size())],180-angle);
 		}
-		if(topCards[0]!=null){
-			if(!isReplay){
-				vposAngle++;
-				if(vposAngle>vposMoveHeight*0.32){
-					isReplay = true;
-				}
-			}else{
-				vposAngle-=5;
-				if(vposAngle<=0){
-					isReplay = false;
-				}
-			}
-		topCards[0].setAngle(vposAngle);
-		topCards[0].draw(gl);
-		}
+
+	}
+	public void move(GL10 gl,Card topBudong,Card dongTu,Card ditu,float angle){
+		topBudong.setAngle(0);
+		topBudong.draw(gl);
+		ditu.setAngle(0);
+		ditu.draw(gl);
+		dongTu.setAngle(angle);
+		dongTu.draw(gl);
 	}
 //	public void nextyuan(GL10 gl,Card buttomBudong,Card ruyuan,Card ditu,float angle){
 //		buttomBudong.setAngle(0);
@@ -160,107 +331,131 @@ public class FlipCards {
 			position=1;
 		return position;
 	}
-
-	private int vposMoveHeight = -1;
+	public void setPosition(int position) {
+		Log.e("TAG", "setPosition"+position);
+		int lastPostion = getPosition();
+		this.position = position;
+//		if(position==1)
+//		{
+//			isChange = true;
+//		}
+		isChange = true;
+		boolean isNextPage = true;
+		if(position>lastPostion){
+			photoPostion++;
+			if(photoPostion >= MainActivity.photoIds.length)
+				photoPostion = 0;
+			isNextPage= true;
+		}else{
+			photoPostion--;
+			isNextPage = false;
+			if(photoPostion < 0)
+				photoPostion =MainActivity. photoIds.length-1;
+		}
+		releaseBitmap(isNextPage,photoPostion, MainActivity.photoIds.length);
+		loadBitmap(isNextPage,photoPostion, MainActivity.photoIds.length);
+		if(isChange)
+		{
+			 changeLastTwoView(gl,isNextPage);
+		}
+	}
+	
 	private void applyTexture(GL10 gl) {
-		if(flipViews!=null){
-			Bitmap bm = flipViews.bitmap;
-			if (bm != null) {
-				if(bm.isRecycled()){
-					Log.e("TAG", "takeScreenshot--isRecycled");
+		if(flipViews!=null)
+		for(int i=0;i<flipViews.size();i++){
+			if (flipViews.get(i).bitmap != null) {
+				int height = flipViews.get(i).bitmap .getHeight();
+				int width  = flipViews.get(i).bitmap .getWidth();
+				if(width < MainActivity.screenWidth){
+					height*=2;
+					width*=2;
 				}
 				//Log.e("TAG", flipViews.get(i).imagePosition+"----applyTexture--第"+i);
-				if (textures[0] != null){
-					textures[0].destroy(gl);
-				}
-				textures[0] = Texture.createTexture(bm, gl);
-				topCards[0].setTexture(textures[0]);
-				//bottomCard.setTexture(textures);
-				if(topCards[0].getCardVertices() == null){
-					Log.e("TAG", "-----------applyTexture--------------");
-					topCards[0].setCardVertices(new float[] { 0f,
-							bm .getHeight() * 1.5f, 0f, // top left
-							0f, bm .getHeight() / 2.0f, 0f, // bottom left
-							bm .getWidth(), bm .getHeight() / 2f, 0f, // bottom
+				if (textures[i] != null)
+					textures[i] .destroy(gl);
+				textures[i] = Texture.createTexture(flipViews.get(i).bitmap, gl);
+				topCards[i].setTexture(textures[i]);
+				bottomCard[i].setTexture(textures[i]);
+				if(topCards[i].getCardVertices() == null){
+					topCards[i].setCardVertices(new float[] { 0f,
+							height, 0f, // top left
+							0f, height / 2.0f, 0f, // bottom left
+							width, height / 2f, 0f, // bottom
 																					// right
-							bm .getWidth(), bm .getHeight() * 1.5f, 0f // top
+							width, height, 0f // top
 																				// right
 							});
-					topCards[0]
+					topCards[i]
 							.setTextureCoordinates(new float[] {
 									0f,
 									0f,
 									0f,
-									bm .getHeight() / 1f
-											/ (float) textures[0].getHeight(),
-											bm .getWidth()
-											/ (float) textures[0].getWidth(),
-											bm .getHeight() / 1f
-											/ (float) textures[0].getHeight(),
-											bm .getWidth()
-											/ (float) textures[0].getWidth(), 0f });
-					
-
+									height / 2f
+											/ (float) textures[i].getHeight(),
+											width
+											/ (float) textures[i].getWidth(),
+											height / 2f
+											/ (float) textures[i].getHeight(),
+											width
+											/ (float) textures[i].getWidth(), 0f });
+					bottomCard[i].setCardVertices(new float[] { 0f,
+							height / 2f, 0f, // top left
+							0f, 0f, 0f, // bottom left
+							width, 0f, 0f, // bottom right
+							width, height / 2f, 0f // top
+																					// right
+							});
+					bottomCard[i].setTextureCoordinates(new float[] {
+							0f,
+							height / 2f
+									/ (float) textures[i].getHeight(),
+							0f,
+							height / (float) textures[i].getHeight(),
+							width / (float) textures[i].getWidth(),
+							height / (float) textures[i].getHeight(),
+							width / (float) textures[i].getWidth(),
+							height / 2f
+									/ (float) textures[i].getHeight() });
 				}
 				checkError(gl);
 	
-				flipViews.bitmapRelases();
-				//System.gc();
-		}
-			
-		}
-		
-		
-		if(flipViewsVpos!=null){
-			Bitmap bm = flipViewsVpos.bitmap;
-			
-			if (bm != null) {
-				if(bm.isRecycled()){
-					Log.e("TAG", "takeScreenshot--isRecycled");
-				}
-				//Log.e("TAG", flipViews.get(i).imagePosition+"----applyTexture--第"+i);
-				if (textures[1] != null){
-					textures[1].destroy(gl);
-				}
-				textures[1] = Texture.createTexture(bm, gl);
-				topCards[1].setTexture(textures[1]);
-				//bottomCard.setTexture(textures);
-				if(topCards[1].getCardVertices() == null){
-					vposMoveHeight = bm.getHeight();
-					Log.e("TAG", "-----------applyTexture--------------");
-					topCards[1].setCardVertices(new float[] { 0f,
-							bm .getHeight() * 1.5f, 0f, // top left
-							0f, bm .getHeight() / 2.0f, 0f, // bottom left
-							bm .getWidth(), bm .getHeight() / 2f, 0f, // bottom
-							// right
-							bm .getWidth(), bm .getHeight() * 1.5f, 0f // top
-							// right
-					});
-					topCards[1]
-					.setTextureCoordinates(new float[] {
-							0f,
-							0f,
-							0f,
-							bm .getHeight() / 1f
-							/ (float) textures[1].getHeight(),
-							bm .getWidth()
-							/ (float) textures[1].getWidth(),
-							bm .getHeight() / 1f
-							/ (float) textures[1].getHeight(),
-							bm .getWidth()
-							/ (float) textures[1].getWidth(), 0f });
-					
-					
-				}
-				checkError(gl);
-				
-				flipViewsVpos.bitmapRelases();
-				//System.gc();
+				flipViews.get(i).bitmapRelases();
+				//Log.e("TAG", "----applyTexture------end"+i);
+				System.gc();
 			}
 		}
+
+	}
+	long time =0;
+	/**
+	 * 更新下一张图片
+	 * @param gl
+	 */
+	private void changeLastTwoView(GL10 gl,final boolean isNextPage) {
+		
+//		ImageView image = new ImageView(context);
+//		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+//		bitmapOptions.inSampleSize = 4;
+//		image.setImageBitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.kk, bitmapOptions));
+//		image.setScaleType(ScaleType.CENTER_CROP);
+//		frontBitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.kk, bitmapOptions);
+//		frontBitmap = BitmapUtils.zoomImage(frontBitmap, 800, 1280);
+//		Drawable d = new BitmapDrawable(frontBitmap);
+		flipViewGroup.context.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				int i = isNextPage ?1:-1;
+				MyView my = flipViews.get(claPostion(getPosition(), i, flipViews.size()));
+				my.setImage(claPostion(photoPostion, i, MainActivity.photoIds.length));
+				my.loadInfo(claPostion(photoPostion, i, MainActivity.photoIds.length));
+				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page："+claPostion(photoPostion, i, MainActivity.photoIds.length));
+				my.setViewToBitmap();
+			}
+		});
+
 		
 	}
-	
 	/**
 	 * 计算索引，首位循环用
 	 * @param photoPostion
@@ -280,8 +475,10 @@ public class FlipCards {
 	public void invalidateTexture() {
 		// Texture is vanished when the gl context is gone, no need to delete it
 		// explicitly
-			if(textures!=null)
-				textures = new Texture[2];
+		for(int i=0;i<textures.length;i++){
+			if(textures[i]!=null)
+				textures[i] = null;
+		}
 	}
 
 	private float lastY = -1;
@@ -290,8 +487,7 @@ public class FlipCards {
 	private float lastUpRotate =0;
 	private boolean isCanDo = false;
 	public boolean handleTouchEvent(MotionEvent event) {
-
-		if (textures == null){
+		if (textures[0] == null){
 			return false;
 		}
 		float delta;
@@ -311,11 +507,14 @@ public class FlipCards {
 			}
 			double_tap_time = System.currentTimeMillis();
 			lastRotate = 0;
+			setState(STATE_TOUCH);
 			isCanDo = true;
 			return true;
 		case MotionEvent.ACTION_MOVE:
 			delta = lastY - event.getY();
 
+			rotateBy(180 * delta / textures[0].getContentHeight()
+					* MOVEMENT_RATE);
 //			Log.e("TAG", 180 * delta / frontTexture.getContentHeight()
 //					* MOVEMENT_RATE+"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
 			lastY = event.getY();
@@ -323,8 +522,20 @@ public class FlipCards {
 			return true;
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_CANCEL:
-			xxx = !xxx;
-			
+			delta = lastY - event.getY();
+	
+			rotateBy(180 * delta / textures[0].getContentHeight()
+					* MOVEMENT_RATE);
+			lastUpRotate = angle;
+			if (angle > 90 || (angle < -90)){
+				isSetPosition=  true;	
+				forward = true;
+			}
+			else{
+				isSetPosition=  false;	
+				forward = false;
+			}
+			setState(STATE_AUTO_ROTATE);
 			return true;
 		}
 
@@ -337,6 +548,4 @@ public class FlipCards {
 			throw new RuntimeException(GLU.gluErrorString(error));
 		}
 	}
-	
-	public static boolean xxx = true;
 }

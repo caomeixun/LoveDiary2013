@@ -39,36 +39,28 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         if(type == FULL_TYPE)
         	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+MainActivity.photoIds[data], MainActivity.screenWidth, MainActivity.screenHeight);
         else{
-        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+MainActivity.photoIds[data], MainActivity.screenWidth, MainActivity.screenHeight);
-        	//return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+MainActivity.photoIds[data], MainActivity.screenWidth/2, MainActivity.screenHeight/2);
+        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+MainActivity.photoIds[data], MainActivity.screenWidth/2, MainActivity.screenHeight/2);
         }
     }
 
     // Once complete, see if ImageView is still around and set bitmap.
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+    	Log.e("TAG", "heightbitmap"+bitmap.getWidth());
     	Log.e("BitmapWorkerTask", "加载完成");
-    	Bitmap bm = null;
     	if(myView!=null){
     		
     		myView.setImage(bitmap);
-    		bm = myView.setViewToBitmap();
-//    		if(bitmap!=null && !bitmap.isRecycled()){
-//    			myView.iv.setImageBitmap(null);
-//    			bitmap.recycle();
-//    			bitmap = null;
-//    		}
+    		myView.setViewToBitmap();
     	}
         if (FlipCards.dateCache != null && bitmap != null) {
         	if(!FlipCards.dateCache.containsKey(data)){
-        			FlipCards.dateCache.put(data, bm);
+        			FlipCards.dateCache.put(data, bitmap);
         	}else{
         		Bitmap rBimtmap = FlipCards.dateCache.get(data);
-//        		if(rBimtmap!=null){
-//	        		rBimtmap.recycle();
-//	        		rBimtmap = null;
-//        		}
-        		FlipCards.dateCache.put(data, bm);
+        		rBimtmap.recycle();
+        		rBimtmap = null;
+        		FlipCards.dateCache.put(data, bitmap);
         		Log.e("BitmapWorkerTask", "替换图片完成");
         	}
         }

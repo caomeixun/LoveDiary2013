@@ -28,7 +28,6 @@ public class GrabIt {
 	}
 
 	public static Bitmap takeScreenshot(View view) {
-		Log.e("TAG", "takeScreenshot");
 		Bitmap bitmap = null;
 		try{
 		assert view.getWidth() > 0 && view.getHeight() > 0;

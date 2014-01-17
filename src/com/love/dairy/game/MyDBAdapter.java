@@ -391,7 +391,7 @@ public class MyDBAdapter {
 			
 			///pt_game
 			values.clear();
-			values.put("level_id", 1);
+			values.put("level_id", 2);
 			_db.insertOrThrow("pt_game", null, values);
 			
 		}

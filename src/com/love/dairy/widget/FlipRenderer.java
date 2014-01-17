@@ -89,7 +89,7 @@ public class FlipRenderer implements GLSurfaceView.Renderer {
 		float fovy = 20f;
 		float eyeZ = height / 2f / (float) Math.tan(Utils.d2r(fovy / 2));
 
-		GLU.gluPerspective(gl, fovy, (float) width / (float) height, 0.5f,
+		GLU.gluPerspective(gl, fovy, (float) width / (float) height, 15.5f,
 				Math.max(2500.0f, eyeZ));
 
 		gl.glMatrixMode(GL_MODELVIEW);

@@ -20,21 +20,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -48,46 +43,33 @@ public class MainActivity extends BaseActivity{
 	public static int screenHeight;
 	public static int screenWidth;
 	public static String path = null;
-	/**
-	 * 标题栏高度
-	 */
-	public static int contentTop = -1;
+//	/**
+//	 * 标题栏高度
+//	 */
+//	public static int contentTop = -1;
 //	public static int[] photoIds = new int[]{R.drawable.zzz0,R.drawable.zzz1,R.drawable.zzz2,R.drawable.zzz3,R.drawable.zzz4
 //			,R.drawable.zzz5,R.drawable.zzz6,R.drawable.zzz7,R.drawable.zzz8};
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		Rect frame = new Rect();    
-	    
-		getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);    
-		
-		contentTop= frame.top;  
-	}
+//	@Override
+//	public void onWindowFocusChanged(boolean hasFocus) {
+//		super.onWindowFocusChanged(hasFocus);
+//		Rect frame = new Rect();    
+//	    
+//		getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);    
+//		    
+//		contentTop= frame.top;  
+//	}
 	public static String[] photoIds = new String[]{};
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DataHelper da = new DataHelper(getApplicationContext());
 		da.close();
 		dataRecover();
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
 		
-		Log.e("TAG", "options.inSampleSize"+dm.heightPixels+"--"+dm.widthPixels);
-		Log.e("TAG", "options.inSampleSize"+screenHeight+"--"+screenWidth);
-		RelativeLayout layout = new RelativeLayout(this);
-		ImageView im = new ImageView(this);
-		Bitmap iphone = BitmapFactory.decodeResource(getResources(), R.drawable.iphone);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(iphone.getWidth(),iphone.getHeight());
-		params.topMargin=screenHeight/2;
-		params.leftMargin = (screenWidth-iphone.getWidth())/2;
-		im.setLayoutParams(params);
-		im.setBackgroundDrawable(new BitmapDrawable(iphone));
+		 
 		contentView = new FlipViewGroup(this);
-		layout.addView(contentView);
-
+		
 		path = getSharedPreferencesData(IMAGE_PATH);
 		List<String> strs = null;
 		if(path != null){
@@ -105,41 +87,42 @@ public class MainActivity extends BaseActivity{
 		if(strs!=null){
 			photoIds = strs.toArray(photoIds);
 		}
-		if(path==null || photoIds.length==0){
+		if(path==null|| photoIds.length==0){
 			Intent intent = new Intent(MainActivity.this,LoginPage.class);
 			intent.putExtra(LoginPage.OPEN_TYPE_PATH, 1);
 			startActivity(intent);
 			return;
 		}
 		FlipCards.dateCache = new HashMap<Integer, Bitmap>();
+		for (int i=0;i<3;i++) {
 			
-		Bitmap bit  = BitmapFactory.decodeResource(getResources(), R.drawable.vpos);
-		FlipCards.dateCache.put(1,bit);
-		
-		Bitmap bit2 = BitmapFactory.decodeResource(getResources(), R.drawable.sk);
-		FlipCards.dateCache.put(0,bit2);
-		MyView my = new MyView(getApplicationContext(),null);
-		my.setImage(0);
-		MyView my2 = new MyView(getApplicationContext(),null);
-		my2.setImage(1);
-		contentView.addFlipView(my2);
-		contentView.addFlipView(my);
+			Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),path + photoIds[i], MainActivity.screenWidth, MainActivity.screenHeight);
+			FlipCards.dateCache.put(i,bit);
+		}
+			MyView my = new MyView(getApplicationContext(),null);
+			my.setImage(0);
+			my.loadInfo(0);
+			MyView my2 = new MyView(getApplicationContext(),null);
+			my2.setImage(1);
+			my2.loadInfo(1);
+			contentView.addFlipView(my2);
+			contentView.addFlipView(my);
 			
 		System.gc();
-		setContentView(layout);
+		setContentView(contentView);
 		contentView.startFlipping();
-		layout.addView(im);
-		im.bringToFront();
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
+		contentView.onResume();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		contentView.onPause();
 	}
 	@Override
 	public void openOptionsMenu() {

@@ -2,7 +2,6 @@ package com.love.dairy.widget;
 
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
-import android.util.Log;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -45,7 +44,7 @@ public class Texture {
 		t.contentHeight = bitmap.getHeight();
 		t.width = w;
 		t.height = h;
-		Log.e("TAG", t.contentHeight+"--"+t.height);
+
 		gl.glGenTextures(1, t.id, 0);
 		gl.glBindTexture(GL_TEXTURE_2D, t.id[0]);
 		gl.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

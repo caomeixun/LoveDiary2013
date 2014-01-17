@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class AutoFitImageView extends ImageView{
@@ -23,7 +24,8 @@ public class AutoFitImageView extends ImageView{
 	
 		Bitmap  bm = ((BitmapDrawable)getDrawable()).getBitmap();
 		if(bm!=null && !bm.isRecycled()){
-			if(bm.getHeight()  <  MainActivity.screenHeight){
+			Log.e("TAG", "height"+bm.getWidth());
+			if(bm.getWidth()  <  MainActivity.screenWidth){
 				m.postScale(2.0f, 2.0f);
 				canvas.drawBitmap(bm , m, null);
 			}
