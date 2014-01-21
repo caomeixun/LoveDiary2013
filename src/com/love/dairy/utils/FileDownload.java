@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.renren.api.connect.android.photos.PhotoBean;
 
 public class FileDownload  {
-
+	public static String path = "/sdcard/LoveStory/";
 	public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 	private ProgressDialog mProgressDialog;
 	private List<PhotoBean> photos ;
@@ -61,10 +61,10 @@ public class FileDownload  {
 				int lenghtOfFile = conexion.getContentLength();
 				Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
 				InputStream input = new BufferedInputStream(url.openStream());
-				File outFile  = new File("/sdcard/LoveStory/");
+				File outFile  = new File(path);
 				if(!outFile.exists())
 					outFile.mkdir();
-				OutputStream output = new FileOutputStream("/sdcard/LoveStory/"+new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date())+aurl[0].substring(aurl[0].lastIndexOf(".")));
+				OutputStream output = new FileOutputStream(path+new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date())+aurl[0].substring(aurl[0].lastIndexOf(".")));
 				byte data[] = new byte[1024];
 				long total = 0;
 				while ((count = input.read(data)) != -1) {

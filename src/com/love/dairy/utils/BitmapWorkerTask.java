@@ -46,7 +46,6 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     // Once complete, see if ImageView is still around and set bitmap.
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-    	Log.e("TAG", "heightbitmap"+bitmap.getWidth());
     	Log.e("BitmapWorkerTask", "º”‘ÿÕÍ≥…");
     	if(myView!=null){
     		

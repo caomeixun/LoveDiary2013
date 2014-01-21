@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.love.dairy.cutimage.ImageFilterCropActivity;
 import com.love.dairy.game.Game;
 import com.love.dairy.game.PicView;
 import com.love.dairy.main.renren.RenrenSDKDemo;
@@ -40,6 +41,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		findViewById(R.id.btnRenren).setOnClickListener(this);
 		findViewById(R.id.btnPath).setOnClickListener(this);
 		findViewById(R.id.btnAbout).setOnClickListener(this);
+		findViewById(R.id.btnCut).setOnClickListener(this);
 		
 		if(getIntent().getIntExtra(OPEN_TYPE_PATH, -1)!=-1){
 			getPicPath();
@@ -83,15 +85,19 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			startActivity(intent);
 		}else if(v.getId() == R.id.btnPath){
 			getPicPath();
+		}else if(v.getId() == R.id.btnCut){
+			Intent intent = new Intent(this, ImageFilterCropActivity.class);
+			intent.putExtra("path",imagePosition);
+			startActivity(intent);
+			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+			finish();
 		}else {
-			Intent i = null;
-				i = new Intent(this, Game.class);
-				i.setAction("NEW_GAME_ACTION");
-				Bundle bundle = new Bundle();
-				bundle.putInt("imageId",imagePosition);
-				i.putExtras(bundle);
-	    		
-			startActivity(i);
+			Intent intent = new Intent(this, Game.class);
+			intent.setAction("NEW_GAME_ACTION");
+			Bundle bundle = new Bundle();
+			bundle.putInt("imageId",imagePosition);
+			intent.putExtras(bundle);
+			startActivity(intent);
     		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     		finish();
 		}

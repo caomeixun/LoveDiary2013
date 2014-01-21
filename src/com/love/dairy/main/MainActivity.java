@@ -99,14 +99,14 @@ public class MainActivity extends BaseActivity{
 			Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),path + photoIds[i], MainActivity.screenWidth, MainActivity.screenHeight);
 			FlipCards.dateCache.put(i,bit);
 		}
-			MyView my = new MyView(getApplicationContext(),null);
-			my.setImage(0);
-			my.loadInfo(0);
-			MyView my2 = new MyView(getApplicationContext(),null);
-			my2.setImage(1);
-			my2.loadInfo(1);
-			contentView.addFlipView(my2);
-			contentView.addFlipView(my);
+		MyView my = new MyView(getApplicationContext(),null);
+		my.setImage(0);
+		my.loadInfo(0);
+		MyView my2 = new MyView(getApplicationContext(),null);
+		my2.setImage(1);
+		my2.loadInfo(1);
+		contentView.addFlipView(my2);
+		contentView.addFlipView(my);
 			
 		System.gc();
 		setContentView(contentView);

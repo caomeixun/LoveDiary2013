@@ -37,7 +37,8 @@ public class ImageUtil {
 	
 	public static Bitmap decodeSampledBitmapFromResource(Resources res,
 			String pathName, int reqWidth, int reqHeight) {
-		Log.e("TAG", "options.inSampleSize"+reqWidth+"--"+reqHeight);
+//		Log.e("TAG", "options.inSampleSize"+reqWidth+"--"+reqHeight);
+		pathName = checkUserCuted(pathName);
 		long time = System.currentTimeMillis();
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
@@ -51,8 +52,8 @@ public class ImageUtil {
 		SoftReference<Bitmap> map = null;
 		try{
 		map = new SoftReference<Bitmap>(BitmapFactory.decodeFile(pathName, options));
-		Log.e("TAG", "options.inSampleSize"+options.inSampleSize);
-		Log.e("TAG", "options.inSampleSize"+reqWidth+"--"+reqHeight);
+//		Log.e("TAG", "options.inSampleSize"+options.inSampleSize);
+//		Log.e("TAG", "options.inSampleSize-size"+reqWidth+"--"+reqHeight);
 		}catch (OutOfMemoryError out) {
 			out.printStackTrace();
 			options.inSampleSize+=1;
@@ -69,6 +70,21 @@ public class ImageUtil {
 		}
 		return newMap;
 	}
+	/**
+	 * 检查是否保存过图盘
+	 * @param pathName
+	 * @return
+	 */
+	private static String checkUserCuted(String pathName) {
+		String md5Name = MD5.getMD5(pathName);
+		String sdPath = FileDownload.path+"cutimage/"+md5Name+".jpg";
+		File file = new File(sdPath);
+		if(file.exists()){
+			return sdPath;
+		}else{
+			return pathName;
+		}
+	}
 
 	private static int calculateInSampleSize(BitmapFactory.Options options,
 			int reqWidth, int reqHeight) {
@@ -77,7 +93,7 @@ public class ImageUtil {
 		final int width = options.outWidth;
 		int inSampleSizeHeight = 1;
 		int inSampleSizewidth = 1;
-		Log.e("TAG", "options.inSampleSize"+height+"--"+width);
+//		Log.e("TAG", "options.inSampleSize"+height+"--"+width);
 		if (height > reqHeight || width > reqWidth) {
 				inSampleSizeHeight = (int) Math.ceil((float) height / (float) reqHeight);
 				inSampleSizewidth = (int) Math.ceil((float) width / (float) reqWidth);
@@ -133,13 +149,13 @@ public class ImageUtil {
 			int y = (int) ((height-h1)/2);
 			newbmp = Bitmap.createBitmap(bitmap, 0, y, width, Math.round(h1), matrix, true);
 		}
-		Log.e("----------",newbmp.getRowBytes() * newbmp.getHeight()+"--2 --size"+ newbmp.getWidth()+"^^"+newbmp.getHeight()+"--------"+ width+"^^"+height);
+		Log.e("zoomBitmapByPhoto","--新图getWidth--size"+ newbmp.getWidth()+"--"+newbmp.getHeight()+"----原图：getWidth----"+ width+"--"+height);
 //		bitmap.recycle();
 //		bitmap = null;
 		return newbmp;
 	}
 	
-	// ��Drawableת��ΪBitmap
+	// Bitmap
 	public static Bitmap drawableToBitmap(Drawable drawable) {
 		int width = drawable.getIntrinsicWidth();
 		int height = drawable.getIntrinsicHeight();
