@@ -3,6 +3,7 @@ package com.love.dairy.widget;
 import java.util.Random;
 
 import com.love.dairy.cutimage.CropImage;
+import com.love.dairy.cutimage.ImageFilterActivity;
 import com.love.dairy.cutimage.ImageFilterCropActivity;
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.main.R;
@@ -70,12 +71,12 @@ public class MyView extends RelativeLayout{
 	}
 	public void setViewToBitmap(){
 		Log.e("TAF","----------------setViewToBitmap");
-		if(ImageFilterCropActivity.imageId != -1 && imagePosition != null){
+		if(ImageFilterActivity.imageId != -1 && imagePosition != null){
 			int rsId = Integer.parseInt(imagePosition);
-			if(ImageFilterCropActivity.imageId == rsId )
+			if(ImageFilterActivity.imageId == rsId )
 			{
 				setImage(rsId);
-				ImageFilterCropActivity.imageId=-1;
+				ImageFilterActivity.imageId=-1;
 			}
 		}
 		bitmap = GrabIt.takeScreenshot(this);

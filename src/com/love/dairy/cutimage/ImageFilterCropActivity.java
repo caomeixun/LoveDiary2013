@@ -42,7 +42,6 @@ public class ImageFilterCropActivity extends KXActivity {
 	private String mPath;// 修改的图片地�?
 	private Bitmap mBitmap;// 修改的图�?
 	private CropImage mCropImage; // 裁剪工具�?
-	public static int imageId = -1;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,13 +72,18 @@ public class ImageFilterCropActivity extends KXActivity {
 
 			public void onClick(View v) {
 				// 保存修改的图片到本地,并返回图片地�?
-				mPath = PhotoUtil.saveToLocal(mCropImage.cropAndSave(),mPath);
+//				mPath = PhotoUtil.saveToLocal(mCropImage.cropAndSave());
+//				Intent intent = new Intent();
+//				intent.putExtra("path", mPath);
+//				setResult(RESULT_OK, intent);
+//					
+//				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + MainActivity.photoIds[imageId], MainActivity.screenWidth, MainActivity.screenHeight);
+//				FlipCards.dateCache.put(imageId,bit);
+//				finish();
+				mPath = PhotoUtil.saveToLocal(mCropImage.cropAndSave());
 				Intent intent = new Intent();
 				intent.putExtra("path", mPath);
 				setResult(RESULT_OK, intent);
-					
-				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + MainActivity.photoIds[imageId], MainActivity.screenWidth, MainActivity.screenHeight);
-				FlipCards.dateCache.put(imageId,bit);
 				finish();
 			}
 		});
@@ -101,9 +105,8 @@ public class ImageFilterCropActivity extends KXActivity {
 
 	private void init() {
 		// 接收传�?的图片地�?
-		imageId = getIntent().getIntExtra("path",-1);
-		if(imageId  == -1) finish();
-		mPath = MainActivity.path + MainActivity.photoIds[imageId];
+		mPath = getIntent().getStringExtra("path");
+
 		try {
 			// 获取修改的图�?
 			mBitmap = PhotoUtil

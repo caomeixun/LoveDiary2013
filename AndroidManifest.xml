@@ -38,14 +38,26 @@
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+         <activity
+            android:name="com.love.dairy.cutimage.ImageFilterActivity"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="com.love.dairy.cutimage.ImageFilterCropActivity"
-            android:label="@string/app_name" 
-            android:launchMode="singleTask"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:screenOrientation="portrait" >
         </activity>
-        
+        <activity
+            android:name="com.love.dairy.cutimage.ImageFilterEffectActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.love.dairy.cutimage.ImageFilterFrameActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.love.dairy.cutimage.ImageFilterFaceActivity"
+            android:screenOrientation="portrait" >
+        </activity>
                 <activity android:name="com.love.dairy.game.Game" 
             android:screenOrientation="portrait" android:theme="@style/Theme_Notitle_FullScreen"/>
                 <activity android:name="com.love.dairy.game.PicView" 

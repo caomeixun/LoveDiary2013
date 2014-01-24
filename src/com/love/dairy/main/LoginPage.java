@@ -1,32 +1,21 @@
 package com.love.dairy.main;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.love.dairy.cutimage.ImageFilterCropActivity;
-import com.love.dairy.game.Game;
-import com.love.dairy.game.PicView;
-import com.love.dairy.main.renren.RenrenSDKDemo;
-import com.love.dairy.pojo.ImageInfo;
-import com.love.dairy.sql.DataHelper;
-import com.love.dairy.utils.FileDownload;
-
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.love.dairy.cutimage.ImageFilterActivity;
+import com.love.dairy.game.Game;
+import com.love.dairy.main.renren.RenrenSDKDemo;
+import com.love.dairy.pojo.ImageInfo;
+import com.love.dairy.sql.DataHelper;
 
 public class LoginPage extends BaseActivity implements OnClickListener{
 	public static String IMAGE_ID = "IMAGE_ID"; 
@@ -86,7 +75,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		}else if(v.getId() == R.id.btnPath){
 			getPicPath();
 		}else if(v.getId() == R.id.btnCut){
-			Intent intent = new Intent(this, ImageFilterCropActivity.class);
+			Intent intent = new Intent(this, ImageFilterActivity.class);
 			intent.putExtra("path",imagePosition);
 			startActivity(intent);
 			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

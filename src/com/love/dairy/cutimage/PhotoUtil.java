@@ -141,7 +141,17 @@ public class PhotoUtil {
 		}
 		return filePath;
 	}
-
+	/**
+	 * 保存图片到本地(JPG)
+	 * 
+	 * @param bm
+	 *            保存的图片
+	 * @return 图片路径
+	 */
+	public static String saveToLocal(Bitmap bm) {
+		String fileName = UUID.randomUUID().toString() + ".jpg";
+		return saveToLocal(bm,fileName);
+	}
 	/**
 	 * 保存图片到本地(PNG)
 	 * 

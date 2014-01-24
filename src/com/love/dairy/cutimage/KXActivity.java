@@ -1,7 +1,12 @@
 package com.love.dairy.cutimage;
 
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -36,7 +41,11 @@ public class KXActivity extends Activity {
 	private View mFaceView;
 	protected ImageView mFaceClose;
 	protected GridView mFaceGridView;
-
+	/**
+	 * 手机SD卡图片缓存
+	 */
+	public HashMap<String, SoftReference<Bitmap>> mPhoneAlbumCache = new HashMap<String, SoftReference<Bitmap>>();
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		/**
@@ -74,6 +83,21 @@ public class KXActivity extends Activity {
 			mFacePop.dismiss();
 		}
 	}
-
+	/**
+	 * 根据地址获取手机SD卡图片
+	 */
+	public Bitmap getPhoneAlbum(String path) {
+		Bitmap bitmap = null;
+		if (mPhoneAlbumCache.containsKey(path)) {
+			SoftReference<Bitmap> reference = mPhoneAlbumCache.get(path);
+			bitmap = reference.get();
+			if (bitmap != null) {
+				return bitmap;
+			}
+		}
+		bitmap = BitmapFactory.decodeFile(path);
+		mPhoneAlbumCache.put(path, new SoftReference<Bitmap>(bitmap));
+		return bitmap;
+	}
 	
 }
