@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import com.love.dairy.main.R;
+import com.love.dairy.widget.GrabIt;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -127,6 +129,7 @@ public class ImageFilterFaceActivity extends KXActivity {
 					}
 					canvas.save(Canvas.ALL_SAVE_FLAG);
 					canvas.restore();
+//					mNewBitmap = GrabIt.takeScreenshot(mDisplay);
 					// 保存到本地
 					mPath = PhotoUtil.saveToLocalPNG(mNewBitmap);
 					// 返回图片地址并关闭当前界面

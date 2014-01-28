@@ -2,28 +2,43 @@ package com.love.dairy.cutimage;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 public class FaceImage {
 	private Bitmap mFace;
 	private RectF mRectF;
-
+	private float scale=1f;
+	private float lastScale = 1f;
 	public FaceImage(Bitmap face, RectF rectF) {
 		this.mFace = face;
 		this.mRectF = rectF;
 	}
-
+	public void setMatrix(float scale){
+		this.scale = scale;
+	}
+	public void setLastSacle(){
+		Log.e("TAG","lastScale"+scale);
+		this.lastScale *= scale;
+	}
 	public void draw(Canvas canvas) {
+//		Log.e("TAG",scale * lastScale+ "lastScale"+lastScale);
 		canvas.save();
-		canvas.drawBitmap(mFace, mRectF.left, mRectF.top, null);
+		/*src原始图片绘画部分*/
+		/*dst画多大和坐标部分*/ 
+		canvas.drawBitmap(mFace, 
+				new Rect(0,0,mFace.getWidth(),mFace.getHeight()),
+				new RectF(mRectF.left,mRectF.top,mRectF.left + mFace.getWidth() * scale * lastScale , mRectF.top + mFace.getHeight() * scale * lastScale), null);
 		canvas.restore();
 	}
 
 	public void move(int x, int y) {
-		mRectF.left = x - mFace.getWidth() / 2;
-		mRectF.top = y - mFace.getHeight() / 2;
-		mRectF.right = x + mFace.getWidth() / 2;
-		mRectF.bottom = y + mFace.getWidth() / 2;
+		mRectF.left = x - mFace.getWidth() * scale * lastScale/ 2;
+		mRectF.top = y - mFace.getHeight() * scale * lastScale/ 2;
+		mRectF.right = x + mFace.getWidth() * scale * lastScale/ 2;
+		mRectF.bottom = y + mFace.getHeight() * scale * lastScale/ 2;
 	}
 
 	public Bitmap getmFace() {

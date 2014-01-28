@@ -34,7 +34,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@null"
-                android:src="@drawable/image_filter_action_back_arrow" />
+                android:src="@drawable/btn_image_back" />
 
             <ImageButton
                 android:id="@+id/imagefilter_forward"
@@ -42,7 +42,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@null"
-                android:src="@drawable/image_filter_action_forward_arrow" />
+                android:src="@drawable/btn_image_forward" />
         </LinearLayout>
 
         <Button

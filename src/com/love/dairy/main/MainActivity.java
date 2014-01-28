@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity{
 //		    
 //		contentTop= frame.top;  
 //	}
+	private String lastPath = null;
 	public static String[] photoIds = new String[]{};
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,11 +67,19 @@ public class MainActivity extends BaseActivity{
 		dataRecover();
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
-		
+		init();
 		 
+	}
+	private void init(){
 		contentView = new FlipViewGroup(this);
-		
 		path = getSharedPreferencesData(IMAGE_PATH);
+		
+		if(lastPath != null && path != null){
+			if(path.equals(lastPath)){
+				return;
+			}
+		}
+		lastPath = path;
 		List<String> strs = null;
 		if(path != null){
 			File outFile  = new File(path);
@@ -112,10 +121,10 @@ public class MainActivity extends BaseActivity{
 		setContentView(contentView);
 		contentView.startFlipping();
 	}
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
+		init();
 		contentView.onResume();
 	}
 

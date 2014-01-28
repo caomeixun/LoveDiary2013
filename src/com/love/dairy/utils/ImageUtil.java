@@ -208,7 +208,7 @@ public class ImageUtil {
 
 	// ���Բ��ͼƬ�ķ���?
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
-
+		if(bitmap == null) return null;
 		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 

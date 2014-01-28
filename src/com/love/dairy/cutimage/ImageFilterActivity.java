@@ -1,6 +1,8 @@
 package com.love.dairy.cutimage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.love.dairy.main.MainActivity;
@@ -39,9 +41,13 @@ public class ImageFilterActivity extends KXActivity {
 	private Bitmap mOldBitmap;// 旧图片
 	private String mNewPath;// 新图片地址
 	private Bitmap mNewBitmap;// 新图片
-	private boolean mIsOld = true;// 是否是选择了旧图片
 	private boolean mIsSetResult = false;// 是否是要返回数据
 	public static int imageId = -1;
+	
+	//缓存修改图片部分-----------------------------
+	private int nowLocation = -1;
+	private List<String> historyPicPaths = new ArrayList<String>();
+	//缓存修改图片部分-----------------------------end
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.imagefilter_activity);
@@ -89,24 +95,18 @@ public class ImageFilterActivity extends KXActivity {
 
 			public void onClick(View v) {
 				// 选择旧图片
-				mIsOld = true;
-				mBack.setImageResource(R.drawable.image_action_back_arrow_normal);
-				mForward.setImageResource(R.drawable.image_filter_action_forward_arrow);
-				mBack.setEnabled(false);
-				mForward.setEnabled(true);
-				mDisplay.setImageBitmap(mOldBitmap);
+				nowLocation--;
+				setBtnState();
+				mDisplay.setImageBitmap(getPhoneAlbum(historyPicPaths.get(nowLocation)));
 			}
 		});
 		mForward.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				// 选择新图片
-				mIsOld = false;
-				mBack.setImageResource(R.drawable.image_filter_action_back_arrow);
-				mForward.setImageResource(R.drawable.image_action_forward_arrow_normal);
-				mBack.setEnabled(true);
-				mForward.setEnabled(false);
-				mDisplay.setImageBitmap(mNewBitmap);
+				nowLocation++;
+				setBtnState();
+				mDisplay.setImageBitmap(getPhoneAlbum(historyPicPaths.get(nowLocation)));
 			}
 		});
 		mCut.setOnClickListener(new OnClickListener() {
@@ -116,11 +116,7 @@ public class ImageFilterActivity extends KXActivity {
 				Intent intent = new Intent();
 				intent.setClass(ImageFilterActivity.this,
 						ImageFilterCropActivity.class);
-				if (mIsOld) {
-					intent.putExtra("path", mOldPath);
-				} else {
-					intent.putExtra("path", mNewPath);
-				}
+				intent.putExtra("path", (historyPicPaths.get(nowLocation)));
 				startActivityForResult(intent,
 						ActivityForResultUtil.REQUESTCODE_IMAGEFILTER_CROP);
 			}
@@ -132,11 +128,7 @@ public class ImageFilterActivity extends KXActivity {
 				Intent intent = new Intent();
 				intent.setClass(ImageFilterActivity.this,
 						ImageFilterEffectActivity.class);
-				if (mIsOld) {
-					intent.putExtra("path", mOldPath);
-				} else {
-					intent.putExtra("path", mNewPath);
-				}
+				intent.putExtra("path", (historyPicPaths.get(nowLocation)));
 				startActivityForResult(intent,
 						ActivityForResultUtil.REQUESTCODE_IMAGEFILTER_EFFECT);
 			}
@@ -148,11 +140,7 @@ public class ImageFilterActivity extends KXActivity {
 				Intent intent = new Intent();
 				intent.setClass(ImageFilterActivity.this,
 						ImageFilterFaceActivity.class);
-				if (mIsOld) {
-					intent.putExtra("path", mOldPath);
-				} else {
-					intent.putExtra("path", mNewPath);
-				}
+				intent.putExtra("path", (historyPicPaths.get(nowLocation)));
 				startActivityForResult(intent,
 						ActivityForResultUtil.REQUESTCODE_IMAGEFILTER_FACE);
 			}
@@ -164,11 +152,7 @@ public class ImageFilterActivity extends KXActivity {
 				Intent intent = new Intent();
 				intent.setClass(ImageFilterActivity.this,
 						ImageFilterFrameActivity.class);
-				if (mIsOld) {
-					intent.putExtra("path", mOldPath);
-				} else {
-					intent.putExtra("path", mNewPath);
-				}
+				intent.putExtra("path", (historyPicPaths.get(nowLocation)));
 				startActivityForResult(intent,
 						ActivityForResultUtil.REQUESTCODE_IMAGEFILTER_FRAME);
 			}
@@ -179,8 +163,6 @@ public class ImageFilterActivity extends KXActivity {
 		// 初始化界面按钮设为不可用
 		imageId = getIntent().getIntExtra("path",-1);
 		if(imageId  == -1) finish();
-		mBack.setImageResource(R.drawable.image_action_back_arrow_normal);
-		mForward.setImageResource(R.drawable.image_action_forward_arrow_normal);
 		mBack.setEnabled(false);
 		mForward.setEnabled(false);
 		// 获取是否返回数据
@@ -190,6 +172,8 @@ public class ImageFilterActivity extends KXActivity {
 		mNewPath = MainActivity.path + MainActivity.photoIds[imageId];
 		mOldBitmap = getPhoneAlbum(mOldPath);
 		mNewBitmap = getPhoneAlbum(mNewPath);
+		historyPicPaths.add(mOldPath);
+		nowLocation = 0;
 		// 显示图片
 		mDisplay.setImageBitmap(mOldBitmap);
 	}
@@ -198,22 +182,34 @@ public class ImageFilterActivity extends KXActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			// 接收修改后的图片地址,并更新
-			if (mIsOld) {
-				mNewPath = data.getStringExtra("path");
-				mNewBitmap = getPhoneAlbum(mNewPath);
-			} else {
-				mOldPath = mNewPath;
-				mOldBitmap = mNewBitmap;
-				mNewPath = data.getStringExtra("path");
-				mNewBitmap = getPhoneAlbum(mNewPath);
+			mNewPath = data.getStringExtra("path");
+			mNewBitmap = getPhoneAlbum(mNewPath);
+			while(nowLocation != historyPicPaths.size() -1){
+				historyPicPaths.remove(historyPicPaths.size()-1);
 			}
-			mIsOld = false;
-			mBack.setImageResource(R.drawable.image_filter_action_back_arrow);
-			mForward.setImageResource(R.drawable.image_action_forward_arrow_normal);
-			mBack.setEnabled(true);
-			mForward.setEnabled(false);
+			nowLocation = historyPicPaths.size() -1;
+			historyPicPaths.add(mNewPath);
+			nowLocation++;
+			setBtnState();
 			mDisplay.setImageBitmap(mNewBitmap);
 
+		}
+	}
+	/**
+	 * 设置返回按钮图片样式
+	 */
+	private void setBtnState(){
+		if(nowLocation > 0) {
+			mBack.setEnabled(true);
+		}
+		else  {
+			mBack.setEnabled(false);
+		}
+		if(nowLocation < historyPicPaths.size()-1){
+			mForward.setEnabled(true);
+		}
+		else {
+			mForward.setEnabled(false);
 		}
 	}
 }

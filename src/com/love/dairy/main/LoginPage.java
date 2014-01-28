@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.love.dairy.cutimage.ImageFilterActivity;
 import com.love.dairy.game.Game;
-import com.love.dairy.main.renren.RenrenSDKDemo;
+import com.love.dairy.main.renren.PhotoServiceActivity;
 import com.love.dairy.pojo.ImageInfo;
 import com.love.dairy.sql.DataHelper;
 
@@ -31,6 +31,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		findViewById(R.id.btnPath).setOnClickListener(this);
 		findViewById(R.id.btnAbout).setOnClickListener(this);
 		findViewById(R.id.btnCut).setOnClickListener(this);
+		findViewById(R.id.btnBack).setOnClickListener(this);
 		
 		if(getIntent().getIntExtra(OPEN_TYPE_PATH, -1)!=-1){
 			getPicPath();
@@ -70,16 +71,20 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			finish();
 		}else if(v.getId() == R.id.btnRenren){
 			Intent intent = new Intent();
-			intent.setClass(this, RenrenSDKDemo.class);
+			intent.setClass(this,com.love.dairy.main.renren. MainActivity.class);
 			startActivity(intent);
+			finish();
 		}else if(v.getId() == R.id.btnPath){
 			getPicPath();
+		}else if(v.getId() == R.id.btnBack){
+			finish();
+			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		}else if(v.getId() == R.id.btnCut){
 			Intent intent = new Intent(this, ImageFilterActivity.class);
 			intent.putExtra("path",imagePosition);
 			startActivity(intent);
-			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 			finish();
+			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		}else {
 			Intent intent = new Intent(this, Game.class);
 			intent.setAction("NEW_GAME_ACTION");
@@ -87,8 +92,8 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			bundle.putInt("imageId",imagePosition);
 			intent.putExtras(bundle);
 			startActivity(intent);
-    		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     		finish();
+    		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		}
 	}
 	@Override
@@ -107,9 +112,6 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 						path = actualimagecursor.getString(actual_image_column_index);
 					}
 					saveSharedPreferencesData(IMAGE_PATH, path.substring(0,path.lastIndexOf("/")+1));
-					Intent intent = new Intent();
-					intent.setClass(this, MainActivity.class);
-		 			startActivity(intent);
 					finish();
 				}
 			}

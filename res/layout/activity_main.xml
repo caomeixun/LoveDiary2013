@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/button_cover"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="登录" />
+
+            <Button
+                android:id="@+id/logout_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="注销"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/userService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_cover"
+            android:gravity="center"
+            android:text="userService" />
+
+        <Button
+            android:id="@+id/albumService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userService_btn"
+            android:gravity="center"
+            android:text="albumService" />
+
+        <Button
+            android:id="@+id/commentService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/albumService_btn"
+            android:gravity="center"
+            android:text="commentService" />
+
+        <Button
+            android:id="@+id/feedService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/commentService_btn"
+            android:gravity="center"
+            android:text="feedService" />
+
+        <Button
+            android:id="@+id/notificationService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feedService_btn"
+            android:gravity="center"
+            android:text="notificationService" />
+
+        <Button
+            android:id="@+id/photoService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notificationService_btn"
+            android:gravity="center"
+            android:text="photoService" />
+
+        <Button
+            android:id="@+id/profileService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photoService_btn"
+            android:gravity="center"
+            android:text="profileService" />
+
+        <Button
+            android:id="@+id/shareService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profileService_btn"
+            android:gravity="center"
+            android:text="shareService" />
+
+        <Button
+            android:id="@+id/statusService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shareService_btn"
+            android:gravity="center"
+            android:text="statusService" />
+
+        <Button
+            android:id="@+id/ubbService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/statusService_btn"
+            android:gravity="center"
+            android:text="ubbService" />
+        
+        <Button
+            android:id="@+id/blogService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ubbService_btn"
+            android:gravity="center"
+            android:text="blogService" />
+        
+        <Button
+            android:id="@+id/likeService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/blogService_btn"
+            android:gravity="center"
+            android:text="likeService" />
+        
+        <Button
+            android:id="@+id/appService_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/likeService_btn"
+            android:gravity="center"
+            android:text="appService" />
+        
+    </RelativeLayout>
+
+</ScrollView>

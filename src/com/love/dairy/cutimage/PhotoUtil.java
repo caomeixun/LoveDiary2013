@@ -97,7 +97,6 @@ public class PhotoUtil {
 		}
 		return true;
 	}
-
 	/**
 	 * 保存图片到本地(JPG)
 	 * 
@@ -106,19 +105,35 @@ public class PhotoUtil {
 	 * @return 图片路径
 	 */
 	public static String saveToLocal(Bitmap bm,String path) {
+		return saveToLocal(bm, path, true);
+	}
+	private static void checkFileDirectionExists(String path){
+		Log.e("TAG", "path"+path);
+		File file = new File(path);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+	}
+	/**
+	 * 保存图片到本地(JPG)
+	 * 
+	 * @param bm
+	 *            保存的图片
+	 * @return 图片路径
+	 */
+	public static String saveToLocal(Bitmap bm,String path,boolean pathNeedMD5) {
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			return null;
 		}
 		FileOutputStream fileOutputStream = null;
-		File file = new File(FileDownload.path+"cutimage/");
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-		Log.e("TAG", "==="+MD5.getMD5(path));
+		checkFileDirectionExists(FileDownload.path+"cutimage/");
 //		String fileName = UUID.randomUUID().toString() + ".jpg";
-		String fileName = MD5.getMD5(path) + ".jpg";
+		String fileName = path;
+		if(pathNeedMD5) fileName = MD5.getMD5(path) + ".jpg";
 		String filePath = FileDownload.path+"cutimage/" + fileName;
+		String mulu = filePath.substring(0, filePath.lastIndexOf("/"));
+		checkFileDirectionExists(mulu);
 		File f = new File(filePath);
 		if(f.exists()){
 			f.delete();
@@ -129,6 +144,7 @@ public class PhotoUtil {
 				fileOutputStream = new FileOutputStream(filePath);
 				bm.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
 			} catch (IOException e) {
+				e.printStackTrace();
 				return null;
 			} finally {
 				try {
