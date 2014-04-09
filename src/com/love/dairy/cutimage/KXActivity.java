@@ -4,20 +4,13 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -38,7 +31,6 @@ public class KXActivity extends Activity {
 	 * 表情控件
 	 */
 	private PopupWindow mFacePop;
-	private View mFaceView;
 	protected ImageView mFaceClose;
 	protected GridView mFaceGridView;
 	/**

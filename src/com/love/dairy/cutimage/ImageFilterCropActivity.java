@@ -1,12 +1,5 @@
 package com.love.dairy.cutimage;
 
-import java.util.HashMap;
-
-import com.love.dairy.main.MainActivity;
-import com.love.dairy.main.R;
-import com.love.dairy.utils.ImageUtil;
-import com.love.dairy.widget.FlipCards;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -20,6 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.love.dairy.main.R;
 
 
 /**

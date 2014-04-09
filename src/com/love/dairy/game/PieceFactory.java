@@ -5,21 +5,16 @@ import java.util.Vector;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.EmbossMaskFilter;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.Bitmap.Config;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Region.Op;
 import android.util.Log;
 
 /**
@@ -43,7 +38,7 @@ public class PieceFactory {
 	private Paint addPaint = new Paint();
 	
 	//保存所有
-	private Vector allPiece = new Vector();
+	private Vector<Piece> allPiece = new Vector<Piece>();
 	
 	/////加载图片长宽
 	private int _imageW;
@@ -149,9 +144,9 @@ public class PieceFactory {
 	}
 	
 	//顺时针取椭圆点位，右边界和下边界
-	private ArrayList getOvalDotArray(Piece piece, int position){
+	private ArrayList<Point> getOvalDotArray(Piece piece, int position){
 		int rnd = ((int)(Math.random()*10)%2 ==0) ? 1 : -1;
-		ArrayList circleDotArray = new ArrayList();
+		ArrayList<Point> circleDotArray = new ArrayList<Point>();
 		Point key = piece.getKey();
 		
 		switch(position){
@@ -205,12 +200,11 @@ public class PieceFactory {
 	}
 	
 	private void getAllDotArray(Piece piece){
-		ArrayList allDotArray = new ArrayList();
 		//top,right,feet,left四面
-		ArrayList top = new ArrayList();
-		ArrayList right = new ArrayList();
-		ArrayList feet = new ArrayList();
-		ArrayList left = new ArrayList();
+		ArrayList<Point> top = new ArrayList<Point>();
+		ArrayList<Point> right = new ArrayList<Point>();
+		ArrayList<Point> feet = new ArrayList<Point>();
+		ArrayList<Point> left = new ArrayList<Point>();
 		
 		Point id = piece.getId();
 		Point key = piece.getKey();
@@ -223,7 +217,7 @@ public class PieceFactory {
 		}else{  //top边界为曲线，则曲线点为上一块碎片的feet边界
 			Piece tmpPiece = (Piece) allPiece.get(_line * (id.x - 1) + id.y);
 			//Log.i("top", "top bian " + id.y + " " + id.y + " " + (_line * (id.x - 1) + id.y));
-			ArrayList tmpFeet = tmpPiece.getApFeet();
+			ArrayList<Point> tmpFeet = tmpPiece.getApFeet();
 			for(int i=tmpFeet.size()-1; i>=0; i--){
 				top.add(tmpFeet.get(i));
 			}
@@ -238,7 +232,7 @@ public class PieceFactory {
 		}else{  //left边界为曲线，则曲线点为左边一块碎片的right边界
 			Piece tmpPiece = (Piece) allPiece.get(_line * id.x + id.y - 1);
 			//Log.i("left", "left bian " + id.y + " " + id.y + " " + (_line * id.x + id.y - 1));
-			ArrayList tmpRight = tmpPiece.getApRight();
+			ArrayList<Point> tmpRight = tmpPiece.getApRight();
 			for(int i=tmpRight.size()-1; i>=0; i--){
 				left.add(tmpRight.get(i));
 			}
@@ -278,7 +272,7 @@ public class PieceFactory {
 		int maxx = 0;
 		int maxy = 0;
 		
-		ArrayList left = piece.getApLeft();
+		ArrayList<Point> left = piece.getApLeft();
 		for(int i=0; i<left.size(); i++){
 			Point lp = (Point) left.get(i);
 			if(lp.x < minx){
@@ -286,7 +280,7 @@ public class PieceFactory {
 			}
 		}
 		
-		ArrayList top = piece.getApTop();
+		ArrayList<Point> top = piece.getApTop();
 		for(int i=0; i<top.size(); i++){
 			Point tp = (Point) top.get(i);
 			if(tp.y < miny){
@@ -296,7 +290,7 @@ public class PieceFactory {
 		//Log.i("getMinAndMaxPoint", "min point: (" + minx + ", " + miny + ")");
 		piece.setMinp(new Point(minx, miny));   // 左上角点位
 		
-		ArrayList right = piece.getApRight();
+		ArrayList<Point> right = piece.getApRight();
 		for(int i=0; i<right.size(); i++){
 			Point rp = (Point) right.get(i);
 			if(rp.x > maxx){
@@ -304,7 +298,7 @@ public class PieceFactory {
 			}
 		}
 		
-		ArrayList feet = piece.getApFeet();
+		ArrayList<Point> feet = piece.getApFeet();
 		for(int i=0; i<feet.size(); i++){
 			Point fp = (Point) feet.get(i);
 			if(fp.y > maxy){
@@ -446,16 +440,16 @@ public class PieceFactory {
 		Point key = (Point) piece.getKey();
 		dotPath.moveTo(key.x-diff.x, key.y-diff.y);
 		
-		ArrayList top = piece.getApTop();
+		ArrayList<Point> top = piece.getApTop();
 		changeDotPath(top, dotPath, diff);
 		
-		ArrayList right = piece.getApRight();
+		ArrayList<Point> right = piece.getApRight();
 		changeDotPath(right, dotPath, diff);
 		
-		ArrayList feet = piece.getApFeet();
+		ArrayList<Point> feet = piece.getApFeet();
 		changeDotPath(feet, dotPath, diff);
 		
-		ArrayList left = piece.getApLeft();
+		ArrayList<Point> left = piece.getApLeft();
 		changeDotPath(left, dotPath, diff);
 	 
 		/////根据碎片的大小，创建透明图片，在画布上每次绘制一个碎片，然后保存
@@ -499,9 +493,9 @@ public class PieceFactory {
 	}
 	
 	//根据minp点，将绝对点位转化为相对点位
-	private void changeDotPath(ArrayList dotList, Path dotPath, Point diff){
+	private void changeDotPath(ArrayList<Point> dotList, Path dotPath, Point diff){
 		int len = dotList.size();
-		ArrayList tempDot = dotList;
+		ArrayList<Point> tempDot = dotList;
 		
 		for(int i=0; i<len; i++){
 			if(tempDot.size() == 2){
@@ -516,11 +510,11 @@ public class PieceFactory {
 		
 	}
 
-	public Vector getAllPiece() {
+	public Vector<Piece> getAllPiece() {
 		return allPiece;
 	}
 
-	public void setAllPiece(Vector allPiece) {
+	public void setAllPiece(Vector<Piece> allPiece) {
 		this.allPiece = allPiece;
 	}
 

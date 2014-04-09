@@ -16,11 +16,8 @@ limitations under the License.
  */
 package com.love.dairy.widget;
 
-import java.lang.ref.SoftReference;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.View;
 
 public class GrabIt {

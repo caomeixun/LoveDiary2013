@@ -22,7 +22,6 @@ import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.util.Log;
-import android.view.View;
 
 /*
  Copyright 2012 Aphid Mobile

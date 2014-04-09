@@ -50,6 +50,8 @@ public class MyDBAdapter {
 	private static final String PIECE_LOC_Y = "piece_loc_y";
 	private static final String PIECE_IMAGE = "piece_image";
 	private static final String PIECE_TOP = "piece_top";
+	private static final String PIECE_HEIGHT = "piece_height";
+	private static final String PIECE_WIDTH = "piece_width";
 	private static final String PIECE_RIGHT = "piece_right";
 	private static final String PIECE_FEET = "piece_feet";
 	private static final String PIECE_LEFT = "piece_left";
@@ -90,6 +92,8 @@ public class MyDBAdapter {
 			PIECE_MINP_Y + " integer, " +
 			PIECE_LOC_X + " integer, " +
 			PIECE_LOC_Y + " integer, " +
+			PIECE_HEIGHT + " integer, " +
+			PIECE_WIDTH + " integer, " +
 			PIECE_IMAGE + " blob, " +
 			PIECE_TOP + " boolean, " +
 			PIECE_RIGHT + " boolean, " +
@@ -98,7 +102,7 @@ public class MyDBAdapter {
 			DESC + " text ); ";
 	
 	//保存数据库实例的变量
-	private SQLiteDatabase db;
+	public SQLiteDatabase db;
 	
 	//使用数据库的应用程序上下文
 	private final Context context;
@@ -120,13 +124,12 @@ public class MyDBAdapter {
 	public void close(){
 		db.close();
 	}
-	
+	public String str = null;
 	public long insertPiece(String table, PieceImageButton pib, int imageid, int levelid){
 		ContentValues values = new ContentValues();
 		//碎片所属拼图原图
 		values.put("image_id", imageid);
 		values.put("level_id", levelid);
-		
 		int pieceid = pib.getId();
 		values.put("piece_id", pieceid);
 		
@@ -141,7 +144,6 @@ public class MyDBAdapter {
 		int piecelocy = loc.y;
 		values.put("piece_loc_x", piecelocx);
 		values.put("piece_loc_y", piecelocy);
-		
 		Bitmap bmp = MyBitmapFactory.DrawableToBitmap(pib.getBackground());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
@@ -151,9 +153,17 @@ public class MyDBAdapter {
 		values.put("piece_right", pib.isHasRight());
 		values.put("piece_feet", pib.isHasFeet());
 		values.put("piece_left", pib.isHasLeft());
+		values.put(PIECE_HEIGHT, pib.pieceHeight);
+		values.put(PIECE_WIDTH, pib.pieceWidth);
 		values.put("desc", pib.getWidth() + ":" + pib.getHeight());
-		
 		return db.insert(table, null, values);
+	}
+	/**
+	 * 批量加入碎片信息
+	 * @return
+	 */
+	public long insertPieces(){
+		return 0;
 	}
 	
 	public long insertEntry(String table, ContentValues values){
@@ -168,8 +178,9 @@ public class MyDBAdapter {
 		return db.delete(table, KEY_ID + "=" + _rowIndex, null) > 0;
 	}
 	
-	public ArrayList getPieces(int imageid, int levelid){
-		ArrayList allImagePieces = new ArrayList();
+	@SuppressWarnings("deprecation")
+	public ArrayList<PieceImageButton> getPieces(int imageid, int levelid){
+		ArrayList<PieceImageButton> allImagePieces = new ArrayList<PieceImageButton>();
 		String sql = " select * from pt_piece where image_id = " + imageid + " and level_id = " + levelid + "; ";
 		
 		Cursor cursor = db.rawQuery(sql, null);
@@ -185,7 +196,8 @@ public class MyDBAdapter {
 			int piecelocx = cursor.getInt(cursor.getColumnIndexOrThrow("piece_loc_x"));
 			int piecelocy = cursor.getInt(cursor.getColumnIndexOrThrow("piece_loc_y"));
 			pib.setLocation(new Point(piecelocx, piecelocy));
-			
+			pib.pieceHeight = (cursor.getInt(cursor.getColumnIndexOrThrow(PIECE_HEIGHT)));
+			pib.pieceWidth = (cursor.getInt(cursor.getColumnIndexOrThrow(PIECE_WIDTH)));
 			byte[] in = cursor.getBlob(cursor.getColumnIndexOrThrow("piece_image"));
 			Bitmap bmp = BitmapFactory.decodeByteArray(in, 0, in.length);
 			pib.setBackgroundDrawable(MyBitmapFactory.BitmapToDrawable(bmp));
@@ -339,12 +351,10 @@ public class MyDBAdapter {
 
 		public MyDbHelper(Context context, String name, CursorFactory factory, int version) {
 			super(context, name, factory, version);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase _db) {
-			// TODO Auto-generated method stub
 			_db.execSQL(EFFECT_TABLE_CREATE_SQL);
 			_db.execSQL(LEVEL_TABLE_CREATE_SQL);
 			_db.execSQL(PIECE_TABLE_CREATE_SQL);
@@ -398,7 +408,6 @@ public class MyDBAdapter {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase _db, int _oldVersion, int _newVersion) {
-			// TODO Auto-generated method stub
 			Log.w("TaskDBAdapter","Upgrade from version " + _oldVersion + " to " + _newVersion + ", which will destroy all old data");
 			
 			_db.execSQL("DROP TABLE IF EXISTS " + EFFECT_TABLE_CREATE_SQL);

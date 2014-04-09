@@ -5,9 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.love.dairy.utils.FileDownload;
-import com.love.dairy.utils.MD5;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -23,8 +20,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
-import android.util.Base64;
 import android.util.Log;
+
+import com.love.dairy.utils.FileDownload;
+import com.love.dairy.utils.MD5;
 
 /**
  * 图片工具类
@@ -835,7 +834,6 @@ public class PhotoUtil {
 			// 获取缩放后图片
 			return BitmapFactory.decodeFile(path, newOpts);
 		} catch (Exception e) {
-			// TODO: handle exception
 			return null;
 		}
 	}

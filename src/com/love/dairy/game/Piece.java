@@ -17,10 +17,10 @@ public class Piece {
 	private int pieceWidth;  //包含凹凸的宽度
 	private int pieceHeight;  //包含凹凸的高度
 	
-	private ArrayList apTop = new ArrayList(4);
-	private ArrayList apRight = new ArrayList(4);
-	private ArrayList apFeet = new ArrayList(4);
-	private ArrayList apLeft = new ArrayList(4);
+	private ArrayList<Point> apTop = new ArrayList<Point>(4);
+	private ArrayList<Point> apRight = new ArrayList<Point>(4);
+	private ArrayList<Point> apFeet = new ArrayList<Point>(4);
+	private ArrayList<Point> apLeft = new ArrayList<Point>(4);
 
 	private Bitmap bmPiece;
 	private Bitmap bmEdge;
@@ -49,35 +49,35 @@ public class Piece {
 		this.key = key;
 	}
 
-	public ArrayList getApTop() {
+	public ArrayList<Point> getApTop() {
 		return apTop;
 	}
 
-	public void setApTop(ArrayList apTop) {
+	public void setApTop(ArrayList<Point> apTop) {
 		this.apTop = apTop;
 	}
 
-	public ArrayList getApRight() {
+	public ArrayList<Point> getApRight() {
 		return apRight;
 	}
 
-	public void setApRight(ArrayList apRight) {
+	public void setApRight(ArrayList<Point> apRight) {
 		this.apRight = apRight;
 	}
 
-	public ArrayList getApFeet() {
+	public ArrayList<Point> getApFeet() {
 		return apFeet;
 	}
 
-	public void setApFeet(ArrayList apFeet) {
+	public void setApFeet(ArrayList<Point> apFeet) {
 		this.apFeet = apFeet;
 	}
 
-	public ArrayList getApLeft() {
+	public ArrayList<Point> getApLeft() {
 		return apLeft;
 	}
 
-	public void setApLeft(ArrayList apLeft) {
+	public void setApLeft(ArrayList<Point> apLeft) {
 		this.apLeft = apLeft;
 	}
 

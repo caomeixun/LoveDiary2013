@@ -1,7 +1,6 @@
 package com.love.dairy.widget;
 
- import java.util.HashMap;
-import java.util.HashSet;
+ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -9,8 +8,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.RectF;
 import android.opengl.GLU;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 
 import com.love.dairy.main.MainActivity;
@@ -35,6 +36,8 @@ import com.love.dairy.utils.BitmapWorkerTask;
 
 public class FlipCards {
 	private FlipViewGroup flipViewGroup;
+	private int tipTimes = 0;
+	private int tipTimesMax = 3;
 	private static final float ACCELERATION = 0.618f;
 	private static final float TIP_SPEED = 1f;
 	private static final float MOVEMENT_RATE = 1.5f;
@@ -55,7 +58,7 @@ public class FlipCards {
 	private String TAG = "imageUtil";
 	
 	
-	public static HashMap<Integer, Bitmap> dateCache = null;
+	public static SparseArray<Bitmap> dateCache = null;
 	//public static HashMap<Integer, SoftReference<Bitmap>> dateCache = null;
 	private void loadBitmap(boolean isNext,int position,int maxSize){
 		Log.e("TAG", "loadBitmap--------------"+position);
@@ -72,7 +75,7 @@ public class FlipCards {
 		if(loadId >= maxSize){
 			loadId = Math.abs(loadId-maxSize);
 		}
-		if(!dateCache.containsKey(loadId)){
+		if(dateCache.get(loadId) == null){
 			final int postion =  loadId;
 			flipViewGroup.context.runOnUiThread( new Runnable() {
 				
@@ -173,6 +176,7 @@ public class FlipCards {
 		bottomCard[0].setAxis(Card.AXIS_TOP);
 		topCards[0].setAxis(Card.AXIS_BOTTOM);
 		topCards[1].setAxis(Card.AXIS_BOTTOM);
+		setState(STATE_TIP);
 	}
 
 	public void reloadTexture(MyView firstView,MyView secondView) {
@@ -227,17 +231,19 @@ public class FlipCards {
 			return;
 		switch (state) {
 		case STATE_TIP: {
-//			if (angle >= 180)
-//				forward = false;
-//			else if (angle <= 0)
-//				forward = true;
-//
-//			rotateBy((forward ? TIP_SPEED : -TIP_SPEED));
-//			if (angle > 90 && angle <= 180 - MAX_TIP_ANGLE) {
-//				forward = true;
-//			} else if (angle < 90 && angle >= MAX_TIP_ANGLE) {
-//				forward = false;
-//			}
+			if (angle >= 180)
+				forward = false;
+			else if (angle <= 0){
+				forward = true;
+				calcTimes();
+			}
+
+			rotateBy((forward ? TIP_SPEED : -TIP_SPEED));
+			if (angle > 90 && angle <= 180 - MAX_TIP_ANGLE) {
+				forward = true;
+			} else if (angle < 90 && angle >= MAX_TIP_ANGLE) {
+				forward = false;
+			}
 		}
 			break;
 		case STATE_TOUCH:
@@ -277,6 +283,12 @@ public class FlipCards {
 			lastPage(gl);
 	}
 
+	private void calcTimes() {
+		if(tipTimes++ > tipTimesMax){
+			setState(STATE_STOP);
+		}
+		
+	}
 	private void lastPage(GL10 gl) {
 
 		if (angle >-90) {
@@ -483,9 +495,6 @@ public class FlipCards {
 
 	private float lastY = -1;
 	private long double_tap_time = 0;
-	private float lastRotate =0;
-	private float lastUpRotate =0;
-	private boolean isCanDo = false;
 	public boolean handleTouchEvent(MotionEvent event) {
 		if (textures[0] == null){
 			return false;
@@ -506,9 +515,7 @@ public class FlipCards {
 				flipViewGroup.context.login(photoPostion);
 			}
 			double_tap_time = System.currentTimeMillis();
-			lastRotate = 0;
 			setState(STATE_TOUCH);
-			isCanDo = true;
 			return true;
 		case MotionEvent.ACTION_MOVE:
 			delta = lastY - event.getY();
@@ -521,12 +528,14 @@ public class FlipCards {
 
 			return true;
 		case MotionEvent.ACTION_UP:
+			RectF rect = new RectF(MainActivity.screenWidth-MainActivity.menuWidth, 0, MainActivity.screenWidth, MainActivity.menuHeight);
+			if(rect.contains(event.getX(),event.getY())){
+				flipViewGroup.context.login(photoPostion);
+			}
 		case MotionEvent.ACTION_CANCEL:
 			delta = lastY - event.getY();
-	
 			rotateBy(180 * delta / textures[0].getContentHeight()
 					* MOVEMENT_RATE);
-			lastUpRotate = angle;
 			if (angle > 90 || (angle < -90)){
 				isSetPosition=  true;	
 				forward = true;

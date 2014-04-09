@@ -2,7 +2,6 @@ package com.love.dairy.cutimage;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;

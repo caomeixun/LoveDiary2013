@@ -1,11 +1,7 @@
 package com.love.dairy.game;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Point;
-import android.util.Log;
 import android.widget.ImageButton;
 
 public class PieceImageButton extends ImageButton {

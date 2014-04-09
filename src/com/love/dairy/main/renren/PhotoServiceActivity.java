@@ -2,15 +2,6 @@ package com.love.dairy.main.renren;
 
 import java.io.File;
 
-import com.love.dairy.main.R;
-import com.renn.rennsdk.RennClient;
-import com.renn.rennsdk.exception.RennException;
-import com.renn.rennsdk.RennResponse;
-import com.renn.rennsdk.RennExecutor.CallBack;
-import com.renn.rennsdk.param.GetPhotoParam;
-import com.renn.rennsdk.param.ListPhotoParam;
-import com.renn.rennsdk.param.UploadPhotoParam;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,7 +9,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.sax.TextElementListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,6 +16,15 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.love.dairy.main.R;
+import com.renn.rennsdk.RennClient;
+import com.renn.rennsdk.RennExecutor.CallBack;
+import com.renn.rennsdk.RennResponse;
+import com.renn.rennsdk.exception.RennException;
+import com.renn.rennsdk.param.GetPhotoParam;
+import com.renn.rennsdk.param.ListPhotoParam;
+import com.renn.rennsdk.param.UploadPhotoParam;
 
 public class PhotoServiceActivity extends Activity implements OnClickListener {
 
@@ -125,7 +124,8 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
     }
     
     //获得图片的物理地址
-    public  String getPath(Uri uri) {
+    @SuppressWarnings("deprecation")
+	public  String getPath(Uri uri) {
         Cursor cursor;
         String[] projection = { MediaStore.Images.Media.DATA };
         if(uri.toString().contains("file:///")){

@@ -1,36 +1,24 @@
 package com.love.dairy.main;
 
 import java.io.File;
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 
 import com.love.dairy.sql.DataHelper;
-import com.love.dairy.utils.FileDownload;
 import com.love.dairy.utils.ImageUtil;
 import com.love.dairy.widget.FlipCards;
 import com.love.dairy.widget.FlipViewGroup;
 import com.love.dairy.widget.MyView;
-
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.LruCache;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.TextView;
 
 /**
  * 仿flipboard特效
@@ -42,6 +30,8 @@ public class MainActivity extends BaseActivity{
 	private FlipViewGroup contentView;
 	public static int screenHeight;
 	public static int screenWidth;
+	public static int menuWidth;
+	public static int menuHeight;
 	public static String path = null;
 //	/**
 //	 * 标题栏高度
@@ -68,7 +58,6 @@ public class MainActivity extends BaseActivity{
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
 		init();
-		 
 	}
 	private void init(){
 		contentView = new FlipViewGroup(this);
@@ -102,9 +91,13 @@ public class MainActivity extends BaseActivity{
 			startActivity(intent);
 			return;
 		}
-		FlipCards.dateCache = new HashMap<Integer, Bitmap>();
+		FlipCards.dateCache = new SparseArray<Bitmap>();
+		if(photoIds.length == 1){
+			photoIds = new String[]{photoIds[0],photoIds[0],photoIds[0]};
+		}else if(photoIds.length == 2){
+			photoIds = new String[]{photoIds[0],photoIds[1],photoIds[0]};
+		}
 		for (int i=0;i<3;i++) {
-			
 			Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),path + photoIds[i], MainActivity.screenWidth, MainActivity.screenHeight);
 			FlipCards.dateCache.put(i,bit);
 		}
@@ -120,6 +113,16 @@ public class MainActivity extends BaseActivity{
 		System.gc();
 		setContentView(contentView);
 		contentView.startFlipping();
+		loadMenuSize();
+	}
+	private void loadMenuSize() {
+		Options opts = new Options();
+		opts.inJustDecodeBounds = true;
+		BitmapFactory.decodeResource(this.getApplicationContext().getResources(), R.drawable.menuhover, opts);
+		MainActivity.menuHeight = opts.outHeight+ (int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 25, getResources()
+				.getDisplayMetrics());;
+		MainActivity.menuWidth = opts.outWidth;
 	}
 	@Override
 	protected void onResume() {

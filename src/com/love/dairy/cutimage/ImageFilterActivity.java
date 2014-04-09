@@ -1,14 +1,7 @@
 package com.love.dairy.cutimage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.love.dairy.main.MainActivity;
-import com.love.dairy.main.R;
-import com.love.dairy.utils.ImageUtil;
-import com.love.dairy.widget.FlipCards;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +11,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.love.dairy.main.MainActivity;
+import com.love.dairy.main.R;
+import com.love.dairy.utils.ImageUtil;
+import com.love.dairy.widget.FlipCards;
 
 
 /**

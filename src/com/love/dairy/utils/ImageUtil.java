@@ -6,12 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import com.love.dairy.main.MainActivity;
-
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -39,7 +33,6 @@ public class ImageUtil {
 			String pathName, int reqWidth, int reqHeight) {
 //		Log.e("TAG", "options.inSampleSize"+reqWidth+"--"+reqHeight);
 		pathName = checkUserCuted(pathName);
-		long time = System.currentTimeMillis();
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(pathName, options);
@@ -52,15 +45,11 @@ public class ImageUtil {
 		SoftReference<Bitmap> map = null;
 		try{
 		map = new SoftReference<Bitmap>(BitmapFactory.decodeFile(pathName, options));
-//		Log.e("TAG", "options.inSampleSize"+options.inSampleSize);
-//		Log.e("TAG", "options.inSampleSize-size"+reqWidth+"--"+reqHeight);
 		}catch (OutOfMemoryError out) {
 			out.printStackTrace();
 			options.inSampleSize+=1;
 			map = new SoftReference<Bitmap>(BitmapFactory.decodeFile(pathName, options));
 		}
-		//Log.e("TAF", System.currentTimeMillis()-time+"time   decodeSampledBitmapFromResource"+map.get().getRowBytes() * map.get().getHeight());
-		//Log.e("TAG", "-------------------------2--------------------------"+pathName);
 		Bitmap newMap = zoomBitmapByPhoto(map.get(),reqWidth,reqHeight);
 		if(map.get()!=null && !map.get().isRecycled()){
 			map.get().recycle();
@@ -120,7 +109,6 @@ public class ImageUtil {
 		Matrix matrix = new Matrix();
 		float scaleWidht = ((float) w / width);
 		float scaleHeight = ((float) h / height);
-		int newHeight,newWidth;
 		float scaleSize = 0;
 
 		if(scaleWidht < scaleHeight){
@@ -373,8 +361,6 @@ public class ImageUtil {
 	}
 
 	public static Bitmap oldRemeber(Bitmap bmp) {
-		// �ٶȲ���
-		long start = System.currentTimeMillis();
 		int width = bmp.getWidth();
 		int height = bmp.getHeight();
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
@@ -403,7 +389,6 @@ public class ImageUtil {
 		}
 
 		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-		long end = System.currentTimeMillis();
 		return bitmap;
 	}
 
@@ -415,7 +400,6 @@ public class ImageUtil {
 	 */
 	public static Bitmap blurImage(Bitmap bmp) {
 		// �ٶȲ���
-		long start = System.currentTimeMillis();
 		int width = bmp.getWidth();
 		int height = bmp.getHeight();
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
@@ -499,7 +483,6 @@ public class ImageUtil {
 				newB = 0;
 			}
 		}
-		long end = System.currentTimeMillis();
 		return bitmap;
 	}
 
@@ -510,8 +493,6 @@ public class ImageUtil {
 	 * @return
 	 */
 	public static Bitmap blurImageAmeliorate(Bitmap bmp) {
-		long start = System.currentTimeMillis();
-		// ��˹����
 		int[] gauss = new int[] { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
 
 		int width = bmp.getWidth();
@@ -567,12 +548,10 @@ public class ImageUtil {
 		}
 
 		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-		long end = System.currentTimeMillis();
 		return bitmap;
 	}
 
 	public static Bitmap sketch(Bitmap bmp) {
-		long start = System.currentTimeMillis();
 		int pos, row, col, clr;
 		int width = bmp.getWidth();
 		int height = bmp.getHeight();
@@ -603,7 +582,6 @@ public class ImageUtil {
 			}
 		}
 		bmp.setPixels(pixSrc, 0, width, 0, 0, width, height);
-		long end = System.currentTimeMillis();
 		return bmp;
 	}
 
@@ -878,8 +856,6 @@ public class ImageUtil {
 	 * @return
 	 */
 	public static Bitmap sharpenImageAmeliorate(Bitmap bmp) {
-		long start = System.currentTimeMillis();
-		// -��-˹����
 		int[] laplacian = new int[] { -1, -1, -1, -1, 9, -1, -1, -1, -1 };
 
 		int width = bmp.getWidth();
@@ -929,7 +905,6 @@ public class ImageUtil {
 		}
 
 		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-		long end = System.currentTimeMillis();
 		return bitmap;
 	}
 

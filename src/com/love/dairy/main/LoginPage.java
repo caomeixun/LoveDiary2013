@@ -2,6 +2,8 @@ package com.love.dairy.main;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,15 +15,17 @@ import android.widget.Toast;
 
 import com.love.dairy.cutimage.ImageFilterActivity;
 import com.love.dairy.game.Game;
-import com.love.dairy.main.renren.PhotoServiceActivity;
 import com.love.dairy.pojo.ImageInfo;
 import com.love.dairy.sql.DataHelper;
+import com.love.dairy.utils.Blur;
+import com.love.dairy.widget.FlipCards;
 
 public class LoginPage extends BaseActivity implements OnClickListener{
 	public static String IMAGE_ID = "IMAGE_ID"; 
 	public static String OPEN_TYPE_PATH = "OPEN_TYPE_PATH"; 
 	private int request_code_path = 123;
 	private int imagePosition = -1;
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle save){
 		super.onCreate(save);
 		setContentView(R.layout.flip_login);
@@ -35,6 +39,14 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		
 		if(getIntent().getIntExtra(OPEN_TYPE_PATH, -1)!=-1){
 			getPicPath();
+		}else{
+			Bitmap bitmap = FlipCards.dateCache.get(imagePosition);
+			if(bitmap != null){
+				double scaleSize = MainActivity.screenWidth / bitmap.getWidth();
+				bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), (int) (getResources().getDimensionPixelSize(R.dimen.title_height)/scaleSize));
+				bitmap = Blur.fastblur(getApplicationContext(), bitmap, 12);
+				findViewById(R.id.topRl).setBackgroundDrawable(new BitmapDrawable(bitmap));
+			}
 		}
 	}
 
@@ -106,6 +118,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 					String path = originalUri.getPath();
 					if(originalUri.getScheme().equals("content")){
 						String[] proj = { MediaStore.Images.Media.DATA };
+						@SuppressWarnings("deprecation")
 						Cursor actualimagecursor = managedQuery(originalUri,proj,null,null,null);
 						int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 						actualimagecursor.moveToFirst();

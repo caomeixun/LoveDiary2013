@@ -1,19 +1,13 @@
 package com.love.dairy.utils;
 
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.widget.FlipCards;
 import com.love.dairy.widget.MyView;
-
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ImageView;
 
 public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	public static int HALF_TYPE = 444;
@@ -53,7 +47,7 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     		myView.setViewToBitmap();
     	}
         if (FlipCards.dateCache != null && bitmap != null) {
-        	if(!FlipCards.dateCache.containsKey(data)){
+        	if(FlipCards.dateCache.get(data) == null){
         			FlipCards.dateCache.put(data, bitmap);
         	}else{
         		Bitmap rBimtmap = FlipCards.dateCache.get(data);

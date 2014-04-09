@@ -1,33 +1,14 @@
 package com.love.dairy.main.renren;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.love.dairy.cutimage.KXActivity;
-import com.love.dairy.main.BaseActivity;
-import com.love.dairy.main.MainActivity;
-import com.love.dairy.main.R;
-import com.love.dairy.main.renren.AsyncImageLoader.ImageCallback;
-import com.love.dairy.utils.BitmapUtils;
-import com.love.dairy.utils.FileDownload;
-import com.love.dairy.utils.ImageUtil;
-import com.renn.rennsdk.RennClient;
-import com.renn.rennsdk.RennExecutor.CallBack;
-import com.renn.rennsdk.RennResponse;
-import com.renn.rennsdk.exception.RennException;
-import com.renn.rennsdk.param.ListAlbumParam;
-import com.renn.rennsdk.param.ListPhotoParam;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -45,6 +26,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.love.dairy.main.BaseActivity;
+import com.love.dairy.main.R;
+import com.love.dairy.main.renren.AsyncImageLoader.ImageCallback;
+import com.love.dairy.utils.FileDownload;
+import com.love.dairy.utils.ImageUtil;
+import com.renn.rennsdk.RennClient;
+import com.renn.rennsdk.RennExecutor.CallBack;
+import com.renn.rennsdk.RennResponse;
+import com.renn.rennsdk.exception.RennException;
+import com.renn.rennsdk.param.ListAlbumParam;
+import com.renn.rennsdk.param.ListPhotoParam;
 
 
 /**
@@ -130,7 +123,7 @@ public class PhoneAlbumActivity extends BaseActivity {
 								String size = images.getJSONObject(j).getString("size");
 								path = images.getJSONObject(j).getString("url");
 								try{
-									if(path.indexOf(size.toLowerCase()+".jpg")==-1){
+									if(path.indexOf(size.toLowerCase(Locale.US)+".jpg")==-1){
 										break;
 									}
 								}catch(Exception ex){
@@ -202,7 +195,7 @@ public class PhoneAlbumActivity extends BaseActivity {
 								String size = images.getJSONObject(j).getString("size");
 								album.cover = images.getJSONObject(j).getString("url");
 								try{
-									if(album.cover.indexOf(size.toLowerCase()+".jpg")==-1){
+									if(album.cover.indexOf(size.toLowerCase(Locale.US)+".jpg")==-1){
 										break;
 									}
 								}catch(Exception ex){
@@ -216,7 +209,6 @@ public class PhoneAlbumActivity extends BaseActivity {
 						}
 						
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -231,7 +223,6 @@ public class PhoneAlbumActivity extends BaseActivity {
                 }
             });
         } catch (RennException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 		
@@ -302,27 +293,5 @@ public class PhoneAlbumActivity extends BaseActivity {
 	}
 
 	
-	/**
-	 * 判断是否为图片
-	 * 
-	 * @param fName
-	 *            文件的名字
-	 * @return
-	 */
-	private boolean getImageFile(String fName) {
-		boolean re;
-
-		String end = fName
-				.substring(fName.lastIndexOf(".") + 1, fName.length())
-				.toLowerCase();
-
-		if (end.equals("jpg") || end.equals("gif") || end.equals("png")
-				|| end.equals("jpeg") || end.equals("bmp")) {
-			re = true;
-		} else {
-			re = false;
-		}
-		return re;
-	}
 
 }

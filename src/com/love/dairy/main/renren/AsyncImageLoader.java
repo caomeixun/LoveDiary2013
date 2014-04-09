@@ -16,7 +16,7 @@ import android.os.Message;
 import android.widget.ImageView;
 
 public class AsyncImageLoader {
-	//SoftReference是软引用，是为了更好的为了系统回收变�?
+	//SoftReference是软引用，是为了更好的为了系统回收变�?
     private static Map<String, SoftReference<Drawable>> imageCache=new HashMap<String, SoftReference<Drawable>>();
     public AsyncImageLoader() {
     }
@@ -36,7 +36,7 @@ public class AsyncImageLoader {
 	                imageCallback.imageLoaded((Drawable) message.obj, imageView,imageUrl);
 	            }
 	        };
-	        //建立新一个新的线程下载图�?
+	        //建立新一个新的线程下载图�?
 	        new Thread() {
 	            @Override
 	            public void run() {
@@ -50,7 +50,8 @@ public class AsyncImageLoader {
         return null;
     }
     
-    public static Drawable loadImageFromUrl(String url){
+    @SuppressWarnings("deprecation")
+	public static Drawable loadImageFromUrl(String url){
         URL m;
         InputStream i = null;
         try {

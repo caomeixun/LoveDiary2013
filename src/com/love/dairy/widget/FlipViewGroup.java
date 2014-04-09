@@ -2,20 +2,16 @@ package com.love.dairy.widget;
 
 import java.util.LinkedList;
 
-import com.love.dairy.main.MainActivity;
-import com.love.dairy.main.R;
-
-
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.*;
-import android.widget.ImageView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.love.dairy.main.MainActivity;
 
 /*
  Copyright 2012 Aphid Mobile

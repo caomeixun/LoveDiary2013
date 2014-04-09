@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -101,7 +100,7 @@ public class PicView extends Activity {
 				break;
 				
 			case R.id.btnExit:
-	    		
+				finish();
 				break;
 			case R.id.setting_level:
 				openLevelDialog();

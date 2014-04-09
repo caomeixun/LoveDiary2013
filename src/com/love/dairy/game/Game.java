@@ -3,9 +3,6 @@ package com.love.dairy.game;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import com.love.dairy.main.R;
-import com.love.dairy.widget.FlipCards;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -14,17 +11,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +29,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.love.dairy.main.R;
+import com.love.dairy.widget.FlipCards;
+
 
 public class Game extends Activity {
 	private int screenWidth;
@@ -44,11 +40,12 @@ public class Game extends Activity {
 	private int INACCURACY = 12;
 		
 	//private Vector<PieceImageButton> allImagePieces = new Vector<PieceImageButton>();
-	private ArrayList allImagePieces = new ArrayList();
+	private ArrayList<PieceImageButton> allImagePieces = new ArrayList<PieceImageButton>();
 	
 	//private Vector<PieceImageButton> movePieces = new Vector<PieceImageButton>();
-	private ArrayList movePieces = new ArrayList();
+	private ArrayList<PieceImageButton> movePieces = new ArrayList<PieceImageButton>();
 	
+	@SuppressWarnings("deprecation")
 	private AbsoluteLayout puzzle = null;
 	
 	private MyDBAdapter db = new MyDBAdapter(this);
@@ -66,9 +63,6 @@ public class Game extends Activity {
 		super.onCreate(savedInstanceState);
 		System.gc();  //回收空间
 		
-
-		
-		////////////////////////////
 		Intent i = this.getIntent();
 		String action = i.getAction();
 		Log.i("Game", "action = " + action);
@@ -76,8 +70,6 @@ public class Game extends Activity {
 		Bundle bundle = i.getExtras();
 		imageId = bundle.getInt("imageId");
 		Log.i("Game", "imageId = " + imageId);
-		
-		//////////////////////
 		
 		db.open();
 		Cursor cursor = db.getLastEntry("pt_game", "_id");
@@ -143,79 +135,13 @@ public class Game extends Activity {
 		
 	}
 	
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	private void saveGame(){
-		
-		db.open();
-		int n = db.getEntryCount("pt_piece", "image_id", imageId);
-		if(n > 0){
-			db.removeEntry("pt_piece", "image_id", "" + imageId);
-		}
-		
-		int count = allImagePieces.size();
-		for(int i=0; i<count; i++){
-			PieceImageButton pib = (PieceImageButton) allImagePieces.get(i);
-			db.insertPiece("pt_piece", pib, imageId, levelId);
-			
-			pib = null;
-			
-		}
-		
-		db.close();
-	}
 	
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
-		saveGame();
-		
-		allImagePieces = null;
-		db = null;
-		System.gc();
-		
+//		new MyLoading().execute(100);
 		super.onPause();
 	}
 
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onRestoreInstanceState(savedInstanceState);
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-	}
-
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
 
 	private void nextGame(){
 		db.open();
@@ -248,43 +174,15 @@ public class Game extends Activity {
 		/////////////
 		progressBar = (ProgressBar) findViewById(R.id.ProgressBar01);
 		progressBar.setProgress(0);
-		new Thread(new Runnable(){
-
-			public void run() {
-				// TODO Auto-generated method stub
-				
-				for(int i=0; i<10; i++){
-					
-					try {
-						intCounter = (i + 1) * 20;
-						
-						Thread.sleep(1000);
-						
-						Message msg = new Message();
-						msg.what = Game.GUI_THREADING_NOTIFIER;
-						Game.this.myMessageHandler.sendMessage(msg);
-						
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				}
-				Message stop_msg = new Message();
-				stop_msg.what = Game.GUI_STOP_NOTIFIER;
-				Game.this.myMessageHandler.sendMessage(stop_msg);
-			}
-			
-		}).start();
-		
 		Button btnBack = (Button) findViewById(R.id.btnReview);
 		int size = getResources().getDimensionPixelSize(R.dimen.game_btn_size);
+		@SuppressWarnings("deprecation")
 		AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(size, size, 5, screenHeight-size-5);
 		btnBack.setLayoutParams(lp);
 		btnBack.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+				new MyLoading().execute(100);
 				Intent i = new Intent(Game.this, PicView.class);
 				i.setAction("GAME_REVIEW_ACTION");
 				Bundle bundle = new Bundle();
@@ -327,6 +225,7 @@ public class Game extends Activity {
 			Point loc = new Point(autoX, autoY);
 			pib.setLocation(loc);
 			
+			@SuppressWarnings("deprecation")
 			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, autoX, autoY);
 			pib.setLayoutParams(autoParams);
 			
@@ -366,7 +265,7 @@ public class Game extends Activity {
 			pib.setOnTouchListener(onTouchListener);
 			Point loc = pib.getLocation();
 			
-			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, loc.x, loc.y);
+			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(pib.pieceWidth, pib.pieceHeight, loc.x, loc.y);
 			pib.setLayoutParams(autoParams);
 			
 			puzzle.addView(pib);
@@ -607,7 +506,7 @@ public class Game extends Activity {
     	
     }
     
-    private void checkMove(PieceImageButton curPIB, int dx, int dy, ArrayList movePieces){
+    private void checkMove(PieceImageButton curPIB, int dx, int dy, ArrayList<PieceImageButton> movePieces){
     	int l = curPIB.getLeft() + dx;
     	int t = curPIB.getTop() + dy;
     	curPIB.setLocation(new Point(l, t));
@@ -924,48 +823,54 @@ public class Game extends Activity {
 			
 		}).show();
     }
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-//		switch(keyCode){
-//		case KeyEvent.KEYCODE_BACK:
-//			return false;
-//		}
-		
-		return super.onKeyDown(keyCode, event);
-	}
     
-	///////////////////////////////
 	private ProgressBar progressBar;
 	protected static final int GUI_STOP_NOTIFIER = 0x108;
 	protected static final int GUI_THREADING_NOTIFIER = 0x109;
 	protected int intCounter = 0;
 	
-	Handler myMessageHandler = new Handler(){
-
+	class MyLoading extends AsyncTask<Integer, Integer, String>{
 		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			switch(msg.what){
-			case Game.GUI_STOP_NOTIFIER:
-				Thread.currentThread().interrupted();
-				break;
-			case Game.GUI_THREADING_NOTIFIER:
-				if(!Thread.currentThread().isInterrupted()){
-					//改变ProgressBar的当前值
-					progressBar.setProgress(intCounter);
-					
-					//设置标题栏中前景的一个进度条进度值
-					setProgress(intCounter * 100);
-					
-				}
-				break;
+		protected String doInBackground(Integer... params) {
+			saveGame();
+			return null;
+		}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			super.onProgressUpdate(values);
+		}
+		private void saveGame(){
+			Log.e("TAG","saveGame-start");
+			
+			long time = System.currentTimeMillis();
+			db.open();
+			int n = db.getEntryCount("pt_piece", "image_id", imageId);
+			if(n > 0){
+				db.removeEntry("pt_piece", "image_id", "" + imageId);
+			}
+			int count = allImagePieces.size();
+			for(int i=0; i<count; i++){
+				PieceImageButton pib = (PieceImageButton) allImagePieces.get(i);
+				db.insertPiece("pt_piece", pib, imageId, levelId);
+				pib = null;
+				publishProgress(i);
 			}
 			
-			super.handleMessage(msg);
+			Log.e("TAG", "-------" + db.str);
+			db.close();
+			Log.e("TAG",System.currentTimeMillis() - time + "：saveGame-end");
 		}
-		
-	};
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			allImagePieces = null;
+			System.gc();
+		}
+	}
 	
 }

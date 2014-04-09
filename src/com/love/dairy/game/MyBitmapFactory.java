@@ -37,6 +37,7 @@ public class MyBitmapFactory {
 	 * @param bitmap
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static Drawable BitmapToDrawable(Bitmap bitmap){
 		if(null == bitmap){
 			return null;
