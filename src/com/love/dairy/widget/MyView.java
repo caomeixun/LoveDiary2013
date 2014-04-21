@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.cutimage.ImageFilterActivity;
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.main.R;
@@ -75,7 +76,8 @@ public class MyView extends RelativeLayout{
 		bitmap = null;
 	}
 	public void loadInfo(int imagePosition){
-		imageName = MainActivity.path+MainActivity.photoIds[imagePosition];
+		LoveApplication application = (LoveApplication) context.getApplicationContext();	
+		imageName = MainActivity.path+application.photoIds[imagePosition];
 		this.imagePosition = imagePosition+"";
 		DataHelper da = new DataHelper(context);
 		ImageInfo  info = da.getImageInfo(imageName);

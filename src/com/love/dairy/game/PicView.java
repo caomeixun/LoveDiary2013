@@ -28,6 +28,7 @@ public class PicView extends Activity {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

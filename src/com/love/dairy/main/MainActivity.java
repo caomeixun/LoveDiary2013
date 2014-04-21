@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.sql.DataHelper;
 import com.love.dairy.utils.ImageUtil;
 import com.love.dairy.widget.FlipCards;
@@ -49,7 +50,6 @@ public class MainActivity extends BaseActivity{
 //		contentTop= frame.top;  
 //	}
 	private String lastPath = null;
-	public static String[] photoIds = new String[]{};
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DataHelper da = new DataHelper(getApplicationContext());
@@ -82,23 +82,24 @@ public class MainActivity extends BaseActivity{
 				}
 			}
 		}
+		LoveApplication application = (LoveApplication) this.getApplication();
 		if(strs!=null){
-			photoIds = strs.toArray(photoIds);
+			application.photoIds = strs.toArray(application.photoIds);
 		}
-		if(path==null|| photoIds.length==0){
+		if(path==null|| application.photoIds.length==0){
 			Intent intent = new Intent(MainActivity.this,LoginPage.class);
 			intent.putExtra(LoginPage.OPEN_TYPE_PATH, 1);
 			startActivity(intent);
 			return;
 		}
 		FlipCards.dateCache = new SparseArray<Bitmap>();
-		if(photoIds.length == 1){
-			photoIds = new String[]{photoIds[0],photoIds[0],photoIds[0]};
-		}else if(photoIds.length == 2){
-			photoIds = new String[]{photoIds[0],photoIds[1],photoIds[0]};
+		if(application.photoIds.length == 1){
+			application.photoIds = new String[]{application.photoIds[0],application.photoIds[0],application.photoIds[0]};
+		}else if(application.photoIds.length == 2){
+			application.photoIds = new String[]{application.photoIds[0],application.photoIds[1],application.photoIds[0]};
 		}
 		for (int i=0;i<3;i++) {
-			Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),path + photoIds[i], MainActivity.screenWidth, MainActivity.screenHeight);
+			Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),path + application.photoIds[i], MainActivity.screenWidth, MainActivity.screenHeight);
 			FlipCards.dateCache.put(i,bit);
 		}
 		MyView my = new MyView(getApplicationContext(),null);
@@ -158,6 +159,8 @@ public class MainActivity extends BaseActivity{
 //		}
 //		FlipCards.dateCache = null;
 //		finish();
+		LoveApplication application = (LoveApplication) this.getApplication();
+		application.photoIds = new String[]{};
 		super.onStop();
 	}
 	@Override

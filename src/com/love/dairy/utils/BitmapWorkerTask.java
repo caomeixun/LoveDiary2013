@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.widget.FlipCards;
 import com.love.dairy.widget.MyView;
@@ -30,10 +31,11 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Integer... params) {
         data = params[0];
+		LoveApplication application = (LoveApplication) context.getApplicationContext();
         if(type == FULL_TYPE)
-        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+MainActivity.photoIds[data], MainActivity.screenWidth, MainActivity.screenHeight);
+        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+application.photoIds[data], MainActivity.screenWidth, MainActivity.screenHeight);
         else{
-        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+MainActivity.photoIds[data], MainActivity.screenWidth/2, MainActivity.screenHeight/2);
+        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+application.photoIds[data], MainActivity.screenWidth/2, MainActivity.screenHeight/2);
         }
     }
 

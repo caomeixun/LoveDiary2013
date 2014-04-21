@@ -401,13 +401,13 @@ public class PieceFactory {
 	 * 给每个piece蒙版填充像素，得到拼图碎片piece
 	 */
 	private void fillPieceWithBitmap(Piece piece){
-		Bitmap pieceEdge = piece.getBmEdge();
+//		Bitmap pieceEdge = piece.getBmEdge();
 		Bitmap pieceBit = piece.getBmPiece();
-		Point minp = piece.getMinp();
+//		Point minp = piece.getMinp();
 		
 		//拼图碎片的宽高
-		int tpieceW = pieceBit.getWidth();
-		int tpieceH = pieceBit.getHeight();
+//		int tpieceW = pieceBit.getWidth();
+//		int tpieceH = pieceBit.getHeight();
 		
 //		for(int i=0; i<tpieceW; i++){
 //			for(int j=0; j<tpieceH; j++){

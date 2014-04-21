@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.cutimage.ImageFilterActivity;
 import com.love.dairy.game.Game;
 import com.love.dairy.pojo.ImageInfo;
@@ -36,6 +37,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		findViewById(R.id.btnAbout).setOnClickListener(this);
 		findViewById(R.id.btnCut).setOnClickListener(this);
 		findViewById(R.id.btnBack).setOnClickListener(this);
+		findViewById(R.id.btnAuthor).setOnClickListener(this);
 		
 		if(getIntent().getIntExtra(OPEN_TYPE_PATH, -1)!=-1){
 			getPicPath();
@@ -70,8 +72,9 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			info.content = etContent;
 			info.ivDate = "Ò»ÄêÇ°";
 			info.title = etTitle;
-			info.path =MainActivity.path + MainActivity.photoIds[imagePosition];
-			info.name = "Love_"+MainActivity.photoIds[imagePosition];
+			LoveApplication application = (LoveApplication) this.getApplication();
+			info.path =MainActivity.path + application.photoIds[imagePosition];
+			info.name = "Love_"+application.photoIds[imagePosition];
 			DataHelper dh = new DataHelper(getApplicationContext());
 			long result =  dh.addUserInfo(info);
 			if(result > 0){
@@ -97,7 +100,12 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			startActivity(intent);
 			finish();
 			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-		}else {
+		}else if(v.getId() == R.id.btnAuthor){
+			Uri uri = Uri.parse("http://weibo.com/lovedairy2014");
+			Intent it = new Intent(Intent.ACTION_VIEW, uri);
+			startActivity(it);
+		}
+		else {
 			Intent intent = new Intent(this, Game.class);
 			intent.setAction("NEW_GAME_ACTION");
 			Bundle bundle = new Bundle();

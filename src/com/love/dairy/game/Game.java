@@ -33,6 +33,7 @@ import com.love.dairy.main.R;
 import com.love.dairy.widget.FlipCards;
 
 
+@SuppressWarnings("deprecation")
 public class Game extends Activity {
 	private int screenWidth;
 	private int screenHeight;
@@ -45,7 +46,6 @@ public class Game extends Activity {
 	//private Vector<PieceImageButton> movePieces = new Vector<PieceImageButton>();
 	private ArrayList<PieceImageButton> movePieces = new ArrayList<PieceImageButton>();
 	
-	@SuppressWarnings("deprecation")
 	private AbsoluteLayout puzzle = null;
 	
 	private MyDBAdapter db = new MyDBAdapter(this);
@@ -176,7 +176,6 @@ public class Game extends Activity {
 		progressBar.setProgress(0);
 		Button btnBack = (Button) findViewById(R.id.btnReview);
 		int size = getResources().getDimensionPixelSize(R.dimen.game_btn_size);
-		@SuppressWarnings("deprecation")
 		AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(size, size, 5, screenHeight-size-5);
 		btnBack.setLayoutParams(lp);
 		btnBack.setOnClickListener(new OnClickListener(){
@@ -225,7 +224,6 @@ public class Game extends Activity {
 			Point loc = new Point(autoX, autoY);
 			pib.setLocation(loc);
 			
-			@SuppressWarnings("deprecation")
 			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, autoX, autoY);
 			pib.setLayoutParams(autoParams);
 			
@@ -277,7 +275,7 @@ public class Game extends Activity {
 	private void getNewPuzzle(int resid, int row, int line){
 		Bitmap newWallpPaper = scalePic(FlipCards.dateCache.get(imageId));
 
-        Vector allPieces = createAllPieces(newWallpPaper, row, line);
+        Vector<Piece> allPieces = createAllPieces(newWallpPaper, row, line);
         
         //对各个切块图片包装成imagebutton待用
         createAllPieceImageButton(allPieces);
@@ -288,7 +286,6 @@ public class Game extends Activity {
         
 	}
 	
-	@SuppressWarnings("deprecation")
 	private View createPuzzle(int resid){        
 //		puzzle = new AbsoluteLayout(this);
 //		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -349,7 +346,7 @@ public class Game extends Activity {
 		
 	}
 	
-	private void createAllPieceImageButton(Vector allPieces){
+	private void createAllPieceImageButton(Vector<Piece> allPieces){
 		for(int i=0; i<allPieces.size(); i++){
 			Piece piece = (Piece) allPieces.get(i);			
 			PieceImageButton pieceImageButton = new PieceImageButton(this);
@@ -380,7 +377,7 @@ public class Game extends Activity {
 	}
 	
 	//通过bitmap创建
-	private Vector createAllPieces(Bitmap bitmap, int row, int line){
+	private Vector<Piece> createAllPieces(Bitmap bitmap, int row, int line){
 		PieceFactory pu = new PieceFactory(this);
     	pu.setImage(bitmap);
     	pu.setRowAndLine(row, line);
@@ -388,14 +385,14 @@ public class Game extends Activity {
     	return pu.getAllPiece();
 	}
 	
-	//通过资源创建
-    private Vector createAllPieces(int imageid, int row, int line){
-    	PieceFactory pu = new PieceFactory(this);
-    	pu.setImage(imageid);
-    	pu.setRowAndLine(row, line);
-    	
-    	return pu.getAllPiece();
-    }
+//	//通过资源创建
+//    private Vector<Piece> createAllPieces(int imageid, int row, int line){
+//    	PieceFactory pu = new PieceFactory(this);
+//    	pu.setImage(imageid);
+//    	pu.setRowAndLine(row, line);
+//    	
+//    	return pu.getAllPiece();
+//    }
     
     private OnTouchListener onTouchListener = new OnTouchListener(){
     	int lastX;
@@ -579,7 +576,7 @@ public class Game extends Activity {
     	
     }
     
-    private void moveSomePieces(ArrayList absorbPieces){
+    private void moveSomePieces(ArrayList<PieceImageButton> absorbPieces){
     	for(int i=0; i<absorbPieces.size(); i++){
     		PieceImageButton piece = (PieceImageButton) absorbPieces.get(i);
     		Point loc = piece.getLocation();

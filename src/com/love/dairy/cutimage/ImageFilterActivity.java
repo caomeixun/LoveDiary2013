@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.main.R;
 import com.love.dairy.utils.ImageUtil;
@@ -21,7 +22,7 @@ import com.love.dairy.widget.FlipCards;
 /**
  * 图片编辑类
  * 
- * @author rendongwei
+ * @author cqli
  * 
  */
 public class ImageFilterActivity extends KXActivity {
@@ -39,7 +40,6 @@ public class ImageFilterActivity extends KXActivity {
 	private Bitmap mOldBitmap;// 旧图片
 	private String mNewPath;// 新图片地址
 	private Bitmap mNewBitmap;// 新图片
-	private boolean mIsSetResult = false;// 是否是要返回数据
 	public static int imageId = -1;
 	
 	//缓存修改图片部分-----------------------------
@@ -80,10 +80,9 @@ public class ImageFilterActivity extends KXActivity {
 
 	
 				// 根据是否选择旧图片返回图片地址
-					
-				String mPath = PhotoUtil.saveToLocal(mNewBitmap,mOldPath);
-					
-				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + MainActivity.photoIds[imageId], MainActivity.screenWidth, MainActivity.screenHeight);
+//				String mPath = PhotoUtil.saveToLocal(mNewBitmap,mOldPath);
+				LoveApplication application = (LoveApplication) ImageFilterActivity.this.getApplication();	
+				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + application.photoIds[imageId], MainActivity.screenWidth, MainActivity.screenHeight);
 				FlipCards.dateCache.put(imageId,bit);
 				finish();
 				
@@ -163,11 +162,10 @@ public class ImageFilterActivity extends KXActivity {
 		if(imageId  == -1) finish();
 		mBack.setEnabled(false);
 		mForward.setEnabled(false);
-		// 获取是否返回数据
-		mIsSetResult = getIntent().getBooleanExtra("isSetResult", false);
 		// 接收传递的图片地址
-		mOldPath = MainActivity.path + MainActivity.photoIds[imageId];
-		mNewPath = MainActivity.path + MainActivity.photoIds[imageId];
+		LoveApplication application = (LoveApplication) ImageFilterActivity.this.getApplication();	
+		mOldPath = MainActivity.path + application.photoIds[imageId];
+		mNewPath = MainActivity.path + application.photoIds[imageId];
 		mOldBitmap = getPhoneAlbum(mOldPath);
 		mNewBitmap = getPhoneAlbum(mNewPath);
 		historyPicPaths.add(mOldPath);

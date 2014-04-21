@@ -1,8 +1,6 @@
 package com.love.dairy.widget;
 
- import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+ import java.util.LinkedList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -14,6 +12,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.utils.BitmapWorkerTask;
 
@@ -106,25 +105,25 @@ public class FlipCards {
 		freeBitmapFromIndex(loadId);
 
 		}
-		private Set claPosition(int postion,int maxSize){
-			Set list = new HashSet();
-			for(int i=postion;i <= postion+2;i++){
-				int index = i;
-				if(i >= maxSize){
-					index = Math.abs(i-maxSize);
-				}
-				list.add(index);
-			}
-			for(int i=postion;i > postion-2;i--){
-				int index = i;
-				if(i < 0){
-					index = Math.abs(maxSize)+i;
-				}
-				list.add(index);
-			}
-			list.add(postion);
-			return list;
-		}
+//		private Set claPosition(int postion,int maxSize){
+//			Set list = new HashSet();
+//			for(int i=postion;i <= postion+2;i++){
+//				int index = i;
+//				if(i >= maxSize){
+//					index = Math.abs(i-maxSize);
+//				}
+//				list.add(index);
+//			}
+//			for(int i=postion;i > postion-2;i--){
+//				int index = i;
+//				if(i < 0){
+//					index = Math.abs(maxSize)+i;
+//				}
+//				list.add(index);
+//			}
+//			list.add(postion);
+//			return list;
+//		}
 
 
 		/**
@@ -353,19 +352,20 @@ public class FlipCards {
 //		}
 		isChange = true;
 		boolean isNextPage = true;
+		LoveApplication application = (LoveApplication) flipViewGroup.context.getApplication();	
 		if(position>lastPostion){
 			photoPostion++;
-			if(photoPostion >= MainActivity.photoIds.length)
+			if(photoPostion >= application.photoIds.length)
 				photoPostion = 0;
 			isNextPage= true;
 		}else{
 			photoPostion--;
 			isNextPage = false;
 			if(photoPostion < 0)
-				photoPostion =MainActivity. photoIds.length-1;
+				photoPostion =application. photoIds.length-1;
 		}
-		releaseBitmap(isNextPage,photoPostion, MainActivity.photoIds.length);
-		loadBitmap(isNextPage,photoPostion, MainActivity.photoIds.length);
+		releaseBitmap(isNextPage,photoPostion, application.photoIds.length);
+		loadBitmap(isNextPage,photoPostion, application.photoIds.length);
 		if(isChange)
 		{
 			 changeLastTwoView(gl,isNextPage);
@@ -459,9 +459,10 @@ public class FlipCards {
 			public void run() {
 				int i = isNextPage ?1:-1;
 				MyView my = flipViews.get(claPostion(getPosition(), i, flipViews.size()));
-				my.setImage(claPostion(photoPostion, i, MainActivity.photoIds.length));
-				my.loadInfo(claPostion(photoPostion, i, MainActivity.photoIds.length));
-				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page£º"+claPostion(photoPostion, i, MainActivity.photoIds.length));
+				LoveApplication application = (LoveApplication) flipViewGroup.context.getApplication();	
+				my.setImage(claPostion(photoPostion, i, application.photoIds.length));
+				my.loadInfo(claPostion(photoPostion, i, application.photoIds.length));
+				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page£º"+claPostion(photoPostion, i, application.photoIds.length));
 				my.setViewToBitmap();
 			}
 		});
