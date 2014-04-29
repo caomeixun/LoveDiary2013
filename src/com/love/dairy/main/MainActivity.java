@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -60,7 +61,6 @@ public class MainActivity extends BaseActivity{
 		init();
 	}
 	private void init(){
-		contentView = new FlipViewGroup(this);
 		path = getSharedPreferencesData(IMAGE_PATH);
 		
 		if(lastPath != null && path != null){
@@ -68,6 +68,8 @@ public class MainActivity extends BaseActivity{
 				return;
 			}
 		}
+		Log.e("TAG", "path---------------------");
+		contentView = new FlipViewGroup(this);
 		lastPath = path;
 		List<String> strs = null;
 		if(path != null){
@@ -84,6 +86,7 @@ public class MainActivity extends BaseActivity{
 		}
 		LoveApplication application = (LoveApplication) this.getApplication();
 		if(strs!=null){
+			application.photoIds = new String[]{};
 			application.photoIds = strs.toArray(application.photoIds);
 		}
 		if(path==null|| application.photoIds.length==0){
@@ -111,7 +114,6 @@ public class MainActivity extends BaseActivity{
 		contentView.addFlipView(my2);
 		contentView.addFlipView(my);
 			
-		System.gc();
 		setContentView(contentView);
 		contentView.startFlipping();
 		loadMenuSize();
@@ -128,6 +130,7 @@ public class MainActivity extends BaseActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
+		System.gc();
 		init();
 		contentView.onResume();
 	}
@@ -152,6 +155,13 @@ public class MainActivity extends BaseActivity{
 		return super.onKeyDown(keyCode, event);
 	}
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+    	screenHeight = getResources().getDisplayMetrics().heightPixels;
+    	screenWidth = getResources().getDisplayMetrics().widthPixels;
+    	FlipCards.dateCache.clear();
+	    super.onConfigurationChanged(newConfig);
+	}
+	@Override
 	protected void onStop() {
 //		for (int i : FlipCards.dateCache.keySet()) {
 //			if(FlipCards.dateCache.get(i)!=null)
@@ -159,8 +169,6 @@ public class MainActivity extends BaseActivity{
 //		}
 //		FlipCards.dateCache = null;
 //		finish();
-		LoveApplication application = (LoveApplication) this.getApplication();
-		application.photoIds = new String[]{};
 		super.onStop();
 	}
 	@Override

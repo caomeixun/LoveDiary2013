@@ -87,9 +87,15 @@ public class FlipRenderer implements GLSurfaceView.Renderer {
 
 		float fovy = 20f;
 		float eyeZ = height / 2f / (float) Math.tan(Utils.d2r(fovy / 2));
-
-		GLU.gluPerspective(gl, fovy, (float) width / (float) height, 15.5f,
-				Math.max(2500.0f, eyeZ));
+		//fovy就是视锥体的上下平面的角度．　裁剪窗口的高度 h ＝ 2 * tan(fovy/2) * zNear.
+		float zNear =  (float) (height /2 * Math.tan(fovy/2)) ;
+		float zFar  = 2500.0f;
+		if(width > height){
+			zNear = 0.5f;
+		}
+		//http://www.cnblogs.com/chengmin/archive/2011/09/12/2174004.html 参考网站
+		GLU.gluPerspective(gl, fovy, (float) width / (float) height, zNear,
+				Math.max(zFar, eyeZ));
 
 		gl.glMatrixMode(GL_MODELVIEW);
 		gl.glLoadIdentity();

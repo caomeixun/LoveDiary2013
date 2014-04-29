@@ -2,6 +2,8 @@ package com.love.dairy.widget;
 
 import java.util.LinkedList;
 
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
@@ -11,7 +13,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
+import com.love.dairy.utils.ImageUtil;
 
 /*
  Copyright 2012 Aphid Mobile
@@ -35,7 +39,7 @@ public class FlipViewGroup extends ViewGroup {
 	private static final int MSG_SURFACE_CREATED = 1;
 	public MainActivity context = null;
 	private LinkedList<MyView> flipViews = new LinkedList<MyView>();
-
+	private boolean isScreenChanged = false;
 	private Handler handler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -106,14 +110,12 @@ public class FlipViewGroup extends ViewGroup {
 
 				if (flipViews.size() >= 2 && flipping ) {
 					Log.e("TAG", "-------flipViews-----");
-//					if(renderer.created){
-//						flipViews.clear();
-//					}
 					renderer.updateTexture(flipViews);
 				}
 			}
 		}
 	}
+
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -132,6 +134,11 @@ public class FlipViewGroup extends ViewGroup {
 	}
 
 	public void onPause() {
+//		if(renderer != null){
+//			Log.e("TAG", "onPause"+renderer.getCards().photoPostion%2);
+//			renderer.getCards().flipViews.get(renderer.getCards().photoPostion%2).bringToFront();
+//			Log.e("TAG", "onPause-end");
+//		}
 		surfaceView.onPause();
 	}
 

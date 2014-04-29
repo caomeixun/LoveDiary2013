@@ -53,7 +53,7 @@
         android:layout_weight="1"
         android:background="@drawable/black_dot_bg">
 
-        <com.love.dairy.cutimage.CropImageView
+        <com.love.dairy.main.cutimage.CropImageView
             android:id="@+id/imagefilter_crop_display"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

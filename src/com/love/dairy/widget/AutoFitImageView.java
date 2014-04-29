@@ -22,7 +22,6 @@ public class AutoFitImageView extends ImageView{
 		Matrix m = new Matrix();
 		Bitmap  bm = ((BitmapDrawable)getDrawable()).getBitmap();
 		if(bm!=null && !bm.isRecycled()){
-			Log.e("TAG", "height"+bm.getWidth());
 			if(bm.getWidth()  <  MainActivity.screenWidth){
 				m.postScale(2.0f, 2.0f);
 				canvas.drawBitmap(bm , m, null);

@@ -46,6 +46,7 @@ public class FlipCards {
 	private static final int STATE_TOUCH = 1;
 	private static final int STATE_AUTO_ROTATE = 2;
 	private static final int STATE_STOP = 3;
+	private static final int STATE_NO_UPDATE_VIEW = 4;
 
 	private Texture[] textures = new Texture[2];
 	int photoPostion = 0;
@@ -101,7 +102,7 @@ public class FlipCards {
 			loadId = Math.abs(loadId-maxSize);
 		}
 
-		//¼´dataCacheÖÐÊ¼ÖÕÖ»»º´æÁË£¨M£½6£«Galleryµ±Ç°¿É¼ûviewµÄ¸öÊý£©M¸öbitmap
+		//å³dataCacheä¸­å§‹ç»ˆåªç¼“å­˜äº†ï¼ˆMï¼6ï¼‹Galleryå½“å‰å¯è§viewçš„ä¸ªæ•°ï¼‰Mä¸ªbitmap
 		freeBitmapFromIndex(loadId);
 
 		}
@@ -128,7 +129,7 @@ public class FlipCards {
 
 		/**
 
-		* ´ÓÄ³Ò»Î»ÖÃ¿ªÊ¼ÊÍ·Åbitmap×ÊÔ´
+		* ä»ŽæŸä¸€ä½ç½®å¼€å§‹é‡Šæ”¾bitmapèµ„æº
 
 		* @param index
 
@@ -143,11 +144,11 @@ public class FlipCards {
 	
 				if(delBitmap != null){
 			
-					//Èç¹û·Ç¿ÕÔò±íÊ¾ÓÐ»º´æµÄbitmap£¬ÐèÒªÇåÀí
+					//å¦‚æžœéžç©ºåˆ™è¡¨ç¤ºæœ‰ç¼“å­˜çš„bitmapï¼Œéœ€è¦æ¸…ç†
 			
 					Log.v(TAG, "release position:"+ del);
 			
-					//´Ó»º´æÖÐÒÆ³ý¸Ãdel->bitmapµÄÓ³Éä
+					//ä»Žç¼“å­˜ä¸­ç§»é™¤è¯¥del->bitmapçš„æ˜ å°„
 			
 					dateCache.remove(del);
 			
@@ -165,7 +166,7 @@ public class FlipCards {
 	// private boolean animating = false;
 	private int animatedFrame = 0;
 	/**
-	 * ´¥ÆÁ×´Ì¬
+	 * è§¦å±çŠ¶æ€
 	 */
 	private int state = STATE_TIP;
 	Context context = null;
@@ -193,20 +194,23 @@ public class FlipCards {
 	}
 	private boolean isLoading = false;
 	/**
-	 * ÖØÔØµ±Ç°Ò³Ãæ
+	 * é‡è½½å½“å‰é¡µé¢
 	 */
 	public void reloadNowImage(){
-		Log.e("TAG", "reloadNowImage");
+		Log.e("TAG", photoPostion+"----reloadNowImage");
 		if(!isLoading){
 			if(flipViews!=null){
-
-				for(int i=1;i>=0;i--){
-					flipViews.get(i).reloadInfo();
-					flipViews.get(i).setViewToBitmap();
-				}
+			    	reloadPath(0);
+			    	reloadPath(1);
 				isLoading = false;
 			}
 		}
+	}
+	private void reloadPath(int index){
+		Log.e("TAG", claPostion(getPosition(), index, flipViews.size())+"reloadPath"+index);
+    	flipViews.get(claPostion(getPosition(), index, flipViews.size())).setImage(photoPostion+index);
+		flipViews.get(claPostion(getPosition(), index, flipViews.size())).reloadInfo();
+		flipViews.get(claPostion(getPosition(), index, flipViews.size())).setViewToBitmap();
 	}
 	public void rotateBy(float delta) {
 		angle += delta;
@@ -275,13 +279,11 @@ public class FlipCards {
 		default:
 			break;
 		}
-		//Log.e("TAG",getPosition()+ "angle-------------="+angle);
-		if(angle>=0)
+		if(angle >= 0)
 			nextPage(gl);
 		else
 			lastPage(gl);
 	}
-
 	private void calcTimes() {
 		if(tipTimes++ > tipTimesMax){
 			setState(STATE_STOP);
@@ -306,14 +308,12 @@ public class FlipCards {
 //		}
 	}
 	private void nextPage(GL10 gl) {
-
 		if (angle < 90) {
-				//ÎÞÌø×ª
+				//æ— è·³è½¬
 				move(gl,topCards[claPostion(getPosition(), 0, flipViews.size())],bottomCard[claPostion(getPosition(), 0, flipViews.size())],bottomCard[claPostion(getPosition(), 1, flipViews.size())],angle);
 		} else {
 				move(gl,topCards[claPostion(getPosition(), 0, flipViews.size())],topCards[claPostion(getPosition(), 1, flipViews.size())],bottomCard[claPostion(getPosition(), 1, flipViews.size())],180-angle);
 		}
-
 	}
 	public void move(GL10 gl,Card topBudong,Card dongTu,Card ditu,float angle){
 		topBudong.setAngle(0);
@@ -373,74 +373,80 @@ public class FlipCards {
 	}
 	
 	private void applyTexture(GL10 gl) {
-		if(flipViews!=null)
-		for(int i=0;i<flipViews.size();i++){
-			if (flipViews.get(i).bitmap != null) {
-				int height = flipViews.get(i).bitmap .getHeight();
-				int width  = flipViews.get(i).bitmap .getWidth();
-				if(width < MainActivity.screenWidth){
-					height*=2;
-					width*=2;
-				}
-				//Log.e("TAG", flipViews.get(i).imagePosition+"----applyTexture--µÚ"+i);
-				if (textures[i] != null)
-					textures[i] .destroy(gl);
-				textures[i] = Texture.createTexture(flipViews.get(i).bitmap, gl);
-				topCards[i].setTexture(textures[i]);
-				bottomCard[i].setTexture(textures[i]);
-				if(topCards[i].getCardVertices() == null){
-					topCards[i].setCardVertices(new float[] { 0f,
-							height, 0f, // top left
-							0f, height / 2.0f, 0f, // bottom left
-							width, height / 2f, 0f, // bottom
-																					// right
-							width, height, 0f // top
-																				// right
-							});
-					topCards[i]
-							.setTextureCoordinates(new float[] {
-									0f,
-									0f,
-									0f,
-									height / 2f
-											/ (float) textures[i].getHeight(),
-											width
-											/ (float) textures[i].getWidth(),
-											height / 2f
-											/ (float) textures[i].getHeight(),
-											width
-											/ (float) textures[i].getWidth(), 0f });
-					bottomCard[i].setCardVertices(new float[] { 0f,
-							height / 2f, 0f, // top left
-							0f, 0f, 0f, // bottom left
-							width, 0f, 0f, // bottom right
-							width, height / 2f, 0f // top
-																					// right
-							});
-					bottomCard[i].setTextureCoordinates(new float[] {
-							0f,
-							height / 2f
-									/ (float) textures[i].getHeight(),
-							0f,
-							height / (float) textures[i].getHeight(),
-							width / (float) textures[i].getWidth(),
-							height / (float) textures[i].getHeight(),
-							width / (float) textures[i].getWidth(),
-							height / 2f
-									/ (float) textures[i].getHeight() });
-				}
-				checkError(gl);
-	
-				flipViews.get(i).bitmapRelases();
-				//Log.e("TAG", "----applyTexture------end"+i);
-				System.gc();
-			}
-		}
+	    if(flipViews != null){
+        	    int nowFlipViewIndex = claPostion(getPosition(), 0, flipViews.size());
+        	    applyBitmap(gl, nowFlipViewIndex);
+        	    applyBitmap(gl, Math.abs(nowFlipViewIndex-1));
+	    }
 
+	}
+	private void applyBitmap(GL10 gl, int i) {
+	    if(flipViews.get(i).bitmap == null) return;
+	    int height = flipViews.get(i).bitmap .getHeight();
+	    int width  = flipViews.get(i).bitmap .getWidth();
+	    Log.e("TAG", width+"appBitmap++"+i);
+	    if(width < MainActivity.screenWidth){
+	    	height*=2;
+	    	width*=2;
+	    }
+	    //Log.e("TAG", flipViews.get(i).imagePosition+"----applyTexture--ç¬¬"+i);
+	    if (textures[i] != null){
+	    	textures[i] .destroy(gl);
+	    	topCards[i].setCardVertices(null);
+	    	bottomCard[i].setCardVertices(null);
+	    }
+	    textures[i] = Texture.createTexture(flipViews.get(i).bitmap, gl);
+	    topCards[i].setTexture(textures[i]);
+	    bottomCard[i].setTexture(textures[i]);
+	    if(topCards[i].getCardVertices() == null){
+	    	topCards[i].setCardVertices(new float[] { 0f,
+	    			height, 0f, // top left
+	    			0f, height / 2.0f, 0f, // bottom left
+	    			width, height / 2f, 0f, // bottom
+	    																	// right
+	    			width, height, 0f // top
+	    																// right
+	    			});
+	    	topCards[i]
+	    			.setTextureCoordinates(new float[] {
+	    					0f,
+	    					0f,
+	    					0f,
+	    					height / 2f
+	    							/ (float) textures[i].getHeight(),
+	    							width
+	    							/ (float) textures[i].getWidth(),
+	    							height / 2f
+	    							/ (float) textures[i].getHeight(),
+	    							width
+	    							/ (float) textures[i].getWidth(), 0f });
+	    	bottomCard[i].setCardVertices(new float[] { 0f,
+	    			height / 2f, 0f, // top left
+	    			0f, 0f, 0f, // bottom left
+	    			width, 0f, 0f, // bottom right
+	    			width, height / 2f, 0f // top
+	    																	// right
+	    			});
+	    	bottomCard[i].setTextureCoordinates(new float[] {
+	    			0f,
+	    			height / 2f
+	    					/ (float) textures[i].getHeight(),
+	    			0f,
+	    			height / (float) textures[i].getHeight(),
+	    			width / (float) textures[i].getWidth(),
+	    			height / (float) textures[i].getHeight(),
+	    			width / (float) textures[i].getWidth(),
+	    			height / 2f
+	    					/ (float) textures[i].getHeight() });
+	    }
+	    checkError(gl);
+	    flipViews.get(i).bitmapRelases();
+	    //Log.e("TAG", "----applyTexture------end"+i);
+	    System.gc();
 	}
 	long time =0;
 	/**
-	 * ¸üÐÂÏÂÒ»ÕÅÍ¼Æ¬
+	 * æ›´æ–°ä¸‹ä¸€å¼ å›¾ç‰‡
 	 * @param gl
 	 */
 	private void changeLastTwoView(GL10 gl,final boolean isNextPage) {
@@ -458,11 +464,13 @@ public class FlipCards {
 			@Override
 			public void run() {
 				int i = isNextPage ?1:-1;
+				//åŽŸå…ˆçš„viewæ”¾åœ¨æœ€å‰ç«¯æ˜¾ç¤º
+				flipViews.get(claPostion(getPosition(), 0, flipViews.size())).bringToFront();
 				MyView my = flipViews.get(claPostion(getPosition(), i, flipViews.size()));
 				LoveApplication application = (LoveApplication) flipViewGroup.context.getApplication();	
 				my.setImage(claPostion(photoPostion, i, application.photoIds.length));
 				my.loadInfo(claPostion(photoPostion, i, application.photoIds.length));
-				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page£º"+claPostion(photoPostion, i, application.photoIds.length));
+				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "pageï¼š"+claPostion(photoPostion, i, application.photoIds.length));
 				my.setViewToBitmap();
 			}
 		});
@@ -470,7 +478,7 @@ public class FlipCards {
 		
 	}
 	/**
-	 * ¼ÆËãË÷Òý£¬Ê×Î»Ñ­»·ÓÃ
+	 * è®¡ç®—ç´¢å¼•ï¼Œé¦–ä½å¾ªçŽ¯ç”¨
 	 * @param photoPostion
 	 * @param i
 	 * @param maxPosition

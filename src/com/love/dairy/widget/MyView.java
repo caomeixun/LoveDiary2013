@@ -70,6 +70,7 @@ public class MyView extends RelativeLayout{
 			}
 		}
 		bitmap = GrabIt.takeScreenshot(this);
+//		setImage(null);
 	}
 	public void bitmapRelases(){
 		bitmap.recycle();
@@ -91,6 +92,7 @@ public class MyView extends RelativeLayout{
 		da.close();
 	}
 	private void setTitleBg(Bitmap bitmap) {
+			if(bitmap == null) return;
 			int color = bitmap.getPixel(20, bitmap.getHeight()-20);
 				if(color > 0x888888){
 					titleBg.setBackgroundColor(Color.parseColor("#33FFFFFF"));

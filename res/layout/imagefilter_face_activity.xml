@@ -55,7 +55,7 @@
         android:background="@drawable/black_dot_bg"
         android:padding="20dip" >
 
-        <com.love.dairy.cutimage.FaceImageView
+        <com.love.dairy.main.cutimage.FaceImageView
             android:id="@+id/imagefilter_face_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
