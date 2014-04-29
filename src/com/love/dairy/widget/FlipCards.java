@@ -46,7 +46,6 @@ public class FlipCards {
 	private static final int STATE_TOUCH = 1;
 	private static final int STATE_AUTO_ROTATE = 2;
 	private static final int STATE_STOP = 3;
-	private static final int STATE_NO_UPDATE_VIEW = 4;
 
 	private Texture[] textures = new Texture[2];
 	int photoPostion = 0;
@@ -355,17 +354,17 @@ public class FlipCards {
 		LoveApplication application = (LoveApplication) flipViewGroup.context.getApplication();	
 		if(position>lastPostion){
 			photoPostion++;
-			if(photoPostion >= application.photoIds.length)
+			if(photoPostion >= application.photoIds.size())
 				photoPostion = 0;
 			isNextPage= true;
 		}else{
 			photoPostion--;
 			isNextPage = false;
 			if(photoPostion < 0)
-				photoPostion =application. photoIds.length-1;
+				photoPostion =application. photoIds.size()-1;
 		}
-		releaseBitmap(isNextPage,photoPostion, application.photoIds.length);
-		loadBitmap(isNextPage,photoPostion, application.photoIds.length);
+		releaseBitmap(isNextPage,photoPostion, application.photoIds.size());
+		loadBitmap(isNextPage,photoPostion, application.photoIds.size());
 		if(isChange)
 		{
 			 changeLastTwoView(gl,isNextPage);
@@ -468,9 +467,9 @@ public class FlipCards {
 				flipViews.get(claPostion(getPosition(), 0, flipViews.size())).bringToFront();
 				MyView my = flipViews.get(claPostion(getPosition(), i, flipViews.size()));
 				LoveApplication application = (LoveApplication) flipViewGroup.context.getApplication();	
-				my.setImage(claPostion(photoPostion, i, application.photoIds.length));
-				my.loadInfo(claPostion(photoPostion, i, application.photoIds.length));
-				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page："+claPostion(photoPostion, i, application.photoIds.length));
+				my.setImage(claPostion(photoPostion, i, application.photoIds.size()));
+				my.loadInfo(claPostion(photoPostion, i, application.photoIds.size()));
+				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page："+claPostion(photoPostion, i, application.photoIds.size()));
 				my.setViewToBitmap();
 			}
 		});

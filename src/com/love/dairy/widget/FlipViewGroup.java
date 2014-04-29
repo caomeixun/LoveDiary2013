@@ -2,8 +2,7 @@ package com.love.dairy.widget;
 
 import java.util.LinkedList;
 
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
@@ -13,9 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
-import com.love.dairy.utils.ImageUtil;
 
 /*
  Copyright 2012 Aphid Mobile
@@ -39,7 +36,6 @@ public class FlipViewGroup extends ViewGroup {
 	private static final int MSG_SURFACE_CREATED = 1;
 	public MainActivity context = null;
 	private LinkedList<MyView> flipViews = new LinkedList<MyView>();
-	private boolean isScreenChanged = false;
 	private Handler handler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -65,6 +61,9 @@ public class FlipViewGroup extends ViewGroup {
 		super(context);
 		this.context=context;
 		setupSurfaceView();
+	}
+	public FlipViewGroup(Context context) {
+		super(context);
 	}
 
 	private void setupSurfaceView() {

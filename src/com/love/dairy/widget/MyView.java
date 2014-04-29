@@ -78,8 +78,8 @@ public class MyView extends RelativeLayout{
 	}
 	public void loadInfo(int imagePosition){
 		LoveApplication application = (LoveApplication) context.getApplicationContext();	
-		imageName = MainActivity.path+application.photoIds[imagePosition];
-		this.imagePosition = imagePosition+"";
+		imageName = MainActivity.path + application.photoIds.get(imagePosition);
+		this.imagePosition = imagePosition + "";
 		DataHelper da = new DataHelper(context);
 		ImageInfo  info = da.getImageInfo(imageName);
 		if(info!=null){

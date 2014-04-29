@@ -23,7 +23,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.EditText;
@@ -196,42 +195,42 @@ public class Game extends Activity {
 		
 	}
 	
-	private View getReadyPuzzle(int resid, int levelid){
-//		//获得屏幕的宽和高
-//		DisplayMetrics dm = getResources().getDisplayMetrics();
-//		screenWidth = dm.widthPixels;
-//		screenHeight = dm.heightPixels;
+//	private View getReadyPuzzle(int resid, int levelid){
+////		//获得屏幕的宽和高
+////		DisplayMetrics dm = getResources().getDisplayMetrics();
+////		screenWidth = dm.widthPixels;
+////		screenHeight = dm.heightPixels;
+////		
+////		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+////		puzzle = (AbsoluteLayout) inflater.inflate(R.layout.game, null);
+////
+////		Drawable dg = MyBitmapFactory.readDrawable(this, resid, screenWidth, screenHeight);
+////		puzzle.setBackgroundDrawable(dg);
+////		puzzle.getBackground().setAlpha(120);
 //		
-//		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-//		puzzle = (AbsoluteLayout) inflater.inflate(R.layout.game, null);
-//
-//		Drawable dg = MyBitmapFactory.readDrawable(this, resid, screenWidth, screenHeight);
-//		puzzle.setBackgroundDrawable(dg);
-//		puzzle.getBackground().setAlpha(120);
-		
-		db.open();
-		allImagePieces = db.getPieces(resid, levelid);
-		db.close();
-		
-		int piececount = allImagePieces.size();
-		Log.i("Game", "getOldPuzzle piececount = " + piececount);
-		for(int i=0; i<piececount; i++){
-			PieceImageButton pib = (PieceImageButton) allImagePieces.get(i);
-			pib.setOnTouchListener(onTouchListener);
-			
-			int autoX = (int) (Math.random() * (screenWidth - screenWidth/line));
-			int autoY = (int) (Math.random() * (screenHeight-screenHeight/row));
-			Point loc = new Point(autoX, autoY);
-			pib.setLocation(loc);
-			
-			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, autoX, autoY);
-			pib.setLayoutParams(autoParams);
-			
-			puzzle.addView(pib);
-		}
-		
-		return puzzle;
-	}
+//		db.open();
+//		allImagePieces = db.getPieces(resid, levelid);
+//		db.close();
+//		
+//		int piececount = allImagePieces.size();
+//		Log.i("Game", "getOldPuzzle piececount = " + piececount);
+//		for(int i=0; i<piececount; i++){
+//			PieceImageButton pib = (PieceImageButton) allImagePieces.get(i);
+//			pib.setOnTouchListener(onTouchListener);
+//			
+//			int autoX = (int) (Math.random() * (screenWidth - screenWidth/line));
+//			int autoY = (int) (Math.random() * (screenHeight-screenHeight/row));
+//			Point loc = new Point(autoX, autoY);
+//			pib.setLocation(loc);
+//			
+//			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, autoX, autoY);
+//			pib.setLayoutParams(autoParams);
+//			
+//			puzzle.addView(pib);
+//		}
+//		
+//		return puzzle;
+//	}
 	
 	/**
 	 * 

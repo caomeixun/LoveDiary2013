@@ -35,7 +35,7 @@ public class PieceFactory {
 	private Path dotPath = new Path();
 	private Paint noPicPaint = new Paint();
 	private Paint edgePaint = new Paint();
-	private Paint addPaint = new Paint();
+//	private Paint addPaint = new Paint();
 	
 	//保存所有
 	private Vector<Piece> allPiece = new Vector<Piece>();
@@ -352,51 +352,51 @@ public class PieceFactory {
 				
 	}
 	
-	/**
-	 * 将边框图片合成到碎片上
-	 * @param piece
-	 */
-	private void addEdge(Piece piece){
-		Bitmap temppiece = piece.getBmPiece();
-		canvas.setBitmap(temppiece);
-		canvas.drawBitmap(piece.getBmEdge(), 0, 0, addPaint);
-		canvas.save(Canvas.ALL_SAVE_FLAG);
-		canvas.restore();
-		
-		piece.setBmPiece(temppiece);
-		piece.getBmEdge().recycle();  //回收图片
-	}
-	
-	private int changeColorToLight(int color, double contrast, int light){
-		int red = Color.red(color);
-		int green = Color.green(color);
-		int blue = Color.blue(color);
-		
-		int r = (int) (red * contrast + light);
-		int g = (int) (green * contrast + light);
-		int b = (int) (blue * contrast + light);
-		
-		if(r > 255){
-			r = 255;
-		}else if(r < 0){
-			r = 0;
-		}
-		
-		if(g > 255){
-			g = 255;
-		}else if(g < 0){
-			g = 0;
-		}
-		
-		if(b > 255){
-			b = 255;
-		}else if(b < 0){
-			b = 0;
-		}
-		
-		return Color.rgb(r, g, b);
-	}
-	
+//	/**
+//	 * 将边框图片合成到碎片上
+//	 * @param piece
+//	 */
+//	private void addEdge(Piece piece){
+//		Bitmap temppiece = piece.getBmPiece();
+//		canvas.setBitmap(temppiece);
+//		canvas.drawBitmap(piece.getBmEdge(), 0, 0, addPaint);
+//		canvas.save(Canvas.ALL_SAVE_FLAG);
+//		canvas.restore();
+//		
+//		piece.setBmPiece(temppiece);
+//		piece.getBmEdge().recycle();  //回收图片
+//	}
+//	
+//	private int changeColorToLight(int color, double contrast, int light){
+//		int red = Color.red(color);
+//		int green = Color.green(color);
+//		int blue = Color.blue(color);
+//		
+//		int r = (int) (red * contrast + light);
+//		int g = (int) (green * contrast + light);
+//		int b = (int) (blue * contrast + light);
+//		
+//		if(r > 255){
+//			r = 255;
+//		}else if(r < 0){
+//			r = 0;
+//		}
+//		
+//		if(g > 255){
+//			g = 255;
+//		}else if(g < 0){
+//			g = 0;
+//		}
+//		
+//		if(b > 255){
+//			b = 255;
+//		}else if(b < 0){
+//			b = 0;
+//		}
+//		
+//		return Color.rgb(r, g, b);
+//	}
+//	
 	/**
 	 * 给每个piece蒙版填充像素，得到拼图碎片piece
 	 */

@@ -13,7 +13,7 @@ import com.love.dairy.widget.MyView;
 public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	public static int HALF_TYPE = 444;
 	public static int FULL_TYPE = 555;
-    private int data = 0;
+    private int index = 0;
     private Context context = null;
     private int type = -1;
     private MyView myView =null;
@@ -30,12 +30,12 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     // Decode image in background.
     @Override
     protected Bitmap doInBackground(Integer... params) {
-        data = params[0];
+        index = params[0];
 		LoveApplication application = (LoveApplication) context.getApplicationContext();
         if(type == FULL_TYPE)
-        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+application.photoIds[data], MainActivity.screenWidth, MainActivity.screenHeight);
+        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+application.photoIds.get(index), MainActivity.screenWidth, MainActivity.screenHeight);
         else{
-        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+application.photoIds[data], MainActivity.screenWidth/2, MainActivity.screenHeight/2);
+        	return ImageUtil.decodeSampledBitmapFromResource(context.getResources(),MainActivity.path+application.photoIds.get(index), MainActivity.screenWidth/2, MainActivity.screenHeight/2);
         }
     }
 
@@ -44,18 +44,17 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
     	Log.e("BitmapWorkerTask", "加载完成");
     	if(myView!=null){
-    		
     		myView.setImage(bitmap);
     		myView.setViewToBitmap();
     	}
         if (FlipCards.dateCache != null && bitmap != null) {
-        	if(FlipCards.dateCache.get(data) == null){
-        			FlipCards.dateCache.put(data, bitmap);
+        	if(FlipCards.dateCache.get(index) == null){
+        			FlipCards.dateCache.put(index, bitmap);
         	}else{
-        		Bitmap rBimtmap = FlipCards.dateCache.get(data);
+        		Bitmap rBimtmap = FlipCards.dateCache.get(index);
         		rBimtmap.recycle();
         		rBimtmap = null;
-        		FlipCards.dateCache.put(data, bitmap);
+        		FlipCards.dateCache.put(index, bitmap);
         		Log.e("BitmapWorkerTask", "替换图片完成");
         	}
         }

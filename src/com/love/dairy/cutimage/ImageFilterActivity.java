@@ -82,7 +82,7 @@ public class ImageFilterActivity extends KXActivity {
 				// 根据是否选择旧图片返回图片地址
 //				String mPath = PhotoUtil.saveToLocal(mNewBitmap,mOldPath);
 				LoveApplication application = (LoveApplication) ImageFilterActivity.this.getApplication();	
-				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + application.photoIds[imageId], MainActivity.screenWidth, MainActivity.screenHeight);
+				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + application.photoIds.get(imageId), MainActivity.screenWidth, MainActivity.screenHeight);
 				FlipCards.dateCache.put(imageId,bit);
 				finish();
 				
@@ -164,8 +164,8 @@ public class ImageFilterActivity extends KXActivity {
 		mForward.setEnabled(false);
 		// 接收传递的图片地址
 		LoveApplication application = (LoveApplication) ImageFilterActivity.this.getApplication();	
-		mOldPath = MainActivity.path + application.photoIds[imageId];
-		mNewPath = MainActivity.path + application.photoIds[imageId];
+		mOldPath = MainActivity.path + application.photoIds.get(imageId);
+		mNewPath = MainActivity.path + application.photoIds.get(imageId);
 		mOldBitmap = getPhoneAlbum(mOldPath);
 		mNewBitmap = getPhoneAlbum(mNewPath);
 		historyPicPaths.add(mOldPath);

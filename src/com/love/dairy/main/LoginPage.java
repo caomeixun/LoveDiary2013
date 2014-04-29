@@ -73,8 +73,8 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			info.ivDate = "Ò»ÄêÇ°";
 			info.title = etTitle;
 			LoveApplication application = (LoveApplication) this.getApplication();
-			info.path =MainActivity.path + application.photoIds[imagePosition];
-			info.name = "Love_"+application.photoIds[imagePosition];
+			info.path =MainActivity.path + application.photoIds.get(imagePosition);
+			info.name = "Love_"+application.photoIds.get(imagePosition);
 			DataHelper dh = new DataHelper(getApplicationContext());
 			long result =  dh.addUserInfo(info);
 			if(result > 0){
