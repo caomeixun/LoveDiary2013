@@ -8,13 +8,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.opengl.GLU;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 
 import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
 import com.love.dairy.utils.BitmapWorkerTask;
+import com.love.dairy.utils.LDLog;
 
 /*
  Copyright 2012 Aphid Mobile
@@ -54,13 +54,10 @@ public class FlipCards {
 
 	private Card[] topCards = new Card[]{new Card(),new Card()};
 	private Card[] bottomCard = new Card[]{new Card(),new Card()};
-	private String TAG = "imageUtil";
-	
 	
 	public static SparseArray<Bitmap> dateCache = null;
 	//public static HashMap<Integer, SoftReference<Bitmap>> dateCache = null;
 	private void loadBitmap(boolean isNext,int position,int maxSize){
-		Log.e("TAG", "loadBitmap--------------"+position);
 		int loadId = 0;
 		if(!isNext){
 			loadId =position-2;
@@ -82,7 +79,6 @@ public class FlipCards {
 				public void run() {
 					BitmapWorkerTask task = new BitmapWorkerTask(FlipCards.this.context,BitmapWorkerTask.HALF_TYPE);
 					task.execute(postion);
-					Log.e("TAG", "cacheId--------------"+postion);
 				}
 			});
 
@@ -145,8 +141,6 @@ public class FlipCards {
 			
 					//如果非空则表示有缓存的bitmap，需要清理
 			
-					Log.v(TAG, "release position:"+ del);
-			
 					//从缓存中移除该del->bitmap的映射
 			
 					dateCache.remove(del);
@@ -196,7 +190,6 @@ public class FlipCards {
 	 * 重载当前页面
 	 */
 	public void reloadNowImage(){
-		Log.e("TAG", photoPostion+"----reloadNowImage");
 		if(!isLoading){
 			if(flipViews!=null){
 			    	reloadPath(0);
@@ -206,7 +199,6 @@ public class FlipCards {
 		}
 	}
 	private void reloadPath(int index){
-		Log.e("TAG", claPostion(getPosition(), index, flipViews.size())+"reloadPath"+index);
     	flipViews.get(claPostion(getPosition(), index, flipViews.size())).setImage(photoPostion+index);
 		flipViews.get(claPostion(getPosition(), index, flipViews.size())).reloadInfo();
 		flipViews.get(claPostion(getPosition(), index, flipViews.size())).setViewToBitmap();
@@ -342,7 +334,6 @@ public class FlipCards {
 		return position;
 	}
 	public void setPosition(int position) {
-		Log.e("TAG", "setPosition"+position);
 		int lastPostion = getPosition();
 		this.position = position;
 //		if(position==1)
@@ -383,12 +374,10 @@ public class FlipCards {
 	    if(flipViews.get(i).bitmap == null) return;
 	    int height = flipViews.get(i).bitmap .getHeight();
 	    int width  = flipViews.get(i).bitmap .getWidth();
-	    Log.e("TAG", width+"appBitmap++"+i);
 	    if(width < MainActivity.screenWidth){
 	    	height*=2;
 	    	width*=2;
 	    }
-	    //Log.e("TAG", flipViews.get(i).imagePosition+"----applyTexture--第"+i);
 	    if (textures[i] != null){
 	    	textures[i] .destroy(gl);
 	    	topCards[i].setCardVertices(null);
@@ -469,7 +458,7 @@ public class FlipCards {
 				LoveApplication application = (LoveApplication) flipViewGroup.context.getApplication();	
 				my.setImage(claPostion(photoPostion, i, application.photoIds.size()));
 				my.loadInfo(claPostion(photoPostion, i, application.photoIds.size()));
-				Log.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page："+claPostion(photoPostion, i, application.photoIds.size()));
+				LDLog.e("TAG",claPostion(getPosition(), i, flipViews.size())+ "page："+claPostion(photoPostion, i, application.photoIds.size()));
 				my.setViewToBitmap();
 			}
 		});
@@ -518,7 +507,6 @@ public class FlipCards {
 //			else if(lastRotate-lastUpRotate>90){
 //				setPosition(0);
 //			}
-			Log.e("TAG", System.currentTimeMillis()- double_tap_time+"MotionEvent");
 			if(System.currentTimeMillis()- double_tap_time < 200){
 				flipViewGroup.context.login(photoPostion);
 			}

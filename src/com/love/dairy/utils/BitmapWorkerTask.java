@@ -3,7 +3,6 @@ package com.love.dairy.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.love.dairy.LoveApplication;
 import com.love.dairy.main.MainActivity;
@@ -42,7 +41,6 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     // Once complete, see if ImageView is still around and set bitmap.
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-    	Log.e("BitmapWorkerTask", "加载完成");
     	if(myView!=null){
     		myView.setImage(bitmap);
     		myView.setViewToBitmap();
@@ -55,7 +53,6 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         		rBimtmap.recycle();
         		rBimtmap = null;
         		FlipCards.dateCache.put(index, bitmap);
-        		Log.e("BitmapWorkerTask", "替换图片完成");
         	}
         }
     }

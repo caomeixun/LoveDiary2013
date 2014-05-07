@@ -2,6 +2,7 @@ package com.love.dairy.cutimage;
 
 import java.util.LinkedList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,7 +10,6 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -77,7 +77,6 @@ public class FaceImageView extends ImageView {
 		switch (action & MotionEvent.ACTION_MASK) {
 		case MotionEvent.ACTION_DOWN:
 			mFaceImagePosition = getPosition(x, y);
-			Log.e("TAG", "----oldDist");
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
             oldDist = spacing(event);
@@ -129,7 +128,8 @@ public class FaceImageView extends ImageView {
 		return mFaceImages;
 	}
 	/** 计算两个手指间的距离 */
-	 private float spacing(MotionEvent event) {
+	 @SuppressLint("FloatMath")
+	private float spacing(MotionEvent event) {
 		          float x = event.getX(0) - event.getX(1);
 		          float y = event.getY(0) - event.getY(1);
 		          /** 使用勾股定理返回两点之间的距离 */
@@ -145,7 +145,6 @@ public class FaceImageView extends ImageView {
 	private void claMartix(MotionEvent event) {
 		if (isZoom) {
 			float newDist = spacing(event);
-			Log.e("TAG", newDist+"----newDist");
 			/**
 			 * 表示新的距离比两个手指刚触碰的距离大 ( +10个像素用来延迟一下放大，不然稍微动一点像素,也放大，感觉也太快了。)
 			 */

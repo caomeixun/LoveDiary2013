@@ -85,7 +85,6 @@ public class PicView extends Activity {
 		//Cursor cursor = db.getLastEntry(table, col_id);
 		//return cursor.getInt(cursor.getColumnIndexOrThrow(col_level_id));
 		
-		//Log.i("", "db.getMaxValue(table, col_level_id)" + db.getMaxValue(table, col_level_id));
 		return db.getMaxValue(table, col_level_id, col_id);
 		
 	}

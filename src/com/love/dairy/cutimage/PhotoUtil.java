@@ -20,7 +20,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
-import android.util.Log;
 
 import com.love.dairy.utils.FileDownload;
 import com.love.dairy.utils.MD5;
@@ -107,7 +106,6 @@ public class PhotoUtil {
 		return saveToLocal(bm, path, true);
 	}
 	private static void checkFileDirectionExists(String path){
-		Log.e("TAG", "path"+path);
 		File file = new File(path);
 		if(!file.exists()){
 			file.mkdirs();

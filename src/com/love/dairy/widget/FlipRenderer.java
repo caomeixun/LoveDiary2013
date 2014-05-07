@@ -21,7 +21,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
-import android.util.Log;
+import com.love.dairy.utils.LDLog;
 
 /*
  Copyright 2012 Aphid Mobile
@@ -52,7 +52,7 @@ public class FlipRenderer implements GLSurfaceView.Renderer {
 
 		cards = new FlipCards(flipViewGroup,flipViewGroup.getContext());
 
-		// AphidLog.i("Renderer created");
+		 LDLog.i("Renderer created");
 	}
 
 	public FlipCards getCards() {
@@ -69,11 +69,8 @@ public class FlipRenderer implements GLSurfaceView.Renderer {
 		gl.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 		created = true;
-		Log.e("TAG", "onSurfaceCreated");
 		cards.invalidateTexture();
 		flipViewGroup.reloadTexture();
-
-		// AphidLog.i("onSurfaceCreated");
 	}
 
 	public static float[] light0Position = { 0, 0, 100f, 0f };

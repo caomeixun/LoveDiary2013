@@ -1,5 +1,6 @@
 package com.love.dairy.main.renren;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +32,7 @@ import com.love.dairy.main.R;
 import com.love.dairy.main.renren.AsyncImageLoader.ImageCallback;
 import com.love.dairy.utils.FileDownload;
 import com.love.dairy.utils.ImageUtil;
+import com.love.dairy.utils.LDLog;
 import com.renn.rennsdk.RennClient;
 import com.renn.rennsdk.RennExecutor.CallBack;
 import com.renn.rennsdk.RennResponse;
@@ -81,12 +82,18 @@ public class PhoneAlbumActivity extends BaseActivity {
 			}
 		});
 	}
-	private Handler handler = new Handler(){
+	static class RefreshHandler extends Handler{
+		private WeakReference<PhoneAlbumActivity> activity = null;
+		public RefreshHandler(PhoneAlbumActivity activity){
+			this.activity = new WeakReference<PhoneAlbumActivity>(activity);
+		}
 		@Override
 		public void dispatchMessage(android.os.Message msg) {
 			String path = (String) msg.obj;
-			saveSharedPreferencesData(IMAGE_PATH, path);
-			finish();
+			if(activity.get() != null){
+				activity.get().saveSharedPreferencesData(IMAGE_PATH, path);
+				activity.get().finish();
+			}
 		};
 	};
 	protected void downloadImages(final int position) {
@@ -132,7 +139,7 @@ public class PhoneAlbumActivity extends BaseActivity {
 							}
 							paths.add(path);
 						}	
-					new FileDownload(paths, PhoneAlbumActivity.this,lists.get(position).id,handler);
+					new FileDownload(paths, PhoneAlbumActivity.this,lists.get(position).id,new RefreshHandler(PhoneAlbumActivity.this));
                     }catch(Exception ex){
                     	ex.printStackTrace();
                     }
@@ -149,7 +156,6 @@ public class PhoneAlbumActivity extends BaseActivity {
                 }
             });
         } catch (RennException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 	}
@@ -172,7 +178,6 @@ public class PhoneAlbumActivity extends BaseActivity {
                 
                 @Override
                 public void onSuccess(RennResponse response) {
-                    Log.e("TAG",response.toString());
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                         mProgressDialog = null;
@@ -215,7 +220,7 @@ public class PhoneAlbumActivity extends BaseActivity {
                 
                 @Override
                 public void onFailed(String errorCode, String errorMessage) {
-                	Log.e("TAG",errorCode+":"+errorMessage);
+                	LDLog.e("TAG",errorCode+":"+errorMessage);
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                         mProgressDialog = null;

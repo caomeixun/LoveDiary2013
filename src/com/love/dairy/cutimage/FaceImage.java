@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
 public class FaceImage {
 	private Bitmap mFace;
@@ -19,11 +18,9 @@ public class FaceImage {
 		this.scale = scale;
 	}
 	public void setLastSacle(){
-		Log.e("TAG","lastScale"+scale);
 		this.lastScale *= scale;
 	}
 	public void draw(Canvas canvas) {
-//		Log.e("TAG",scale * lastScale+ "lastScale"+lastScale);
 		canvas.save();
 		/*src原始图片绘画部分*/
 		/*dst画多大和坐标部分*/ 

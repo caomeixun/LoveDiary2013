@@ -8,12 +8,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.util.Log;
+
+import com.love.dairy.utils.LDLog;
 
 
 public class MyDBAdapter {
@@ -408,7 +409,7 @@ public class MyDBAdapter {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase _db, int _oldVersion, int _newVersion) {
-			Log.w("TaskDBAdapter","Upgrade from version " + _oldVersion + " to " + _newVersion + ", which will destroy all old data");
+			LDLog.w("TaskDBAdapter","Upgrade from version " + _oldVersion + " to " + _newVersion + ", which will destroy all old data");
 			
 			_db.execSQL("DROP TABLE IF EXISTS " + EFFECT_TABLE_CREATE_SQL);
 			_db.execSQL("DROP TABLE IF EXISTS " + LEVEL_TABLE_CREATE_SQL);

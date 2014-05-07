@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 
@@ -146,7 +145,6 @@ public class MainActivity extends BaseActivity{
 		dataBackup();
 	}
 	public void login(int imageId){
-		Log.e("TAg", "imageId-------"+imageId);
 		Intent intent = new Intent(MainActivity.this,LoginPage.class);
 		intent.putExtra(LoginPage.IMAGE_ID, imageId);
 		startActivity(intent);

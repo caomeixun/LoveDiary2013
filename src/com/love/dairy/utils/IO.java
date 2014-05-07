@@ -35,7 +35,7 @@ public class IO {
 			if (closeable != null)
 				closeable.close();
 		} catch (IOException e) {
-			AphidLog.w(e, "Failed to close a closable");
+			LDLog.w(e, "Failed to close a closable");
 		}
 	}
 
@@ -53,7 +53,7 @@ public class IO {
 
 			return output.toByteArray();
 		} catch (IOException e) {
-			AphidLog.e(e, "Failed to readData");
+			LDLog.e(e, "Failed to readData");
 			return null;
 		} finally {
 			close(input);
@@ -80,7 +80,7 @@ public class IO {
 
 			return builder.toString();
 		} catch (IOException e) {
-			AphidLog.e(e, "Failed to readString");
+			LDLog.e(e, "Failed to readString");
 			return null;
 		} finally {
 			close(reader);
@@ -94,7 +94,7 @@ public class IO {
 		try {
 			return BitmapFactory.decodeStream(input);
 		} catch (Exception e) {
-			AphidLog.e(e, "Failed to read bitmap");
+			LDLog.e(e, "Failed to read bitmap");
 			return null;
 		} finally {
 			close(input);

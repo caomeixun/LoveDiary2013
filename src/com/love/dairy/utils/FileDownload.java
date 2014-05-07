@@ -7,15 +7,15 @@ import java.util.List;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.love.dairy.cutimage.PhotoUtil;
 
 
 public class FileDownload  {
-	public static String path = "/sdcard/LoveStory/";
+	public static String path = Environment.getExternalStorageDirectory().getPath() + "LoveStory/";
 	public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 	private ProgressDialog mProgressDialog;
 	private List<String> photos ;
@@ -56,10 +56,10 @@ public class FileDownload  {
 					    PhotoUtil.saveToLocal(BitmapFactory.decodeStream(input),savePath,false);
 						Message msg = handler.obtainMessage();
 						msg.arg1 = i+1;
+						msg.obj = mProgressDialog;
 						handler.sendMessage(msg);
 					} catch (Exception e) {
-						Log.e("error", e.getMessage().toString());
-						System.out.println(e.getMessage().toString());
+						e.printStackTrace();
 					}
 				}
 				Message msg = new Message();
@@ -69,12 +69,13 @@ public class FileDownload  {
 		}).start();
 		
 	}
-	Handler handler = new Handler(){
+	private static Handler handler = new Handler(){
 		@Override
 		public void handleMessage(android.os.Message msg) {
-			Log.e("TAG", "handleMessage"+msg.arg1);
-
-			mProgressDialog.setProgress(msg.arg1);
+			if(msg.obj != null){
+				ProgressDialog mProgressDialog = (ProgressDialog) msg.obj;
+				mProgressDialog.setProgress(msg.arg1);
+			}
 			
 		};
 	};

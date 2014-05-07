@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,6 +16,7 @@ import com.love.dairy.main.R;
 import com.love.dairy.pojo.ImageInfo;
 import com.love.dairy.sql.DataHelper;
 import com.love.dairy.utils.BitmapWorkerTask;
+import com.love.dairy.utils.LDLog;
 
 public class MyView extends RelativeLayout{
 	private ImageView iv = null;
@@ -47,7 +47,7 @@ public class MyView extends RelativeLayout{
 			setTitleBg(bitmap);
 		}
 		else{
-			Log.e("TAG", "去加载图片了");
+			LDLog.e("TAG", "去加载图片了");
 			BitmapWorkerTask task = new BitmapWorkerTask(context,BitmapWorkerTask.FULL_TYPE,this);
 			task.execute(rsId);
 		}
@@ -60,7 +60,6 @@ public class MyView extends RelativeLayout{
 		tvTitle.setText(str);
 	}
 	public void setViewToBitmap(){
-		Log.e("TAF","----------------setViewToBitmap");
 		if(ImageFilterActivity.imageId != -1 && imagePosition != null){
 			int rsId = Integer.parseInt(imagePosition);
 			if(ImageFilterActivity.imageId == rsId )

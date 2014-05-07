@@ -7,7 +7,6 @@ import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +107,6 @@ public class FlipViewGroup extends ViewGroup {
 				height = h;
 
 				if (flipViews.size() >= 2 && flipping ) {
-					Log.e("TAG", "-------flipViews-----");
 					renderer.updateTexture(flipViews);
 				}
 			}

@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.love.dairy.main.R;
+import com.love.dairy.utils.LDLog;
 import com.love.dairy.widget.FlipCards;
 
 
@@ -64,11 +65,11 @@ public class Game extends Activity {
 		
 		Intent i = this.getIntent();
 		String action = i.getAction();
-		Log.i("Game", "action = " + action);
+		LDLog.i("Game", "action = " + action);
 		
 		Bundle bundle = i.getExtras();
 		imageId = bundle.getInt("imageId");
-		Log.i("Game", "imageId = " + imageId);
+		LDLog.i("Game", "imageId = " + imageId);
 		
 		db.open();
 		Cursor cursor = db.getLastEntry("pt_game", "_id");
@@ -80,7 +81,7 @@ public class Game extends Activity {
 		cursor.moveToFirst();
 		row = cursor.getInt(cursor.getColumnIndexOrThrow("piece_row"));
 		line = cursor.getInt(cursor.getColumnIndexOrThrow("piece_line"));
-		Log.i("Game", "row = " + row + ", line = " + line);
+		LDLog.i("Game", "row = " + row + ", line = " + line);
 		cursor.close();
 		
 		String where = "image_id=" + imageId + " and level_id=" + levelId + " ";
@@ -213,7 +214,7 @@ public class Game extends Activity {
 //		db.close();
 //		
 //		int piececount = allImagePieces.size();
-//		Log.i("Game", "getOldPuzzle piececount = " + piececount);
+//		LDLog.i("Game", "getOldPuzzle piececount = " + piececount);
 //		for(int i=0; i<piececount; i++){
 //			PieceImageButton pib = (PieceImageButton) allImagePieces.get(i);
 //			pib.setOnTouchListener(onTouchListener);
@@ -256,7 +257,7 @@ public class Game extends Activity {
 		db.close();
 		
 		int piececount = allImagePieces.size();
-		Log.i("Game", "getOldPuzzle piececount = " + piececount);
+		LDLog.i("Game", "getOldPuzzle piececount = " + piececount);
 		for(int i=0; i<piececount; i++){
 			PieceImageButton pib = (PieceImageButton) allImagePieces.get(i);
 			pib.setOnTouchListener(onTouchListener);
@@ -364,8 +365,8 @@ public class Game extends Activity {
 			
 			pieceImageButton.pieceHeight = piece.getPieceHeight();
 			pieceImageButton.pieceWidth = piece.getPieceWidth();
-			Log.e("TAG", "pib.pieceWidth"+piece.getPieceWidth());
-			Log.e("TAG", piece.getMaxp().x- piece.getMinp().x+"pib.pieceWidth");
+			LDLog.e("TAG", "pib.pieceWidth"+piece.getPieceWidth());
+			LDLog.e("TAG", piece.getMaxp().x- piece.getMinp().x+"pib.pieceWidth");
 			//背景图片占满整个ImageButton，方法2
 			BitmapDrawable bd = new BitmapDrawable(piece.getBmPiece());
 			pieceImageButton.setBackgroundDrawable(bd);			
@@ -398,7 +399,6 @@ public class Game extends Activity {
     	int lastY;
     	
 		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN:
 				lastX = (int) event.getRawX();

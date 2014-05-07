@@ -15,7 +15,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.util.Log;
 
 /**
  * 1、建立透明图片，作为蒙板
@@ -79,8 +78,6 @@ public class PieceFactory {
 		mBitPic = bitmap;
 		_imageW = mBitPic.getWidth();
 		_imageH = mBitPic.getHeight();
-		Log.e("TAG", _imageW+"mBitPic"+_imageH);
-		
 	}
 
 	public void setImage(int imageid){
@@ -338,11 +335,9 @@ public class PieceFactory {
 				int width = piece.getMaxp().x- piece.getMinp().x;
 				int height = piece.getMaxp().y- piece.getMinp().y;
 				
-				Log.e("TAG", key.x+"--"+key.y+"--"+width+"--"+height+"--"+mBitPic.getWidth());
 				width = width> mBitPic.getWidth() ?mBitPic.getWidth():width;
 				height = height> mBitPic.getHeight() ?mBitPic.getHeight():height;
 				mCutBit = Bitmap.createBitmap(mBitPic, piece.getMinp().x, piece.getMinp().y, width, height);
-				Log.e("TAG", mCutBit.getHeight()+"-()-"+mCutBit.getWidth());
 				getPieceBitmap(piece);
 				fillPieceWithBitmap(piece);
 				
@@ -469,10 +464,7 @@ public class PieceFactory {
 		canvas.drawPath(dotPath, edgePaint);
 		canvas.save(Canvas.ALL_SAVE_FLAG);
 		canvas.restore();
-		
-		Log.e("TAG", pieceBit.getHeight()+"-(||)-"+pieceBit.getWidth());
  		piece.setBmPiece(pieceBit);
-		
 //		BlurMaskFilter blurFilter = new BlurMaskFilter(3, BlurMaskFilter.Blur.OUTER);
 // 		Paint shadowPaint = new Paint();		
 // 		shadowPaint.setMaskFilter(blurFilter);

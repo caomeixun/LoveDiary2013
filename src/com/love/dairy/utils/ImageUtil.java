@@ -1,16 +1,13 @@
 package com.love.dairy.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,7 +22,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class ImageUtil {
 	
@@ -137,7 +133,7 @@ public class ImageUtil {
 			int y = (int) ((height-h1)/2);
 			newbmp = Bitmap.createBitmap(bitmap, 0, y, width, Math.round(h1), matrix, true);
 		}
-		Log.e("zoomBitmapByPhoto","--新图getWidth--size"+ newbmp.getWidth()+"--"+newbmp.getHeight()+"----原图：getWidth----"+ width+"--"+height);
+		LDLog.e("zoomBitmapByPhoto","--新图getWidth--size"+ newbmp.getWidth()+"--"+newbmp.getHeight()+"----原图：getWidth----"+ width+"--"+height);
 //		bitmap.recycle();
 //		bitmap = null;
 		return newbmp;
@@ -176,23 +172,23 @@ public class ImageUtil {
 		return path;
 	}
 
-	public static String saveToLocal(Bitmap bm) {
-		String path = "/sdcard/test.jpg";
-		try {
-			FileOutputStream fos = new FileOutputStream(path);
-			bm.compress(CompressFormat.JPEG, 75, fos);
-			fos.flush();
-			fos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return path;
-	}
+//	public static String saveToLocal(Bitmap bm) {
+//		String path = "/sdcard/test.jpg";
+//		try {
+//			FileOutputStream fos = new FileOutputStream(path);
+//			bm.compress(CompressFormat.JPEG, 75, fos);
+//			fos.flush();
+//			fos.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//			return null;
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//
+//		return path;
+//	}
 
 	// ���Բ��ͼƬ�ķ���?
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
