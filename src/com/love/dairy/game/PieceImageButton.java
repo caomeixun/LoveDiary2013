@@ -21,6 +21,7 @@ public class PieceImageButton extends ImageButton {
 	private boolean hasLeft = false;
 	
 	private boolean traverse = false;
+	public boolean isAbsort = false;
 	
 	public PieceImageButton(Context context) {
 		super(context);

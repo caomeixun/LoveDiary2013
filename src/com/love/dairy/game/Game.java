@@ -1,6 +1,8 @@
 package com.love.dairy.game;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -16,6 +18,7 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +30,10 @@ import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.love.dairy.LoveApplication;
+import com.love.dairy.main.MainActivity;
 import com.love.dairy.main.R;
 import com.love.dairy.utils.LDLog;
 import com.love.dairy.widget.FlipCards;
@@ -52,6 +58,7 @@ public class Game extends Activity {
 	
 	private int _id;
 	private int imageId;
+	private String imageName;
 	
 	private int levelId;
 	private int row;
@@ -59,7 +66,6 @@ public class Game extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		System.gc();  //回收空间
 		
@@ -69,7 +75,9 @@ public class Game extends Activity {
 		
 		Bundle bundle = i.getExtras();
 		imageId = bundle.getInt("imageId");
-		LDLog.i("Game", "imageId = " + imageId);
+		LoveApplication application = (LoveApplication) this.getApplication();
+		imageName = Base64.encodeToString(application.photoIds.get(imageId).getBytes(),Base64.DEFAULT).replace("\n", "");
+		LDLog.i("Game", "imageId = " + imageName);
 		
 		db.open();
 		Cursor cursor = db.getLastEntry("pt_game", "_id");
@@ -133,16 +141,32 @@ public class Game extends Activity {
 			//default
 		}
 		
+//		refreshJindu();
+		
 	}
 	
-	
+	private void refreshJindu(){
+		if(tfJindu != null){
+			tfJindu.setText((countTaverse++) + "/" + "" + allImagePieces.size());
+			progressBar.setMax(allImagePieces.size());
+			progressBar.setProgress(countTaverse++);
+		}
+	}
 	@Override
 	protected void onPause() {
 //		new MyLoading().execute(100);
 		super.onPause();
 	}
-
-
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if(timer != null){
+			timer.cancel();
+			timer = null;
+		}
+	}
+	
 	private void nextGame(){
 		db.open();
 		
@@ -173,11 +197,15 @@ public class Game extends Activity {
 		
 		/////////////
 		progressBar = (ProgressBar) findViewById(R.id.ProgressBar01);
-		progressBar.setProgress(0);
+		tfTime = (TextView) findViewById(R.id.tfTime);
+		tfJindu = (TextView) findViewById(R.id.tfJindu);
 		Button btnBack = (Button) findViewById(R.id.btnReview);
 		int size = getResources().getDimensionPixelSize(R.dimen.game_btn_size);
+		int progressBarHeight = getResources().getDimensionPixelSize(R.dimen.item_space_extra);
 		AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(size, size, 5, screenHeight-size-5);
 		btnBack.setLayoutParams(lp);
+		tfTime.setLayoutParams(new AbsoluteLayout.LayoutParams(MainActivity.screenWidth / 2, progressBarHeight, 5, 0));
+		tfJindu.setLayoutParams(new AbsoluteLayout.LayoutParams(MainActivity.screenWidth / 2, progressBarHeight, MainActivity.screenWidth / 2, 0));
 		btnBack.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View arg0) {
@@ -194,8 +222,36 @@ public class Game extends Activity {
 			
 		});
 		
+		TimerTask timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				Game.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						tfTime.setText(String.format("已用时 %d 秒", use_time));
+						use_time++;
+					}
+				});
+
+			}
+		};
+		timer = new Timer("Update_time");
+		timer.schedule(timerTask, 0, 1000);
+		tfJindu.setText(loadBestTimeStr());
 	}
-	
+	private String loadBestTimeStr(){
+		int time = loadBestTime();
+		if(time == 0){
+			return "暂无最佳纪录";
+		}else{
+			return String.format("最佳用时 %d 秒", time);
+		}
+	}
+	int use_time =1;
+	private Timer timer = null;
+	int countTaverse = 0;
 //	private View getReadyPuzzle(int resid, int levelid){
 ////		//获得屏幕的宽和高
 ////		DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -435,7 +491,6 @@ public class Game extends Activity {
 				//先取得碎片吸附的路径，然后移动碎片
 				cleanPath();
 				PieceImageButton firstPiece = checkAbsorb((PieceImageButton)v);
-				
 				cleanPath();
 				absorb(firstPiece);
 				
@@ -499,7 +554,6 @@ public class Game extends Activity {
     		}
     		
     	}
-    	
     }
     
     private void checkMove(PieceImageButton curPIB, int dx, int dy, ArrayList<PieceImageButton> movePieces){
@@ -641,11 +695,16 @@ public class Game extends Activity {
     	}
     	
     }
-    
+    private void sumAbsortPiece(PieceImageButton piece){
+    	if(!piece.isAbsort){
+    		piece.isAbsort = true;
+    		refreshJindu();
+    	}
+    	
+    }
     //从top，right，feet，left开始遍历，设置吸附标志
     private PieceImageButton checkAbsorb(PieceImageButton v){
     	PieceImageButton firstPiece = null;
-    	
     	PieceImageButton curPiece = (PieceImageButton) v;
     	curPiece.setTraverse(true);
     	
@@ -671,7 +730,7 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = topPiece;
 	    			}
-
+	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{  //如果上面的碎片已经吸附,且不是搜索的来源（避免死循环）,则继续上面的碎片查找
     			PieceImageButton topPiece = (PieceImageButton) allImagePieces.get(topPieceId);
@@ -698,7 +757,7 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = rightPiece;
 	    			}
-	    			
+	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{
     			PieceImageButton rightPiece = (PieceImageButton) allImagePieces.get(rightPieceId);
@@ -725,7 +784,7 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = feetPiece;
 	    			}
-	    			
+	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{
     			PieceImageButton feetPiece = (PieceImageButton) allImagePieces.get(feetPieceId);
@@ -752,7 +811,7 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = leftPiece;
 	    			}
-	    			
+	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{
     			PieceImageButton leftPiece = (PieceImageButton) allImagePieces.get(leftPieceId);
@@ -805,22 +864,70 @@ public class Game extends Activity {
     }
 	
     private void openFinishDialog(){
+    	if(timer != null){
+    		timer.cancel();
+    		timer = null;
+    	}
+    	savaGameBestTime();
+    	TextView textView = new TextView(getApplicationContext());
+    	textView.setTag(String.format("用时 %d 秒", use_time));
     	Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("拼图完成");
 		builder.setCancelable(false);
-		builder.setView(new EditText(this));
-		builder.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+		builder.setView(textView);
+		builder.setPositiveButton("下一关", new DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialogInterface, int which) {
-				// TODO Auto-generated method stub
 				nextGame();   //完成后，新增pt_game中的记录
 				
 			}
 			
+		}).setNegativeButton("返回",new DialogInterface.OnClickListener(){
+
+			public void onClick(DialogInterface dialogInterface, int which) {
+				finish();
+			}
+			
 		}).show();
     }
-    
+    /**
+     * 读取用户最佳游戏时间
+     * @return
+     */
+    private int loadBestTime(){
+    	db.open();
+    	int time = 0;
+		Cursor cursor = db.getEntry("BEST_TIME", "where image_name = '"+imageName+"' and level_id =" + levelId);
+		Log.e("TAG", "time_"+cursor.getCount());
+		while(cursor.moveToNext()){
+			time = cursor.getInt(cursor.getColumnIndexOrThrow("image_time"));
+			String timex = cursor.getString(cursor.getColumnIndexOrThrow("image_name"));
+			Log.e("TAG", timex+"time"+time);
+		}
+		cursor.close();
+		db.close();
+		return time;
+		
+    }
+	private void savaGameBestTime() {
+		int time = loadBestTime();
+		db.open();
+		if(use_time < time || time == 0){
+			if(time !=0){
+				db.removeEntry("BEST_TIME", "image_name = '"+imageName+"' and level_id =" + levelId);
+			}
+			ContentValues values = new ContentValues();
+			values.put("image_name",  imageName);
+			values.put("image_time",  use_time);
+			values.put("level_id",  levelId);
+			long lond =db.insertEntry("BEST_TIME", values);
+		}
+		db.close();
+		
+	}
 	private ProgressBar progressBar;
+	private TextView tfTime;
+	private TextView tfJindu;
 	protected static final int GUI_STOP_NOTIFIER = 0x108;
 	protected static final int GUI_THREADING_NOTIFIER = 0x109;
 	protected int intCounter = 0;

@@ -20,6 +20,7 @@ import com.love.dairy.utils.LDLog;
 public class MyDBAdapter {
 	private static final String DATABASE_NAME = "puzzle.db";
 	private static final String TABLE_LEVEL = "pt_level";
+	private static final String BEST_TIME = "BEST_TIME";
 	private static final String TABLE_EFFECT = "pt_effect";
 	private static final String TABLE_GAME = "pt_game";
 	private static final String TABLE_PIECE = "pt_piece";
@@ -42,6 +43,8 @@ public class MyDBAdapter {
 	//game
 	private static final String IMAGE_ID = "image_id";
 	private static final String IMAGE_NAME = "image_name";
+	private static final String IMAGE_TIME = "image_time";
+	private static final String IMAGE_LEVEL_ID = "level_id";
 	
 	//piece
 	private static final String PIECE_ID = "piece_id";
@@ -67,6 +70,13 @@ public class MyDBAdapter {
 			PIECE_ROW + " integer not null, " +
 			PIECE_LINE + " integer not null, " +
 			DESC + " text ); ";
+	
+	//最佳时间保存
+	private static final String BEST_TIME_SQL = "create table " +
+			BEST_TIME + " (" + KEY_ID + " integer primary key autoincrement, " +
+			IMAGE_NAME + " text not null, " +
+			IMAGE_LEVEL_ID + " integer not null, " +
+			IMAGE_TIME + " integer not null); ";
 	
 	//效果effect
 	private static final String EFFECT_TABLE_CREATE_SQL = "create table " +
@@ -172,7 +182,11 @@ public class MyDBAdapter {
 	}
 	
 	public int removeEntry(String table, String col, String val){
-		return db.delete(table, col + "=" + val, null);
+		return db.delete(table, col + "='" + val + "'", null);
+	}
+	
+	public int removeEntry(String table, String where){
+		return db.delete(table, where, null);
 	}
 	
 	public boolean removeEntry(String table, long _rowIndex){
@@ -255,7 +269,7 @@ public class MyDBAdapter {
 	}
 	
 	public Cursor getEntry(String table, String col, String value){
-		String sql = " select * from " + table + " where " + col + "=" + value + " ; ";
+		String sql = " select * from " + table + " where " + col + "='" + value + "' ; ";
 		return db.rawQuery(sql, null);
 	}
 	
@@ -358,6 +372,7 @@ public class MyDBAdapter {
 		public void onCreate(SQLiteDatabase _db) {
 			_db.execSQL(EFFECT_TABLE_CREATE_SQL);
 			_db.execSQL(LEVEL_TABLE_CREATE_SQL);
+			_db.execSQL(BEST_TIME_SQL);
 			_db.execSQL(PIECE_TABLE_CREATE_SQL);
 			_db.execSQL(GAME_TABLE_CREATE_SQL);
 			
