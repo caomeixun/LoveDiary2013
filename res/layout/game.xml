@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout
+<com.love.dairy.widget.LDAbsoluteLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
@@ -18,7 +18,7 @@
   	android:layout_height="30dp"
   	android:paddingLeft="5dp"
   	android:gravity="center_vertical"
-  	android:text="1212"
+  	android:textColor="#FFFFFF"
   	/>
   <TextView
   	android:id="@+id/tfJindu"
@@ -26,7 +26,7 @@
   	android:layout_height="30dp"
   	android:gravity="right|center_vertical"
   	android:paddingRight="5dp"
-  	android:text="12/30"
+  	android:textColor="#FFFFFF"
   	/>
   <Button
   	android:id="@+id/btnReview"
@@ -34,5 +34,5 @@
   	android:layout_height="wrap_content"
   	android:background="@drawable/menu_bz"
   	/>
-</AbsoluteLayout>
+</com.love.dairy.widget.LDAbsoluteLayout>
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Point;
 import android.widget.ImageButton;
 
+import com.love.dairy.utils.LDLog;
+
 public class PieceImageButton extends ImageButton {
 	//private Point key;
 	//private int lineWidth;   //碎片的内部宽度
@@ -21,7 +23,7 @@ public class PieceImageButton extends ImageButton {
 	private boolean hasLeft = false;
 	
 	private boolean traverse = false;
-	public boolean isAbsort = false;
+
 	
 	public PieceImageButton(Context context) {
 		super(context);
@@ -82,6 +84,22 @@ public class PieceImageButton extends ImageButton {
 		this.traverse = traverse;
 	}
 	
-
+	public int getSumPath(){
+		LDLog.e("getSumPath");
+		int sum = 0;
+		if(isHasFeet()){
+			sum++;
+		}
+		if(isHasTop()){
+			sum++;
+		}
+		if(isHasRight()){
+			sum++;
+		}
+		if(isHasLeft()){
+			sum++;
+		}
+		return sum;
+	}
 
 }

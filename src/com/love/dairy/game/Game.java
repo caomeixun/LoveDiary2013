@@ -1,6 +1,7 @@
 package com.love.dairy.game;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -11,6 +12,7 @@ import android.app.AlertDialog.Builder;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -28,7 +30,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,10 +38,12 @@ import com.love.dairy.main.MainActivity;
 import com.love.dairy.main.R;
 import com.love.dairy.utils.LDLog;
 import com.love.dairy.widget.FlipCards;
+import com.love.dairy.widget.LDAbsoluteLayout;
 
 
 @SuppressWarnings("deprecation")
 public class Game extends Activity {
+	
 	private int screenWidth;
 	private int screenHeight;
 	
@@ -52,7 +55,7 @@ public class Game extends Activity {
 	//private Vector<PieceImageButton> movePieces = new Vector<PieceImageButton>();
 	private ArrayList<PieceImageButton> movePieces = new ArrayList<PieceImageButton>();
 	
-	private AbsoluteLayout puzzle = null;
+	private LDAbsoluteLayout puzzle = null;
 	
 	private MyDBAdapter db = new MyDBAdapter(this);
 	
@@ -63,6 +66,10 @@ public class Game extends Activity {
 	private int levelId;
 	private int row;
 	private int line;
+	//总路径
+	private int sumPath;
+	//吸附的路径
+	private int abortPath;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +111,7 @@ public class Game extends Activity {
 		screenHeight = dm.heightPixels;
 		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-		puzzle = (AbsoluteLayout) inflater.inflate(R.layout.game, null);
+		puzzle = (LDAbsoluteLayout) inflater.inflate(R.layout.game, null);
 		setContentView(puzzle);
 		initBtnReview();
 
@@ -113,49 +120,57 @@ public class Game extends Activity {
 		puzzle.getBackground().setAlpha(120);
 		
 		
-		//////////////////////
-
 		if("RETURN_GAME_ACTION".equals(action) && count>0){
 			
-			//setContentView(getOldPuzzle(imageId, levelId));
-			getOldPuzzle(imageId, levelId);
+			while(isSaving){
+				LDLog.e("isSaving");
+			}
+			use_time = loadBestTime("lastTime");
+			
+			getOldPuzzle(imageId , levelId);
 			
 			
 		}else if("NEW_GAME_ACTION".equals(action)){
-			
-			recordGame(_id, imageId);
-			
-//			if(count == (row * line)){
-//				//setContentView(getReadyPuzzle(imageId, levelId));
-//				getReadyPuzzle(imageId, levelId);
-//				
-//			}else{
-				//将图片根据row行line列切开，并返回切块数组
-		        //row = 5;
-		        //line = 3;
-		        
-		        getNewPuzzle(imageId, row, line);
-//			}
+			newGame();
 	        
-		}else{
-			//default
-		}
-		
-//		refreshJindu();
-		
+		}	
+		clacSumPath();
+		refreshJindu();
 	}
 	
+	private void clacSumPath() {
+		int twoPath = 4;
+		int threePath = row * 2 + line * 2 - twoPath;
+		int fourPath = allImagePieces.size() - twoPath - threePath;
+		sumPath = twoPath * 2 + threePath * 3 + fourPath * 4;
+	}
+
+	private void newGame(){
+		recordGame(_id, imageId);
+		//将图片根据row行line列切开，并返回切块数组
+	        
+	    getNewPuzzle(imageId, row, line);
+	}
 	private void refreshJindu(){
 		if(tfJindu != null){
-			tfJindu.setText((countTaverse++) + "/" + "" + allImagePieces.size());
-			progressBar.setMax(allImagePieces.size());
-			progressBar.setProgress(countTaverse++);
+//			tfJindu.setText((abortPath) + "/" + "" + sumPath);
+			progressBar.setMax(sumPath);
+			progressBar.setProgress(abortPath);
 		}
 	}
 	@Override
 	protected void onPause() {
-//		new MyLoading().execute(100);
 		super.onPause();
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		Log.e("TAG","newConfig");
+		super.onConfigurationChanged(newConfig);
 	}
 	
 	@Override
@@ -181,7 +196,21 @@ public class Game extends Activity {
 		values.put("level_id", next_level);
 		db.insertEntry("pt_game", values);
 		
+		Cursor cursor = db.getEntry("pt_level", "level_id", next_level);
+		cursor.moveToFirst();
+		row = cursor.getInt(cursor.getColumnIndexOrThrow("piece_row"));
+		line = cursor.getInt(cursor.getColumnIndexOrThrow("piece_line"));
+		LDLog.i("Game", "row = " + row + ", line = " + line);
 		db.close();
+		
+		Intent intent = new Intent(this, Game.class);
+		intent.setAction("NEW_GAME_ACTION");
+		Bundle bundle = new Bundle();
+		bundle.putInt("imageId",imageId);
+		intent.putExtras(bundle);
+		startActivity(intent);
+		finish();
+		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 	}
 	
 	private void recordGame(int game_id, int game_imageid){
@@ -242,16 +271,15 @@ public class Game extends Activity {
 		tfJindu.setText(loadBestTimeStr());
 	}
 	private String loadBestTimeStr(){
-		int time = loadBestTime();
+		int time = loadBestTime("");
 		if(time == 0){
 			return "暂无最佳纪录";
 		}else{
-			return String.format("最佳用时 %d 秒", time);
+			return String.format(Locale.US,"最佳用时 %d 秒", time);
 		}
 	}
 	int use_time =1;
 	private Timer timer = null;
-	int countTaverse = 0;
 //	private View getReadyPuzzle(int resid, int levelid){
 ////		//获得屏幕的宽和高
 ////		DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -321,10 +349,8 @@ public class Game extends Activity {
 			
 			AbsoluteLayout.LayoutParams autoParams = new AbsoluteLayout.LayoutParams(pib.pieceWidth, pib.pieceHeight, loc.x, loc.y);
 			pib.setLayoutParams(autoParams);
-			
 			puzzle.addView(pib);
 		}
-		
 		return puzzle;
 	}
 	
@@ -421,8 +447,6 @@ public class Game extends Activity {
 			
 			pieceImageButton.pieceHeight = piece.getPieceHeight();
 			pieceImageButton.pieceWidth = piece.getPieceWidth();
-			LDLog.e("TAG", "pib.pieceWidth"+piece.getPieceWidth());
-			LDLog.e("TAG", piece.getMaxp().x- piece.getMinp().x+"pib.pieceWidth");
 			//背景图片占满整个ImageButton，方法2
 			BitmapDrawable bd = new BitmapDrawable(piece.getBmPiece());
 			pieceImageButton.setBackgroundDrawable(bd);			
@@ -695,13 +719,7 @@ public class Game extends Activity {
     	}
     	
     }
-    private void sumAbsortPiece(PieceImageButton piece){
-    	if(!piece.isAbsort){
-    		piece.isAbsort = true;
-    		refreshJindu();
-    	}
-    	
-    }
+  
     //从top，right，feet，left开始遍历，设置吸附标志
     private PieceImageButton checkAbsorb(PieceImageButton v){
     	PieceImageButton firstPiece = null;
@@ -730,7 +748,6 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = topPiece;
 	    			}
-	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{  //如果上面的碎片已经吸附,且不是搜索的来源（避免死循环）,则继续上面的碎片查找
     			PieceImageButton topPiece = (PieceImageButton) allImagePieces.get(topPieceId);
@@ -757,7 +774,6 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = rightPiece;
 	    			}
-	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{
     			PieceImageButton rightPiece = (PieceImageButton) allImagePieces.get(rightPieceId);
@@ -784,7 +800,6 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = feetPiece;
 	    			}
-	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{
     			PieceImageButton feetPiece = (PieceImageButton) allImagePieces.get(feetPieceId);
@@ -811,7 +826,6 @@ public class Game extends Activity {
 	    			if(firstPiece == null){
 	    				firstPiece = leftPiece;
 	    			}
-	    			sumAbsortPiece(curPiece);
 	    		}
     		}else{
     			PieceImageButton leftPiece = (PieceImageButton) allImagePieces.get(leftPieceId);
@@ -851,13 +865,15 @@ public class Game extends Activity {
 
     private void hasComplete(){
     	int finish = 0;
+    	abortPath = 0;
     	for(int i=0; i<allImagePieces.size(); i++){
     		PieceImageButton piece = (PieceImageButton) allImagePieces.get(i);
     		if(piece.isTraverse()){
     			finish ++;
     		}
-        	
+        	abortPath += piece.getSumPath();
     	}
+    	refreshJindu();
     	if(finish == row * line){
     		openFinishDialog();
     	}
@@ -868,9 +884,9 @@ public class Game extends Activity {
     		timer.cancel();
     		timer = null;
     	}
-    	savaGameBestTime();
+    	savaGameBestTime("");
     	TextView textView = new TextView(getApplicationContext());
-    	textView.setTag(String.format("用时 %d 秒", use_time));
+    	textView.setText(String.format("  用时 %d 秒", use_time));
     	Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("拼图完成");
 		builder.setCancelable(false);
@@ -894,10 +910,10 @@ public class Game extends Activity {
      * 读取用户最佳游戏时间
      * @return
      */
-    private int loadBestTime(){
+    private int loadBestTime(String type){
     	db.open();
     	int time = 0;
-		Cursor cursor = db.getEntry("BEST_TIME", "where image_name = '"+imageName+"' and level_id =" + levelId);
+		Cursor cursor = db.getEntry("BEST_TIME", "where image_name = '"+imageName+type+"' and level_id =" + levelId);
 		Log.e("TAG", "time_"+cursor.getCount());
 		while(cursor.moveToNext()){
 			time = cursor.getInt(cursor.getColumnIndexOrThrow("image_time"));
@@ -909,18 +925,21 @@ public class Game extends Activity {
 		return time;
 		
     }
-	private void savaGameBestTime() {
-		int time = loadBestTime();
+    /**
+     * 保存最佳用时
+     */
+	private void savaGameBestTime(String type) {
+		int time = loadBestTime("");
 		db.open();
 		if(use_time < time || time == 0){
 			if(time !=0){
 				db.removeEntry("BEST_TIME", "image_name = '"+imageName+"' and level_id =" + levelId);
 			}
 			ContentValues values = new ContentValues();
-			values.put("image_name",  imageName);
+			values.put("image_name",  imageName+type);
 			values.put("image_time",  use_time);
 			values.put("level_id",  levelId);
-			long lond =db.insertEntry("BEST_TIME", values);
+			db.insertEntry("BEST_TIME", values);
 		}
 		db.close();
 		
@@ -931,10 +950,12 @@ public class Game extends Activity {
 	protected static final int GUI_STOP_NOTIFIER = 0x108;
 	protected static final int GUI_THREADING_NOTIFIER = 0x109;
 	protected int intCounter = 0;
+	private static boolean isSaving = false;
 	
 	class MyLoading extends AsyncTask<Integer, Integer, String>{
 		@Override
 		protected String doInBackground(Integer... params) {
+			savaGameBestTime("lastTime");
 			saveGame();
 			return null;
 		}
@@ -948,7 +969,7 @@ public class Game extends Activity {
 		}
 		private void saveGame(){
 			Log.e("TAG","saveGame-start");
-			
+			isSaving = true;
 			long time = System.currentTimeMillis();
 			db.open();
 			int n = db.getEntryCount("pt_piece", "image_id", imageId);
@@ -963,15 +984,20 @@ public class Game extends Activity {
 				publishProgress(i);
 			}
 			
-			Log.e("TAG", "-------" + db.str);
 			db.close();
 			Log.e("TAG",System.currentTimeMillis() - time + "：saveGame-end");
+			isSaving = false;
 		}
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			allImagePieces = null;
+			
+			if(puzzle != null){
+				for(PieceImageButton p :allImagePieces){
+					puzzle.removeView(p);
+				}
+				allImagePieces = null;
+			}
 			System.gc();
 		}
 	}

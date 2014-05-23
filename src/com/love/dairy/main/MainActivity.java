@@ -12,10 +12,13 @@ import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.util.TypedValue;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.RelativeLayout;
 
 import com.love.dairy.LoveApplication;
 import com.love.dairy.sql.DataHelper;
 import com.love.dairy.utils.ImageUtil;
+import com.love.dairy.widget.AutoFadeOutTextView;
 import com.love.dairy.widget.FlipCards;
 import com.love.dairy.widget.FlipViewGroup;
 import com.love.dairy.widget.MyView;
@@ -105,9 +108,15 @@ public class MainActivity extends BaseActivity{
 			my.loadInfo(i);
 			contentView.addFlipView(my);
 		}
-			
-		setContentView(contentView);
-		contentView.startFlipping();
+		RelativeLayout rel = new RelativeLayout(this);
+		rel.addView(contentView);
+		String recordTime = getSharedPreferencesData("recordTime");
+		AutoFadeOutTextView textView = new AutoFadeOutTextView(this, contentView,recordTime);
+		setContentView(rel);
+		android.widget.RelativeLayout.LayoutParams layoutParams = new android.widget.RelativeLayout.LayoutParams(new LayoutParams(-2, -2));
+		layoutParams.leftMargin = screenWidth - screenWidth/3;
+		layoutParams.topMargin = screenHeight/4;
+		rel.addView(textView,layoutParams);
 		loadMenuSize();
 	}
 	private void loadMenuSize() {
@@ -116,7 +125,7 @@ public class MainActivity extends BaseActivity{
 		BitmapFactory.decodeResource(this.getApplicationContext().getResources(), R.drawable.menuhover, opts);
 		MainActivity.menuHeight = opts.outHeight+ (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 25, getResources()
-				.getDisplayMetrics());;
+				.getDisplayMetrics());
 		MainActivity.menuWidth = opts.outWidth;
 	}
 	@Override

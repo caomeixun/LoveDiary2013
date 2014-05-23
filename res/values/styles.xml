@@ -117,6 +117,16 @@
         <item name="android:shadowDy">-2.0</item>
         <item name="android:shadowRadius">0.01</item>
     </style>
+    
+    <style name="title_shadow">
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textColor">#FFC0CB</item>
+        <item name="android:shadowColor">#ffffff</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
     <style name="FLInput">
         <item name="android:textSize">16.0dip</item>
         <item name="android:gravity">center_vertical</item>

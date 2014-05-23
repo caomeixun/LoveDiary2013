@@ -1,5 +1,11 @@
 package com.love.dairy.main;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,6 +44,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		findViewById(R.id.btnAbout).setOnClickListener(this);
 		findViewById(R.id.btnCut).setOnClickListener(this);
 		findViewById(R.id.btnBack).setOnClickListener(this);
+		findViewById(R.id.btnDate).setOnClickListener(this);
 		findViewById(R.id.btnAuthor).setOnClickListener(this);
 		
 		if(getIntent().getIntExtra(OPEN_TYPE_PATH, -1)!=-1){
@@ -91,6 +99,8 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			finish();
 		}else if(v.getId() == R.id.btnPath){
 			getPicPath();
+		}else if(v.getId() == R.id.btnDate){
+			chooseDate(); 
 		}else if(v.getId() == R.id.btnBack){
 			finish();
 			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -115,6 +125,36 @@ public class LoginPage extends BaseActivity implements OnClickListener{
     		finish();
     		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		}
+	}
+	/**
+	 * Ñ¡ÔñÈÕÆÚ
+	 */
+	private void chooseDate() {
+		String recordTime = getSharedPreferencesData("recordTime");
+		Calendar calendar = Calendar.getInstance();
+		if(recordTime != null){
+				try {
+					calendar.setTime(new SimpleDateFormat("yyyyMMhh", Locale.US).parse(recordTime));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+		}
+		
+		DatePickerDialog.OnDateSetListener dateListener =  
+			    new DatePickerDialog.OnDateSetListener() { 
+			        @Override 
+			        public void onDateSet(DatePicker datePicker,  
+			                int year, int month, int dayOfMonth) { 
+			        	month++;
+			        	String monthStr = month < 10 ? "0"+month : month+"";
+			        	saveSharedPreferencesData("recordTime", year+monthStr+dayOfMonth);
+			        } 
+			    }; 
+		new DatePickerDialog(this, 
+		         dateListener, 
+		         calendar.get(Calendar.YEAR), 
+		         calendar.get(Calendar.MONTH), 
+		         calendar.get(Calendar.DAY_OF_MONTH)).show();
 	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

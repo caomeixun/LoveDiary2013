@@ -54,7 +54,7 @@ public class FlipViewGroup extends ViewGroup {
 	private int width;
 	private int height;
 
-	private boolean flipping = true;
+	private boolean flipping = false;
 
 	public FlipViewGroup(MainActivity context) {
 		super(context);
@@ -97,7 +97,7 @@ public class FlipViewGroup extends ViewGroup {
 		for (View child : flipViews){
 			child.layout(0, 0, r - l, b - t);
 		}
-		if (changed || width == 0) {
+		if (changed || width == 0 ) {
 			int w = r - l;
 			int h = b - t;
 			surfaceView.layout(0, 0, w, h);
@@ -124,6 +124,7 @@ public class FlipViewGroup extends ViewGroup {
 
 	public void startFlipping() {
 		flipping = true;
+		renderer.updateTexture(flipViews);
 	}
 
 	public void onResume() {
