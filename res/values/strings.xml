@@ -343,7 +343,6 @@
     <string name="read_later_select_service_unknown_title">未知的稍后再读服务</string>
     <string name="about_vc_title">关于 Flipboard</string>
     <string name="about_screen_version_string_prefix">Flipboard</string>
-    <string name="about_screen_copyright">© 2011-2012 Flipboard Inc.</string>
     <string name="about_screen_credits">"John Engelhart 开发的 RegexKitLite &amp; JSONKit
 Andreas Linde 开发的 HockeyKit and QuincyKit
 Deusty, LLC 开发的 CocoaLumberjack
@@ -974,4 +973,38 @@ https://github.com/openaphid/Demos is also updated with two new demos: touch_tes
    <string name="renren_demo_pay_des">订单描述</string>
    <string name="renren_demo_pay_pay">点击支付</string>
    <string name="renren_demo_pay_open_repair">修复订单</string>
+   <string name="love_caidan">菜单</string>
+   <string name="love_sort">乱序</string>
+   <string name="love_path">目录</string>
+   <string name="love_cut">截图</string>
+   <string name="love_choose_date">选择纪念日</string>
+   <string name="love_title">标题</string>
+   <string name="love_content">内容</string>
+   <string name="love_record">记录照片心情</string>
+   <string name="love_renren">人人</string>
+   <string name="love_game">拼图游戏</string>
+   <string name="love_auth">关注作者</string>
+   <string name="love_photo_cut">照片裁剪</string>
+   <string name="love_photo_turn_left">左旋转</string>
+   <string name="love_photo_turn_right">右旋转</string>
+   <string name="love_photo_face">表情</string>
+   <string name="love_snak">祥蛇</string>
+   <string name="love_fudao">福倒</string>
+   <string name="love_hongbao">红包</string>
+   <string name="love_baozhu">爆竹</string>
+   <string name="love_18jing">18禁</string>
+   <string name="love_rabbit">兔耳朵</string>
+   <string name="love_happy">开心</string>
+   <string name="love_xingfu">幸福</string>
+   <string name="love_heart">爱心</string>
+   <string name="love_jiong">囧</string>
+   <string name="love_kiss">吻</string>
+   <string name="love_eyes">眼睛</string>
+   <string name="love_huxu">胡须</string>
+   <string name="love_no_pic">没有找到图片</string>
+   <string name="love_dialog_tips">温馨提示</string>
+   <string name="love_dialog_content">请先选择图片目录</string>
+   <string name="love_exit">退出</string>
+   
+   
 </resources>

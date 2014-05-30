@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -36,6 +39,7 @@ public class MainActivity extends BaseActivity{
 	public static int menuWidth;
 	public static int menuHeight;
 	public static String path = null;
+	private Dialog dialog = null;
 //	/**
 //	 * 标题栏高度
 //	 */
@@ -86,9 +90,7 @@ public class MainActivity extends BaseActivity{
 		}
 	
 		if(path==null|| application.photoIds.size()==0){
-			Intent intent = new Intent(MainActivity.this,LoginPage.class);
-			intent.putExtra(LoginPage.OPEN_TYPE_PATH, 1);
-			startActivity(intent);
+			choosePhotoPath();
 			return;
 		}
 		FlipCards.dateCache = new SparseArray<Bitmap>();
@@ -118,6 +120,35 @@ public class MainActivity extends BaseActivity{
 		layoutParams.topMargin = screenHeight/4;
 		rel.addView(textView,layoutParams);
 		loadMenuSize();
+	}
+	/**
+	 * 提示用户选择图片
+	 */
+	private void choosePhotoPath(){
+		if(dialog == null){
+			dialog = new AlertDialog.Builder(this).setTitle(R.string.love_dialog_tips).setMessage(getString(R.string.love_dialog_content)).setPositiveButton(getString(R.string.ok_button), new DialogInterface.OnClickListener()
+			{
+	
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					Intent intent = new Intent(MainActivity.this,LoginPage.class);
+					intent.putExtra(LoginPage.OPEN_TYPE_PATH, 1);
+					startActivity(intent);
+					dialog.dismiss();
+				}
+	
+			}).setNegativeButton(R.string.love_exit, new DialogInterface.OnClickListener()
+			{
+	
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					finish();
+				}
+	
+			}).show();
+		}
 	}
 	private void loadMenuSize() {
 		Options opts = new Options();

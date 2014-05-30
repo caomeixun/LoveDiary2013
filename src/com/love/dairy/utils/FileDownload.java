@@ -15,7 +15,7 @@ import com.love.dairy.cutimage.PhotoUtil;
 
 
 public class FileDownload  {
-	public static String path = Environment.getExternalStorageDirectory().getPath() + "LoveStory/";
+	public static String path = Environment.getExternalStorageDirectory().getPath() + "/LoveStory/";
 	public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 	private ProgressDialog mProgressDialog;
 	private List<String> photos ;

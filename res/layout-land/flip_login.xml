@@ -11,6 +11,7 @@
         <ImageView 
             android:id="@+id/btnBack"
             android:layout_marginLeft="12dp"
+            android:contentDescription="@string/_1_day"
             android:layout_centerVertical="true"
             android:layout_width="25dp" 
             android:layout_height="25dp" 
@@ -22,31 +23,33 @@
                 android:layout_width="wrap_content" 
                 android:layout_height="48dip" 
                 android:layout_centerInParent="true"
-                android:text="菜单" 
-                android:textSize="22dp" 
+                android:text="@string/love_caidan" 
+                android:textSize="22sp" 
                 style="@style/textShadowBlack" />
     </RelativeLayout>
 	<LinearLayout  
-	    	android:layout_marginTop="45dp"        
+	    	android:layout_marginTop="45dp" 
+	    	android:baselineAligned="false"       
 	    	android:layout_width="fill_parent" 
             android:layout_height="match_parent">
-        	<LinearLayout            
+        <LinearLayout            
 	    	android:layout_width="0dp" 
 	    	android:layout_weight="1"
 	    	android:orientation="vertical"
             android:layout_height="match_parent">
-            	<Button 
+        <Button 
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="乱序"
+    	    android:text="@string/love_sort"
+    	    android:layout_height="0dp"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
-            android:layout_height="0dp"/>
+            />
     	<Button 
     	    android:id="@+id/btnPath"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="目录"
+    	    android:text="@string/love_path"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>
@@ -54,7 +57,7 @@
     	    android:id="@+id/btnCut"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="截图"
+    	    android:text="@string/love_cut"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>
@@ -62,7 +65,7 @@
     	    android:id="@+id/btnDate"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="选择纪念日"
+    	    android:text="@string/love_choose_date"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>
@@ -81,44 +84,42 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="76dp"
-        android:hint="标题"
+        android:hint="@string/love_title"
         android:inputType="textNoSuggestions"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"
         android:singleLine="true"
         android:textColorHint="#ffcccccc"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/etContent"
         style="@style/FLInput"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etTitle"
         android:layout_gravity="fill_horizontal"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="16dp"
-        android:hint="内容"
+        android:hint="@string/love_content"
         android:maxLines="3"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"
         android:singleLine="true"
         android:textColorHint="#ffcccccc"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btnOK"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etTitle"
         android:layout_marginLeft="20.0dip"
         android:layout_marginRight="20.0dip"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="记录照片心情"
+        android:text="@string/love_record"
         style="@style/FLPaperButtonDarkDone" 
-        android:textSize="17dp" />
+        android:textSize="17sp" />
     </LinearLayout>
     <LinearLayout            
 	    	android:layout_width="0dp" 
@@ -130,7 +131,7 @@
     	    android:id="@+id/btnRenren"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="人人"
+    	    android:text="@string/love_renren"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>
@@ -138,7 +139,7 @@
     	    android:id="@+id/btnAbout"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="拼图游戏"
+    	    android:text="@string/love_game"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>
@@ -146,7 +147,7 @@
     	    android:id="@+id/btnAuthor"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 
-    	    android:text="关注作者"
+    	    android:text="@string/love_auth"
     	    android:layout_weight="1"
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>

@@ -82,7 +82,7 @@ public class ImageFilterEffectActivity extends KXActivity {
 					setResult(RESULT_CANCELED);
 					finish();
 				} else {
-					mPath = PhotoUtil.saveToLocal(mNewBitmap);
+					mPath = PhotoUtil.saveToLocal(mNewBitmap , mPath);
 					Intent intent = new Intent();
 					intent.putExtra("path", mPath);
 					setResult(RESULT_OK, intent);

@@ -486,7 +486,7 @@ public class Game extends Activity {
 				
 				//puzzle.bringChildToFront(v);  //把该视图置于其他所有子视图之上
 				displayFront((PieceImageButton)v);
-				
+				checkMove((PieceImageButton)v, movePieces);
 				break;
 				/**
 				 * layout(l,t,r,b)
@@ -500,17 +500,20 @@ public class Game extends Activity {
 				int dy =(int)event.getRawY() - lastY;
 				
 				//存在延迟
-				checkMove((PieceImageButton)v, dx, dy, movePieces);
+				for(PieceImageButton curPIB :movePieces){
+			    	int l = curPIB.getLeft() + dx;
+			    	int t = curPIB.getTop() + dy;
+			    	curPIB.setLocation(new Point(l, t));
+				}
 				moveSomePieces(movePieces);
-				movePieces.clear();   //重置移动的标志，清空可移动记录
 				cleanPath();
-				
 				
 				lastX = (int) event.getRawX();
 				lastY = (int) event.getRawY();
 				
 				break;
 			case MotionEvent.ACTION_UP:
+				movePieces.clear();   //重置移动的标志，清空可移动记录
 				
 				//先取得碎片吸附的路径，然后移动碎片
 				cleanPath();
@@ -580,10 +583,7 @@ public class Game extends Activity {
     	}
     }
     
-    private void checkMove(PieceImageButton curPIB, int dx, int dy, ArrayList<PieceImageButton> movePieces){
-    	int l = curPIB.getLeft() + dx;
-    	int t = curPIB.getTop() + dy;
-    	curPIB.setLocation(new Point(l, t));
+    private void checkMove(PieceImageButton curPIB,ArrayList<PieceImageButton> movePieces){
 
     	/*
 		if(l < 0){
@@ -605,8 +605,8 @@ public class Game extends Activity {
 		*/
     	
 		//curPIB.layout(l, t, r, b);
+    	if(movePieces.contains(curPIB)) return;
     	movePieces.add(curPIB);
-    	
 		int id = curPIB.getId();
     	int curRow = id / line;
     	int curLine = id % line;
@@ -614,9 +614,9 @@ public class Game extends Activity {
     	//top
     	if(curPIB.isHasTop()){
     		PieceImageButton topPIB = (PieceImageButton) allImagePieces.get((curRow - 1) * line + curLine);
-    		if(!topPIB.isTraverse()){
+    		if(topPIB.isTraverse()){
     			topPIB.setTraverse(true);
-    			checkMove(topPIB, dx, dy, movePieces);
+    			checkMove(topPIB, movePieces);
     		}
     		
     	}
@@ -624,9 +624,9 @@ public class Game extends Activity {
     	//right
     	if(curPIB.isHasRight()){
     		PieceImageButton rightPIB = (PieceImageButton) allImagePieces.get(id + 1);
-        	if(!rightPIB.isTraverse()){
+        	if(rightPIB.isTraverse()){
         		rightPIB.setTraverse(true);
-        		checkMove(rightPIB, dx, dy, movePieces);
+        		checkMove(rightPIB, movePieces);
         	}
     		
     	}
@@ -634,9 +634,9 @@ public class Game extends Activity {
     	//feet
     	if(curPIB.isHasFeet()){
     		PieceImageButton feetPIB = (PieceImageButton) allImagePieces.get((curRow + 1) * line + curLine);
-        	if(!feetPIB.isTraverse()){
+        	if(feetPIB.isTraverse()){
         		feetPIB.setTraverse(true);
-        		checkMove(feetPIB, dx, dy, movePieces);
+        		checkMove(feetPIB, movePieces);
         	}
     		
     	}
@@ -644,9 +644,9 @@ public class Game extends Activity {
     	//left
     	if(curPIB.isHasLeft()){
     		PieceImageButton leftPIB = (PieceImageButton) allImagePieces.get(id - 1);
-        	if(!leftPIB.isTraverse()){
+        	if(leftPIB.isTraverse()){
         		leftPIB.setTraverse(true);
-        		checkMove(leftPIB, dx, dy, movePieces);
+        		checkMove(leftPIB, movePieces);
         	}
     		
     	}

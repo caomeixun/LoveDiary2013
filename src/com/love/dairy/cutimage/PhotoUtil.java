@@ -145,8 +145,10 @@ public class PhotoUtil {
 				return null;
 			} finally {
 				try {
-					fileOutputStream.flush();
-					fileOutputStream.close();
+					if(fileOutputStream != null){
+						fileOutputStream.flush();
+						fileOutputStream.close();
+					}
 				} catch (IOException e) {
 					return null;
 				}

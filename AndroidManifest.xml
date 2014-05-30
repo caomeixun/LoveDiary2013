@@ -70,7 +70,7 @@
             android:screenOrientation="portrait" android:theme="@style/Theme_Notitle_FullScreen"/>
  
 		<!-- renren sdk中的Activity -->
-		<activity android:name=".renren.MainActivity" android:theme="@android:style/Theme.NoTitleBar" 
+		<activity android:name=".renren.MainActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" 
 		     android:label="@string/app_name">
 		</activity>
 		

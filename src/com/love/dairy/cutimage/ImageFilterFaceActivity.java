@@ -129,7 +129,7 @@ public class ImageFilterFaceActivity extends KXActivity {
 					canvas.restore();
 //					mNewBitmap = GrabIt.takeScreenshot(mDisplay);
 					// 保存到本地
-					mPath = PhotoUtil.saveToLocalPNG(mNewBitmap);
+					mPath = PhotoUtil.saveToLocal(mNewBitmap , mPath);
 					// 返回图片地址并关闭当前界面
 					Intent intent = new Intent();
 					intent.putExtra("path", mPath);

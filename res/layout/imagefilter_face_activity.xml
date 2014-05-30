@@ -16,11 +16,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dip"
             android:background="@drawable/image_filter_title_text_btn_bg"
-            android:text="取消"
+            android:text="@string/cancel_button"
             android:textColor="#ffffff" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginLeft="20dip"
             android:layout_marginRight="20dip"
@@ -32,7 +32,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                android:text="表情"
+                android:text="@string/love_photo_face"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -43,19 +43,19 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dip"
             android:background="@drawable/image_filter_title_text_btn_bg"
-            android:text="确定"
+            android:text="@string/ok_button"
             android:textColor="#ffffff" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/imagefilter_face_display_layout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/black_dot_bg"
         android:padding="20dip" >
 
-        <com.love.dairy.main.cutimage.FaceImageView
+        <com.love.dairy.cutimage.FaceImageView
             android:id="@+id/imagefilter_face_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         android:scrollbars="none" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"
@@ -90,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/new_year_1s" />
 
@@ -97,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="祥蛇"
+                    android:text="@string/love_snak"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -114,6 +115,7 @@
                     android:id="@+id/imagefilter_face_face2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/_1_day"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
                     android:scaleType="centerInside"
@@ -123,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="福倒"
+                    android:text="@string/love_fudao"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -142,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/new_year_3s" />
 
@@ -149,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="红包"
+                    android:text="@string/love_hongbao"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -168,6 +171,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/new_year_4s" />
 
@@ -175,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="爆竹"
+                    android:text="@string/love_baozhu"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -194,6 +198,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface_forbit" />
 
@@ -201,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="18禁"
+                    android:text="@string/love_18jing"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -220,6 +225,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface_rabbit" />
 
@@ -227,7 +233,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="兔耳朵"
+                    android:text="@string/love_rabbit"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -246,6 +252,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface1_banner" />
 
@@ -253,7 +260,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="开心"
+                    android:text="@string/love_happy"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -272,6 +279,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface2_banner" />
 
@@ -279,7 +287,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="幸福"
+                    android:text="@string/love_xingfu"
+                    android:contentDescription="@string/_1_day"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -298,6 +307,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface3_banner" />
 
@@ -305,7 +315,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="爱心"
+                    android:text="@string/love_heart"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -324,6 +334,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface4_banner" />
 
@@ -331,7 +342,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="囧"
+                    android:text="@string/love_jiong"
+                    android:contentDescription="@string/_1_day"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -350,6 +362,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface9_banner" />
 
@@ -357,7 +370,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="吻"
+                    android:text="@string/love_kiss"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -376,6 +389,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface10_banner" />
 
@@ -383,7 +397,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="眼睛"
+                    android:text="@string/love_eyes"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -402,6 +416,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/image_filter_banner_bg"
                     android:padding="5dip"
+                    android:contentDescription="@string/_1_day"
                     android:scaleType="centerInside"
                     android:src="@drawable/photoface11_banner" />
 
@@ -409,7 +424,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:text="胡须"
+                    android:text="@string/love_huxu"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
             </LinearLayout>

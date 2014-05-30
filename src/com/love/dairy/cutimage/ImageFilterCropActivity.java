@@ -66,16 +66,8 @@ public class ImageFilterCropActivity extends KXActivity {
 		mDetermine.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// 保存修改的图片到本地,并返回图片地�?
-//				mPath = PhotoUtil.saveToLocal(mCropImage.cropAndSave());
-//				Intent intent = new Intent();
-//				intent.putExtra("path", mPath);
-//				setResult(RESULT_OK, intent);
-//					
-//				Bitmap bit = ImageUtil.decodeSampledBitmapFromResource(getResources(),MainActivity.path + MainActivity.photoIds[imageId], MainActivity.screenWidth, MainActivity.screenHeight);
-//				FlipCards.dateCache.put(imageId,bit);
-//				finish();
-				mPath = PhotoUtil.saveToLocal(mCropImage.cropAndSave());
+				// 保存修改的图片到本地,并返回图片地
+				mPath = PhotoUtil.saveToLocal(mCropImage.cropAndSave(),mPath);
 				Intent intent = new Intent();
 				intent.putExtra("path", mPath);
 				setResult(RESULT_OK, intent);
@@ -108,7 +100,7 @@ public class ImageFilterCropActivity extends KXActivity {
 					.createBitmap(mPath, mScreenWidth, mScreenHeight);
 			// 如果图片不存�?则返�?存在则初始化
 			if (mBitmap == null) {
-				Toast.makeText(ImageFilterCropActivity.this, "没有找到图片", 0)
+				Toast.makeText(ImageFilterCropActivity.this, R.string.love_no_pic, Toast.LENGTH_SHORT)
 						.show();
 				setResult(RESULT_CANCELED);
 				finish();
@@ -116,7 +108,7 @@ public class ImageFilterCropActivity extends KXActivity {
 				resetImageView(mBitmap);
 			}
 		} catch (Exception e) {
-			Toast.makeText(ImageFilterCropActivity.this, "没有找到图片", 0).show();
+			Toast.makeText(ImageFilterCropActivity.this, R.string.love_no_pic, Toast.LENGTH_SHORT).show();
 			setResult(RESULT_CANCELED);
 			finish();
 		}
