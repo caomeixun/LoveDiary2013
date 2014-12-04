@@ -6,7 +6,7 @@ import java.util.List;
 import android.app.Application;
 
 public class LoveApplication extends Application{
-	//ͼƬ��ַ
+	//照片集合
 	public List<String> photoIds = new ArrayList<String>();
 	
 }

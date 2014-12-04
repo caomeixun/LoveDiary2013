@@ -35,9 +35,9 @@ public class AutoFadeOutTextView extends LinearLayout {
 			long l3 = new SimpleDateFormat("yyyyMMdd", Locale.US).parse(
 					time).getTime();
 			long l1 = l2 - l3;
-			String str = "µÚ" + l1 / 1000L / 60L / 60L / 24L + "Ìì";
-			firstLine = "½ñÌìÊÇ";
-			secondLine = "ÎÒÃÇÏà°®µÄ";
+			String str = "ç¬¬" + l1 / 1000L / 60L / 60L / 24L + "å¤©";
+			firstLine = "ä»Šå¤©æ˜¯";
+			secondLine = "æˆ‘ä»¬ç›¸çˆ±çš„";
 			addTextView(firstLine);
 			addTextView(secondLine);
 			addTextView(str);
