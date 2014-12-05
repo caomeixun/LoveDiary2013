@@ -66,15 +66,15 @@ public class Game extends Activity {
 	private int levelId;
 	private int row;
 	private int line;
-	//×ÜÂ·¾¶
+	//æ€»è·¯å¾„
 	private int sumPath;
-	//Îü¸½µÄÂ·¾¶
+	//å¸é™„çš„è·¯å¾„
 	private int abortPath;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		System.gc();  //»ØÊÕ¿Õ¼ä
+		System.gc();  //å›æ”¶ç©ºé—´
 		
 		Intent i = this.getIntent();
 		String action = i.getAction();
@@ -105,7 +105,7 @@ public class Game extends Activity {
 		db.close();
 		/////////////////////////////
 		
-		//»ñµÃÆÁÄ»µÄ¿íºÍ¸ß
+		//è·å¾—å±å¹•çš„å®½å’Œé«˜
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		screenWidth = dm.widthPixels;
 		screenHeight = dm.heightPixels;
@@ -147,7 +147,7 @@ public class Game extends Activity {
 
 	private void newGame(){
 		recordGame(_id, imageId);
-		//½«Í¼Æ¬¸ù¾İrowĞĞlineÁĞÇĞ¿ª£¬²¢·µ»ØÇĞ¿éÊı×é
+		//å°†å›¾ç‰‡æ ¹æ®rowè¡Œlineåˆ—åˆ‡å¼€ï¼Œå¹¶è¿”å›åˆ‡å—æ•°ç»„
 	        
 	    getNewPuzzle(imageId, row, line);
 	}
@@ -185,7 +185,7 @@ public class Game extends Activity {
 	private void nextGame(){
 		db.open();
 		
-		//Èç¹ûÒÑ¾­ÊÇ×î´óÄÑ¶È£¬ÔòÃ»ÓĞÏÂÒ»¹Ø
+		//å¦‚æœå·²ç»æ˜¯æœ€å¤§éš¾åº¦ï¼Œåˆ™æ²¡æœ‰ä¸‹ä¸€å…³
 		int max_level = db.getMaxValue("pt_level", "level_id", "level_id");
 		int next_level = levelId + 1;
 		if(next_level > max_level){
@@ -259,7 +259,7 @@ public class Game extends Activity {
 					
 					@Override
 					public void run() {
-						tfTime.setText(String.format("ÒÑÓÃÊ± %d Ãë", use_time));
+						tfTime.setText(String.format("å·²ç”¨æ—¶ %d ç§’", use_time));
 						use_time++;
 					}
 				});
@@ -273,15 +273,15 @@ public class Game extends Activity {
 	private String loadBestTimeStr(){
 		int time = loadBestTime("");
 		if(time == 0){
-			return "ÔİÎŞ×î¼Ñ¼ÍÂ¼";
+			return "æš‚æ— æœ€ä½³çºªå½•";
 		}else{
-			return String.format(Locale.US,"×î¼ÑÓÃÊ± %d Ãë", time);
+			return String.format(Locale.US,"æœ€ä½³ç”¨æ—¶ %d ç§’", time);
 		}
 	}
 	int use_time =1;
 	private Timer timer = null;
 //	private View getReadyPuzzle(int resid, int levelid){
-////		//»ñµÃÆÁÄ»µÄ¿íºÍ¸ß
+////		//è·å¾—å±å¹•çš„å®½å’Œé«˜
 ////		DisplayMetrics dm = getResources().getDisplayMetrics();
 ////		screenWidth = dm.widthPixels;
 ////		screenHeight = dm.heightPixels;
@@ -324,7 +324,7 @@ public class Game extends Activity {
 	 */
 	private View getOldPuzzle(int resid, int levelid){
 	
-//		//»ñµÃÆÁÄ»µÄ¿íºÍ¸ß
+//		//è·å¾—å±å¹•çš„å®½å’Œé«˜
 //		DisplayMetrics dm = getResources().getDisplayMetrics();
 //		screenWidth = dm.widthPixels;
 //		screenHeight = dm.heightPixels;
@@ -359,10 +359,10 @@ public class Game extends Activity {
 
         Vector<Piece> allPieces = createAllPieces(newWallpPaper, row, line);
         
-        //¶Ô¸÷¸öÇĞ¿éÍ¼Æ¬°ü×°³Éimagebutton´ıÓÃ
+        //å¯¹å„ä¸ªåˆ‡å—å›¾ç‰‡åŒ…è£…æˆimagebuttonå¾…ç”¨
         createAllPieceImageButton(allPieces);
         
-        //½«°ü×°ºÃµÄimageviewËæ»ú»æÖÆµ½Æ´Í¼°åÉÏ
+        //å°†åŒ…è£…å¥½çš„imageviewéšæœºç»˜åˆ¶åˆ°æ‹¼å›¾æ¿ä¸Š
         //setContentView(createPuzzle(resid));
         createPuzzle(resid);
         
@@ -399,29 +399,29 @@ public class Game extends Activity {
 	}
 	
 	/**
-	 * Ëõ·ÅÍ¼Æ¬
+	 * ç¼©æ”¾å›¾ç‰‡
 	 * @param resid
 	 * @return
 	 */
 	private Bitmap scalePic(Bitmap wallpaper){
-		//»ñµÃÆÁÄ»µÄ¿íºÍ¸ß
+		//è·å¾—å±å¹•çš„å®½å’Œé«˜
 		
 		
-		//»ñµÃÍ¼Æ¬µÄ¿íºÍ¸ß
+		//è·å¾—å›¾ç‰‡çš„å®½å’Œé«˜
         int width = wallpaper.getWidth();
         int height = wallpaper.getHeight();
         
-        //¼ÆËãËõ·ÅÂÊ,Ê¹Í¼Æ¬ºÍÊÖ»úÆÁÄ»Ò»Ñù´óĞ¡
+        //è®¡ç®—ç¼©æ”¾ç‡,ä½¿å›¾ç‰‡å’Œæ‰‹æœºå±å¹•ä¸€æ ·å¤§å°
         float scaleWidth = (float)screenWidth / width;
         float scaleHeight = (float)screenHeight / height;
         
-        //´´½¨²Ù×÷Í¼Æ¬ÓÃµÄmatrix¶ÔÏó
+        //åˆ›å»ºæ“ä½œå›¾ç‰‡ç”¨çš„matrixå¯¹è±¡
         Matrix matrix = new Matrix();
         
-        //Ëõ·ÅÍ¼Æ¬¶¯×÷
+        //ç¼©æ”¾å›¾ç‰‡åŠ¨ä½œ
         matrix.postScale(scaleWidth, scaleHeight);
         
-        //´´½¨ĞÂµÄÍ¼Æ¬
+        //åˆ›å»ºæ–°çš„å›¾ç‰‡
         Bitmap newWallpPaper = Bitmap.createBitmap(wallpaper, 0, 0, width, height, matrix, true);
 
         return newWallpPaper;
@@ -433,11 +433,11 @@ public class Game extends Activity {
 			Piece piece = (Piece) allPieces.get(i);			
 			PieceImageButton pieceImageButton = new PieceImageButton(this);
 			
-			pieceImageButton.setId(i);  //ËéÆ¬µÄÎ¨Ò»ID
-			pieceImageButton.setMinp(piece.getMinp());     //Õû¸öËéÆ¬µÄÍâ²¿¿ªÊ¼µã,ÇĞÍ¼Ç°µÄµãÎ»
+			pieceImageButton.setId(i);  //ç¢ç‰‡çš„å”¯ä¸€ID
+			pieceImageButton.setMinp(piece.getMinp());     //æ•´ä¸ªç¢ç‰‡çš„å¤–éƒ¨å¼€å§‹ç‚¹,åˆ‡å›¾å‰çš„ç‚¹ä½
 			pieceImageButton.setLocation(new Point(0,0));
 			
-			//Í¼Æ¬Õ¼ÂúÕû¸öImageButton,·½·¨1
+			//å›¾ç‰‡å æ»¡æ•´ä¸ªImageButton,æ–¹æ³•1
 			/*
 			pieceImageButton.setPadding(0, 0, 0, 0);
 			pieceImageButton.setScaleType(ScaleType.FIT_XY);
@@ -447,7 +447,7 @@ public class Game extends Activity {
 			
 			pieceImageButton.pieceHeight = piece.getPieceHeight();
 			pieceImageButton.pieceWidth = piece.getPieceWidth();
-			//±³¾°Í¼Æ¬Õ¼ÂúÕû¸öImageButton£¬·½·¨2
+			//èƒŒæ™¯å›¾ç‰‡å æ»¡æ•´ä¸ªImageButtonï¼Œæ–¹æ³•2
 			BitmapDrawable bd = new BitmapDrawable(piece.getBmPiece());
 			pieceImageButton.setBackgroundDrawable(bd);			
 			
@@ -456,7 +456,7 @@ public class Game extends Activity {
 		
 	}
 	
-	//Í¨¹ıbitmap´´½¨
+	//é€šè¿‡bitmapåˆ›å»º
 	private Vector<Piece> createAllPieces(Bitmap bitmap, int row, int line){
 		PieceFactory pu = new PieceFactory(this);
     	pu.setImage(bitmap);
@@ -465,7 +465,7 @@ public class Game extends Activity {
     	return pu.getAllPiece();
 	}
 	
-//	//Í¨¹ı×ÊÔ´´´½¨
+//	//é€šè¿‡èµ„æºåˆ›å»º
 //    private Vector<Piece> createAllPieces(int imageid, int row, int line){
 //    	PieceFactory pu = new PieceFactory(this);
 //    	pu.setImage(imageid);
@@ -484,7 +484,7 @@ public class Game extends Activity {
 				lastX = (int) event.getRawX();
 				lastY = (int) event.getRawY();
 				
-				//puzzle.bringChildToFront(v);  //°Ñ¸ÃÊÓÍ¼ÖÃÓÚÆäËûËùÓĞ×ÓÊÓÍ¼Ö®ÉÏ
+				//puzzle.bringChildToFront(v);  //æŠŠè¯¥è§†å›¾ç½®äºå…¶ä»–æ‰€æœ‰å­è§†å›¾ä¹‹ä¸Š
 				displayFront((PieceImageButton)v);
 				checkMove((PieceImageButton)v, movePieces);
 				break;
@@ -499,7 +499,7 @@ public class Game extends Activity {
 				int dx =(int)event.getRawX() - lastX;
 				int dy =(int)event.getRawY() - lastY;
 				
-				//´æÔÚÑÓ³Ù
+				//å­˜åœ¨å»¶è¿Ÿ
 				for(PieceImageButton curPIB :movePieces){
 			    	int l = curPIB.getLeft() + dx;
 			    	int t = curPIB.getTop() + dy;
@@ -513,18 +513,18 @@ public class Game extends Activity {
 				
 				break;
 			case MotionEvent.ACTION_UP:
-				movePieces.clear();   //ÖØÖÃÒÆ¶¯µÄ±êÖ¾£¬Çå¿Õ¿ÉÒÆ¶¯¼ÇÂ¼
+				movePieces.clear();   //é‡ç½®ç§»åŠ¨çš„æ ‡å¿—ï¼Œæ¸…ç©ºå¯ç§»åŠ¨è®°å½•
 				
-				//ÏÈÈ¡µÃËéÆ¬Îü¸½µÄÂ·¾¶£¬È»ºóÒÆ¶¯ËéÆ¬
+				//å…ˆå–å¾—ç¢ç‰‡å¸é™„çš„è·¯å¾„ï¼Œç„¶åç§»åŠ¨ç¢ç‰‡
 				cleanPath();
 				PieceImageButton firstPiece = checkAbsorb((PieceImageButton)v);
 				cleanPath();
 				absorb(firstPiece);
 				
-				//Îü¸½ºó£¬ÏÔÊ¾µ½Ç°¶Ë
+				//å¸é™„åï¼Œæ˜¾ç¤ºåˆ°å‰ç«¯
 				displayFront(firstPiece);
 				
-				//ÅĞ¶ÏÊÇ·ñÍê³É
+				//åˆ¤æ–­æ˜¯å¦å®Œæˆ
 				hasComplete();
 				
 				break;        		
@@ -535,7 +535,7 @@ public class Game extends Activity {
     };
     
     private void displayFront(PieceImageButton curPiece){
-    	puzzle.bringChildToFront(curPiece);   //°Ñ¸ÃÊÓÍ¼ÖÃÓÚÆäËûËùÓĞ×ÓÊÓÍ¼Ö®ÉÏ
+    	puzzle.bringChildToFront(curPiece);   //æŠŠè¯¥è§†å›¾ç½®äºå…¶ä»–æ‰€æœ‰å­è§†å›¾ä¹‹ä¸Š
     	curPiece.postInvalidate();
     	
     	int id = curPiece.getId();
@@ -720,7 +720,7 @@ public class Game extends Activity {
     	
     }
   
-    //´Ótop£¬right£¬feet£¬left¿ªÊ¼±éÀú£¬ÉèÖÃÎü¸½±êÖ¾
+    //ä»topï¼Œrightï¼Œfeetï¼Œleftå¼€å§‹éå†ï¼Œè®¾ç½®å¸é™„æ ‡å¿—
     private PieceImageButton checkAbsorb(PieceImageButton v){
     	PieceImageButton firstPiece = null;
     	PieceImageButton curPiece = (PieceImageButton) v;
@@ -733,15 +733,15 @@ public class Game extends Activity {
     	Point curLoc = curPiece.getLocation();
  
     	//top
-    	if(curRow > 0){   //µ±Ç°ËéÆ¬´æÔÚÉÏÃæµÄËéÆ¬
+    	if(curRow > 0){   //å½“å‰ç¢ç‰‡å­˜åœ¨ä¸Šé¢çš„ç¢ç‰‡
     		int topPieceId = (curRow - 1) * line + curLine;
-    		if(!curPiece.isHasTop()){  //Èç¹ûÉÏÃæµÄËéÆ¬»¹Î´Îü¸½
-    			//Èç¹û´æÔÚÉÏÃæµÄËéÆ¬£¬»¹Ã»ÓĞÅö×²£¬ÔòµÃµ½ÉÏÃæËéÆ¬µÄÎ»ÖÃÅĞ¶ÏÊÇ·ñÎü¸½
+    		if(!curPiece.isHasTop()){  //å¦‚æœä¸Šé¢çš„ç¢ç‰‡è¿˜æœªå¸é™„
+    			//å¦‚æœå­˜åœ¨ä¸Šé¢çš„ç¢ç‰‡ï¼Œè¿˜æ²¡æœ‰ç¢°æ’ï¼Œåˆ™å¾—åˆ°ä¸Šé¢ç¢ç‰‡çš„ä½ç½®åˆ¤æ–­æ˜¯å¦å¸é™„
     			PieceImageButton topPiece = (PieceImageButton) allImagePieces.get(topPieceId);
 	    		Point topLoc = topPiece.getLocation();
 	    		Point topMinp = topPiece.getMinp();
 	    		
-	    		//Èç¹ûÎü¸½Ìõ¼ş³ÉÁ¢£¬ÔòÎü¸½
+	    		//å¦‚æœå¸é™„æ¡ä»¶æˆç«‹ï¼Œåˆ™å¸é™„
 	    		if(distance(curMinp, topMinp, curLoc, topLoc, INACCURACY)){
 	    			curPiece.setHasTop(true);
 	    			topPiece.setHasFeet(true);
@@ -749,7 +749,7 @@ public class Game extends Activity {
 	    				firstPiece = topPiece;
 	    			}
 	    		}
-    		}else{  //Èç¹ûÉÏÃæµÄËéÆ¬ÒÑ¾­Îü¸½,ÇÒ²»ÊÇËÑË÷µÄÀ´Ô´£¨±ÜÃâËÀÑ­»·£©,Ôò¼ÌĞøÉÏÃæµÄËéÆ¬²éÕÒ
+    		}else{  //å¦‚æœä¸Šé¢çš„ç¢ç‰‡å·²ç»å¸é™„,ä¸”ä¸æ˜¯æœç´¢çš„æ¥æºï¼ˆé¿å…æ­»å¾ªç¯ï¼‰,åˆ™ç»§ç»­ä¸Šé¢çš„ç¢ç‰‡æŸ¥æ‰¾
     			PieceImageButton topPiece = (PieceImageButton) allImagePieces.get(topPieceId);
     			if(!topPiece.isTraverse()){
     				checkAbsorb(topPiece);
@@ -759,15 +759,15 @@ public class Game extends Activity {
     	}
     	
     	//right
-    	if(curLine < (line -1)){  //µ±Ç°ËéÆ¬´æÔÚÓÒÃæµÄËéÆ¬
+    	if(curLine < (line -1)){  //å½“å‰ç¢ç‰‡å­˜åœ¨å³é¢çš„ç¢ç‰‡
     		int rightPieceId = curId + 1;
-    		if(!curPiece.isHasRight()){  //Èç¹ûÓÒÃæµÄËéÆ¬»¹ÎªÎü¸½
-    			//Èç¹û´æÔÚÓÒÃæµÄËéÆ¬£¬»¹Ã»ÓĞÅö×²£¬ÔòµÃµ½ÓÒÃæËéÆ¬µÄÎ»ÖÃÅĞ¶ÏÊÇ·ñÎü¸½
+    		if(!curPiece.isHasRight()){  //å¦‚æœå³é¢çš„ç¢ç‰‡è¿˜ä¸ºå¸é™„
+    			//å¦‚æœå­˜åœ¨å³é¢çš„ç¢ç‰‡ï¼Œè¿˜æ²¡æœ‰ç¢°æ’ï¼Œåˆ™å¾—åˆ°å³é¢ç¢ç‰‡çš„ä½ç½®åˆ¤æ–­æ˜¯å¦å¸é™„
     			PieceImageButton rightPiece = (PieceImageButton) allImagePieces.get(rightPieceId);
 	    		Point rightLoc = rightPiece.getLocation();
 	    		Point rightMinp = rightPiece.getMinp();
 
-	    		//Èç¹ûÎü¸½Ìõ¼ş³ÉÁ¢£¬ÔòÎü¸½
+	    		//å¦‚æœå¸é™„æ¡ä»¶æˆç«‹ï¼Œåˆ™å¸é™„
 	    		if(distance(curMinp, rightMinp, curLoc, rightLoc, INACCURACY)){
 	    			curPiece.setHasRight(true);
 	    			rightPiece.setHasLeft(true);
@@ -788,12 +788,12 @@ public class Game extends Activity {
     	if(curRow < (row - 1)){
     		int feetPieceId = (curRow + 1) * line + curLine;
     		if(!curPiece.isHasFeet()){
-    			//Èç¹û´æÔÚÓÒÃæµÄËéÆ¬£¬»¹Ã»ÓĞÅö×²£¬ÔòµÃµ½ÓÒÃæËéÆ¬µÄÎ»ÖÃÅĞ¶ÏÊÇ·ñÎü¸½
+    			//å¦‚æœå­˜åœ¨å³é¢çš„ç¢ç‰‡ï¼Œè¿˜æ²¡æœ‰ç¢°æ’ï¼Œåˆ™å¾—åˆ°å³é¢ç¢ç‰‡çš„ä½ç½®åˆ¤æ–­æ˜¯å¦å¸é™„
     			PieceImageButton feetPiece = (PieceImageButton) allImagePieces.get(feetPieceId);
 	    		Point feetLoc = feetPiece.getLocation();
 	    		Point feetMinp = feetPiece.getMinp();
 	    		
-	    		//Èç¹ûÎü¸½Ìõ¼ş³ÉÁ¢£¬ÔòÎü¸½
+	    		//å¦‚æœå¸é™„æ¡ä»¶æˆç«‹ï¼Œåˆ™å¸é™„
 	    		if(distance(curMinp, feetMinp, curLoc, feetLoc, INACCURACY)){
 	    			curPiece.setHasFeet(true);
 	    			feetPiece.setHasTop(true);
@@ -814,12 +814,12 @@ public class Game extends Activity {
     	if(curLine > 0){
     		int leftPieceId = curId - 1;
     		if(!curPiece.isHasLeft()){
-    			//Èç¹û´æÔÚÓÒÃæµÄËéÆ¬£¬»¹Ã»ÓĞÅö×²£¬ÔòµÃµ½ÓÒÃæËéÆ¬µÄÎ»ÖÃÅĞ¶ÏÊÇ·ñÎü¸½
+    			//å¦‚æœå­˜åœ¨å³é¢çš„ç¢ç‰‡ï¼Œè¿˜æ²¡æœ‰ç¢°æ’ï¼Œåˆ™å¾—åˆ°å³é¢ç¢ç‰‡çš„ä½ç½®åˆ¤æ–­æ˜¯å¦å¸é™„
     			PieceImageButton leftPiece = (PieceImageButton) allImagePieces.get(leftPieceId);
 	    		Point leftLoc = leftPiece.getLocation();
 	    		Point leftMinp = leftPiece.getMinp();
 	    		
-	    		//Èç¹ûÎü¸½Ìõ¼ş³ÉÁ¢£¬ÔòÎü¸½
+	    		//å¦‚æœå¸é™„æ¡ä»¶æˆç«‹ï¼Œåˆ™å¸é™„
 	    		if(distance(curMinp, leftMinp, curLoc, leftLoc, INACCURACY)){
 	    			curPiece.setHasLeft(true);
 	    			leftPiece.setHasRight(true);
@@ -844,7 +844,7 @@ public class Game extends Activity {
     
     
     private boolean distance(Point srckey, Point destkey, Point srcloc, Point destloc, int inaccuracy){
-    	//µ±Ç°X×ø±êµÄ²îÖµ£¬ÓëÔ­À´µÄĞé×ø±êµÄ²îÖµ½Ó½üÊ±
+    	//å½“å‰Xåæ ‡çš„å·®å€¼ï¼Œä¸åŸæ¥çš„è™šåæ ‡çš„å·®å€¼æ¥è¿‘æ—¶
 		if(Math.abs((srckey.x - destkey.x) - (srcloc.x - destloc.x)) <= inaccuracy){
 			if(Math.abs((srckey.y - destkey.y) - (srcloc.y - destloc.y)) <= inaccuracy){
 				return true;
@@ -886,19 +886,19 @@ public class Game extends Activity {
     	}
     	savaGameBestTime("");
     	TextView textView = new TextView(getApplicationContext());
-    	textView.setText(String.format("  ÓÃÊ± %d Ãë", use_time));
+    	textView.setText(String.format("  ç”¨æ—¶ %d ç§’", use_time));
     	Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Æ´Í¼Íê³É");
+		builder.setTitle("æ‹¼å›¾å®Œæˆ");
 		builder.setCancelable(false);
 		builder.setView(textView);
-		builder.setPositiveButton("ÏÂÒ»¹Ø", new DialogInterface.OnClickListener(){
+		builder.setPositiveButton("ä¸‹ä¸€å…³", new DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialogInterface, int which) {
-				nextGame();   //Íê³Éºó£¬ĞÂÔöpt_gameÖĞµÄ¼ÇÂ¼
+				nextGame();   //å®Œæˆåï¼Œæ–°å¢pt_gameä¸­çš„è®°å½•
 				
 			}
 			
-		}).setNegativeButton("·µ»Ø",new DialogInterface.OnClickListener(){
+		}).setNegativeButton("è¿”å›",new DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialogInterface, int which) {
 				finish();
@@ -907,7 +907,7 @@ public class Game extends Activity {
 		}).show();
     }
     /**
-     * ¶ÁÈ¡ÓÃ»§×î¼ÑÓÎÏ·Ê±¼ä
+     * è¯»å–ç”¨æˆ·æœ€ä½³æ¸¸æˆæ—¶é—´
      * @return
      */
     private int loadBestTime(String type){
@@ -926,7 +926,7 @@ public class Game extends Activity {
 		
     }
     /**
-     * ±£´æ×î¼ÑÓÃÊ±
+     * ä¿å­˜æœ€ä½³ç”¨æ—¶
      */
 	private void savaGameBestTime(String type) {
 		int time = loadBestTime("");
@@ -985,7 +985,7 @@ public class Game extends Activity {
 			}
 			
 			db.close();
-			Log.e("TAG",System.currentTimeMillis() - time + "£ºsaveGame-end");
+			Log.e("TAG",System.currentTimeMillis() - time + "ï¼šsaveGame-end");
 			isSaving = false;
 		}
 		@Override

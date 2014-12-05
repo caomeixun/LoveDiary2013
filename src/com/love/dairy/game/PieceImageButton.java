@@ -8,14 +8,14 @@ import com.love.dairy.utils.LDLog;
 
 public class PieceImageButton extends ImageButton {
 	//private Point key;
-	//private int lineWidth;   //ËéÆ¬µÄÄÚ²¿¿í¶È
-	//private int rowHeight;   //ËéÆ¬µÄÄÚ²¿¸ß¶È
+	//private int lineWidth;   //ç¢ç‰‡çš„å†…éƒ¨å®½åº¦
+	//private int rowHeight;   //ç¢ç‰‡çš„å†…éƒ¨é«˜åº¦
 	
 	private Point minp;
-	public int pieceWidth;   //Õû¸öËéÆ¬µÄ¿í¶È
-	public int pieceHeight;  //Õû¸öËéÆ¬µÄ¸ß¶È
+	public int pieceWidth;   //æ•´ä¸ªç¢ç‰‡çš„å®½åº¦
+	public int pieceHeight;  //æ•´ä¸ªç¢ç‰‡çš„é«˜åº¦
 	
-	private Point location;   //±£´æËéÆ¬µ±Ç°Î»ÖÃ
+	private Point location;   //ä¿å­˜ç¢ç‰‡å½“å‰ä½ç½®
 	
 	private boolean hasTop = false;
 	private boolean hasRight = false;

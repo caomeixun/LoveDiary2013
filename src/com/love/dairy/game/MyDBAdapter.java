@@ -26,11 +26,11 @@ public class MyDBAdapter {
 	private static final String TABLE_PIECE = "pt_piece";
 	private static final int DATABASE_VERSION = 1;
 	
-	//where×Ó¾äÖĞÊ¹ÓÃµÄË÷ÒıÁĞµÄÃû×Ö
+	//whereå­å¥ä¸­ä½¿ç”¨çš„ç´¢å¼•åˆ—çš„åå­—
 	private static final String KEY_ID = "_id";
 	private static final String DESC = "desc";
 	
-	//Êı¾İ¿âÖĞµÄÃ¿Ò»ÁĞµÄÃû³ÆºÍÁĞË÷Òı
+	//æ•°æ®åº“ä¸­çš„æ¯ä¸€åˆ—çš„åç§°å’Œåˆ—ç´¢å¼•
 	//level
 	private static final String LEVEL_ID = "level_id";
 	private static final String PIECE_ROW = "piece_row";
@@ -62,8 +62,8 @@ public class MyDBAdapter {
 	
 
 	
-	//SQLÓï¾ä
-	//ÄÑÒ×¶Èlevel
+	//SQLè¯­å¥
+	//éš¾æ˜“åº¦level
 	private static final String LEVEL_TABLE_CREATE_SQL = "create table " +
 			TABLE_LEVEL + " (" + KEY_ID + " integer primary key autoincrement, " +
 			LEVEL_ID + " integer not null, " +
@@ -71,21 +71,21 @@ public class MyDBAdapter {
 			PIECE_LINE + " integer not null, " +
 			DESC + " text ); ";
 	
-	//×î¼ÑÊ±¼ä±£´æ
+	//æœ€ä½³æ—¶é—´ä¿å­˜
 	private static final String BEST_TIME_SQL = "create table " +
 			BEST_TIME + " (" + KEY_ID + " integer primary key autoincrement, " +
 			IMAGE_NAME + " text not null, " +
 			IMAGE_LEVEL_ID + " integer not null, " +
 			IMAGE_TIME + " integer not null); ";
 	
-	//Ğ§¹ûeffect
+	//æ•ˆæœeffect
 	private static final String EFFECT_TABLE_CREATE_SQL = "create table " +
 		TABLE_EFFECT + " (" + KEY_ID + " integer primary key autoincrement, " +
 		EFFECT_ID + " integer not null, " +
 		IS_CHECKED + " boolean not null, " +
 		DESC + " text ); ";
 	
-	//ÕıÔÚ½øĞĞÓÎÏ·game
+	//æ­£åœ¨è¿›è¡Œæ¸¸æˆgame
 	private static final String GAME_TABLE_CREATE_SQL = "create table " +
 			TABLE_GAME + " (" + KEY_ID + " integer primary key autoincrement, " +
 			IMAGE_ID + " integer, " +
@@ -93,7 +93,7 @@ public class MyDBAdapter {
 			LEVEL_ID + " integer, " +
 			DESC + " text ); ";
 	
-	//Í¼Æ¬ËéÆ¬piece
+	//å›¾ç‰‡ç¢ç‰‡piece
 	private static final String PIECE_TABLE_CREATE_SQL = "create table " +
 			TABLE_PIECE + " (" + KEY_ID + " integer primary key autoincrement, " +
 			IMAGE_ID + " integer, " +
@@ -112,13 +112,13 @@ public class MyDBAdapter {
 			PIECE_LEFT + " boolean, " +
 			DESC + " text ); ";
 	
-	//±£´æÊı¾İ¿âÊµÀıµÄ±äÁ¿
+	//ä¿å­˜æ•°æ®åº“å®ä¾‹çš„å˜é‡
 	public SQLiteDatabase db;
 	
-	//Ê¹ÓÃÊı¾İ¿âµÄÓ¦ÓÃ³ÌĞòÉÏÏÂÎÄ
+	//ä½¿ç”¨æ•°æ®åº“çš„åº”ç”¨ç¨‹åºä¸Šä¸‹æ–‡
 	private final Context context;
 	
-	//Êı¾İ¿â´ò¿ª/¸üĞÂhelper
+	//æ•°æ®åº“æ‰“å¼€/æ›´æ–°helper
 	private MyDbHelper dbHelper;
 	
 	public MyDBAdapter(Context _context) {
@@ -138,7 +138,7 @@ public class MyDBAdapter {
 	public String str = null;
 	public long insertPiece(String table, PieceImageButton pib, int imageid, int levelid){
 		ContentValues values = new ContentValues();
-		//ËéÆ¬ËùÊôÆ´Í¼Ô­Í¼
+		//ç¢ç‰‡æ‰€å±æ‹¼å›¾åŸå›¾
 		values.put("image_id", imageid);
 		values.put("level_id", levelid);
 		int pieceid = pib.getId();
@@ -170,7 +170,7 @@ public class MyDBAdapter {
 		return db.insert(table, null, values);
 	}
 	/**
-	 * ÅúÁ¿¼ÓÈëËéÆ¬ĞÅÏ¢
+	 * æ‰¹é‡åŠ å…¥ç¢ç‰‡ä¿¡æ¯
 	 * @return
 	 */
 	public long insertPieces(){
@@ -287,7 +287,7 @@ public class MyDBAdapter {
 	}
 	
 	/**
-	 * ·µ»Øcol×îºóµÄÄÇÒ»ĞĞ¼ÇÂ¼
+	 * è¿”å›colæœ€åçš„é‚£ä¸€è¡Œè®°å½•
 	 * @param table
 	 * @param col
 	 * @return Cursor

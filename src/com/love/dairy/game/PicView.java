@@ -27,11 +27,9 @@ public class PicView extends Activity {
 		super.onDestroy();
 	}
 	
-	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -61,11 +59,10 @@ public class PicView extends Activity {
 		String table_level = "pt_level";
     	Cursor cursor = db.getAllEntries(table_level);
 		Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Ñ¡ÔñÄÑÒ×¶È");
+		builder.setTitle("é€‰æ‹©éš¾æ˜“åº¦");
 		builder.setSingleChoiceItems(cursor, currentLevel-1, "desc", new DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int item) {
-				// TODO Auto-generated method stub
 				String table = "pt_game";
 				ContentValues cv = new ContentValues();
 				cv.put("level_id", item+1);
@@ -91,7 +88,6 @@ public class PicView extends Activity {
 	private OnClickListener onClickListener = new OnClickListener(){
 
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			int currentViewID = ((Button)v).getId();
 		
 			switch(currentViewID){

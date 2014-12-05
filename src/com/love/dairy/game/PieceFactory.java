@@ -17,17 +17,17 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
 /**
- * 1¡¢½¨Á¢Í¸Ã÷Í¼Æ¬£¬×÷ÎªÃÉ°å
- * 2¡¢½«ÃÉ°åÇĞ¿é£¬Ãèµã»æÖÆ³öÒ»¸öÇĞ¿éµÄ±ß¿ò
- * 3¡¢¸ù¾İ±ß¿ò£¬×ö±ÕºÏÇøÓòµÄÌî³ä
- * 4¡¢¶ÔÌî³äÉ«½øĞĞÌæ»»£¬ÌîÈëÖ¸¶¨Í¼Æ¬Ö¸¶¨×ø±êµÄÑÕÉ«
- * 5¡¢Ñ­»·²½Öè3ºÍ4£¬¼ÇÂ¼»æÖÆÍê³ÉµÄÇĞ¿é
+ * 1ã€å»ºç«‹é€æ˜å›¾ç‰‡ï¼Œä½œä¸ºè’™æ¿
+ * 2ã€å°†è’™æ¿åˆ‡å—ï¼Œæç‚¹ç»˜åˆ¶å‡ºä¸€ä¸ªåˆ‡å—çš„è¾¹æ¡†
+ * 3ã€æ ¹æ®è¾¹æ¡†ï¼Œåšé—­åˆåŒºåŸŸçš„å¡«å……
+ * 4ã€å¯¹å¡«å……è‰²è¿›è¡Œæ›¿æ¢ï¼Œå¡«å…¥æŒ‡å®šå›¾ç‰‡æŒ‡å®šåæ ‡çš„é¢œè‰²
+ * 5ã€å¾ªç¯æ­¥éª¤3å’Œ4ï¼Œè®°å½•ç»˜åˆ¶å®Œæˆçš„åˆ‡å—
  * @author pcuser
  *
  */
 public class PieceFactory {
-	private Bitmap mBitPic;   //Êµ¼ÊÍ¼Æ¬
-	private Bitmap mCutBit;   //Êµ¼ÊÍ¼Æ¬
+	private Bitmap mBitPic;   //å®é™…å›¾ç‰‡
+	private Bitmap mCutBit;   //å®é™…å›¾ç‰‡
 	
 	private Canvas canvas = new Canvas();
 	
@@ -36,32 +36,32 @@ public class PieceFactory {
 	private Paint edgePaint = new Paint();
 //	private Paint addPaint = new Paint();
 	
-	//±£´æËùÓĞ
+	//ä¿å­˜æ‰€æœ‰
 	private Vector<Piece> allPiece = new Vector<Piece>();
 	
-	/////¼ÓÔØÍ¼Æ¬³¤¿í
+	/////åŠ è½½å›¾ç‰‡é•¿å®½
 	private int _imageW;
 	private int _imageH;
 	
-	//Í¼Æ¬ÇĞ·Ö¾ØÕóĞĞÁĞ£¬¿éÊı
+	//å›¾ç‰‡åˆ‡åˆ†çŸ©é˜µè¡Œåˆ—ï¼Œå—æ•°
 	private int _row;
 	private int _line;
 	
-	//ËéÆ¬µÄ¿í¸ß
+	//ç¢ç‰‡çš„å®½é«˜
 	private int _pieceW;
 	private int _pieceH;
 	private int _pieceMinWH;
 	private int _pieceD;
 	
-	//ÄÚÇĞ¾ØĞÎ¿í¸ß
+	//å†…åˆ‡çŸ©å½¢å®½é«˜
 	private int _pieceOW;
 	private int _pieceOH;
 	
-	//±ÈÀıÏµÊı
-	private int _pieceD_k = 10;  //±ß½ç×óÓÒ¸¡¶¯ÏµÊı
-	private int _pieceO_k = 4;   //ËéÆ¬°¼Í¹ÏµÊı£¬Õ¼±ß½ç³¤¶ÈµÄ°Ù·Ö±È
+	//æ¯”ä¾‹ç³»æ•°
+	private int _pieceD_k = 10;  //è¾¹ç•Œå·¦å³æµ®åŠ¨ç³»æ•°
+	private int _pieceO_k = 4;   //ç¢ç‰‡å‡¹å‡¸ç³»æ•°ï¼Œå è¾¹ç•Œé•¿åº¦çš„ç™¾åˆ†æ¯”
 	
-	//·½Ïò
+	//æ–¹å‘
 	private int RIGHT = 1;
 	private int FEET = 2;
 	
@@ -94,7 +94,7 @@ public class PieceFactory {
 		bitmapCut();
 	}
 	private int bgColor = Color.parseColor("#FFFFFF");
-	///////Ë½ÓĞ·½·¨
+	///////ç§æœ‰æ–¹æ³•
 	private void pieceSet(){
 		_pieceW = _imageW / _line;
 		_pieceH = _imageH / _row;
@@ -105,9 +105,9 @@ public class PieceFactory {
 		
 		
 		noPicPaint.setColor(bgColor);
-		noPicPaint.setStyle(Paint.Style.FILL);  //ÊµĞÄÌî³ä
-		noPicPaint.setStrokeWidth(1); //Íâ¿ò¿í¶È
-		noPicPaint.setAntiAlias(true);  //¿¹¾â³İ
+		noPicPaint.setStyle(Paint.Style.FILL);  //å®å¿ƒå¡«å……
+		noPicPaint.setStrokeWidth(1); //å¤–æ¡†å®½åº¦
+		noPicPaint.setAntiAlias(true);  //æŠ—é”¯é½¿
 //		edgePaint.setColor(Color.GRAY);
 //		edgePaint.setStyle(Paint.Style.STROKE);
 //		edgePaint.setStrokeWidth(3);
@@ -119,28 +119,28 @@ public class PieceFactory {
 		edgePaint.setStyle(Paint.Style.STROKE);
 		edgePaint.setStrokeWidth(1);
 		edgePaint.setAntiAlias(true);
-		//////////Í¼Æ¬Ğ§¹û
-//		//ÉèÖÃ¹âÔ´µÄ·½Ïò
+		//////////å›¾ç‰‡æ•ˆæœ
+//		//è®¾ç½®å…‰æºçš„æ–¹å‘
 //		float[] direction = new float[]{ 1, 1, 1 };
-//		//ÉèÖÃ»·¾³¹âÁÁ¶È
+//		//è®¾ç½®ç¯å¢ƒå…‰äº®åº¦
 //		float light = 10.6f;
-//		//Ñ¡ÔñÒªÓ¦ÓÃµÄ·´ÉäµÈ¼¶
+//		//é€‰æ‹©è¦åº”ç”¨çš„åå°„ç­‰çº§
 //		float specular = 0;
-//		//ÏòmaskÓ¦ÓÃÒ»¶¨¼¶±ğµÄÄ£ºı
+//		//å‘maskåº”ç”¨ä¸€å®šçº§åˆ«çš„æ¨¡ç³Š
 //		float blur = 0f;
 //		EmbossMaskFilter emboss = new EmbossMaskFilter(direction, light, specular, blur);
-//		//Ó¦ÓÃmask
+//		//åº”ç”¨mask
 //		edgePaint.setMaskFilter(emboss);
 		
 		
 	}
 	
 	private int getRndD(){
-		//·µ»ØÓë±ß½ç´í¿ªµÄ¸ß¶È
+		//è¿”å›ä¸è¾¹ç•Œé”™å¼€çš„é«˜åº¦
 		return _pieceD - (int)Math.random() * 2 * _pieceD;
 	}
 	
-	//Ë³Ê±ÕëÈ¡ÍÖÔ²µãÎ»£¬ÓÒ±ß½çºÍÏÂ±ß½ç
+	//é¡ºæ—¶é’ˆå–æ¤­åœ†ç‚¹ä½ï¼Œå³è¾¹ç•Œå’Œä¸‹è¾¹ç•Œ
 	private ArrayList<Point> getOvalDotArray(Piece piece, int position){
 		int rnd = ((int)(Math.random()*10)%2 ==0) ? 1 : -1;
 		ArrayList<Point> circleDotArray = new ArrayList<Point>();
@@ -197,7 +197,7 @@ public class PieceFactory {
 	}
 	
 	private void getAllDotArray(Piece piece){
-		//top,right,feet,leftËÄÃæ
+		//top,right,feet,leftå››é¢
 		ArrayList<Point> top = new ArrayList<Point>();
 		ArrayList<Point> right = new ArrayList<Point>();
 		ArrayList<Point> feet = new ArrayList<Point>();
@@ -206,12 +206,12 @@ public class PieceFactory {
 		Point id = piece.getId();
 		Point key = piece.getKey();
 		if(id.x == 0){
-			//top±ß½çÎªÖ±Ïß
+			//topè¾¹ç•Œä¸ºç›´çº¿
 			Point tp1 = new Point(key.x, key.y);
 			Point tp2 = new Point(key.x + _pieceW, key.y);
 			top.add(tp1);
 			top.add(tp2);
-		}else{  //top±ß½çÎªÇúÏß£¬ÔòÇúÏßµãÎªÉÏÒ»¿éËéÆ¬µÄfeet±ß½ç
+		}else{  //topè¾¹ç•Œä¸ºæ›²çº¿ï¼Œåˆ™æ›²çº¿ç‚¹ä¸ºä¸Šä¸€å—ç¢ç‰‡çš„feetè¾¹ç•Œ
 			Piece tmpPiece = (Piece) allPiece.get(_line * (id.x - 1) + id.y);
 			//Log.i("top", "top bian " + id.y + " " + id.y + " " + (_line * (id.x - 1) + id.y));
 			ArrayList<Point> tmpFeet = tmpPiece.getApFeet();
@@ -221,12 +221,12 @@ public class PieceFactory {
 		}
 		
 		if(id.y == 0){
-			//left±ß½çÎªÖ±Ïß
+			//leftè¾¹ç•Œä¸ºç›´çº¿
 			Point lp1 = new Point(key.x, key.y + _pieceH);
 			Point lp2 = new Point(key.x, key.y);
 			left.add(lp1);
 			left.add(lp2);
-		}else{  //left±ß½çÎªÇúÏß£¬ÔòÇúÏßµãÎª×ó±ßÒ»¿éËéÆ¬µÄright±ß½ç
+		}else{  //leftè¾¹ç•Œä¸ºæ›²çº¿ï¼Œåˆ™æ›²çº¿ç‚¹ä¸ºå·¦è¾¹ä¸€å—ç¢ç‰‡çš„rightè¾¹ç•Œ
 			Piece tmpPiece = (Piece) allPiece.get(_line * id.x + id.y - 1);
 			//Log.i("left", "left bian " + id.y + " " + id.y + " " + (_line * id.x + id.y - 1));
 			ArrayList<Point> tmpRight = tmpPiece.getApRight();
@@ -236,7 +236,7 @@ public class PieceFactory {
 		}
 		
 		if(id.x == _row-1){
-			//feet±ß½çÎªÖ±Ïß
+			//feetè¾¹ç•Œä¸ºç›´çº¿
 			Point fp1 = new Point(key.x + _pieceW, key.y + _pieceH);
 			Point fp2 = new Point(key.x, key.y + _pieceH);
 			feet.add(fp1);
@@ -246,7 +246,7 @@ public class PieceFactory {
 		}
 		
 		if(id.y == _line-1){
-			//right±ß½çÎªÖ±Ïß
+			//rightè¾¹ç•Œä¸ºç›´çº¿
 			Point rp1 = new Point(key.x + _pieceW, key.y);
 			Point rp2 = new Point(key.x + _pieceW, key.y + _pieceH);
 			right.add(rp1);
@@ -262,7 +262,7 @@ public class PieceFactory {
 
 	}
 	
-	//µÃ³öËéÆ¬µÄ×óÉÏ½ÇºÍÓÒÏÂ½Ç×ø±êµãÎ»
+	//å¾—å‡ºç¢ç‰‡çš„å·¦ä¸Šè§’å’Œå³ä¸‹è§’åæ ‡ç‚¹ä½
 	private void getMinAndMaxPoint(Piece piece){
 		int minx = _imageW;
 		int miny = _imageH;
@@ -285,7 +285,7 @@ public class PieceFactory {
 			}
 		}
 		//Log.i("getMinAndMaxPoint", "min point: (" + minx + ", " + miny + ")");
-		piece.setMinp(new Point(minx, miny));   // ×óÉÏ½ÇµãÎ»
+		piece.setMinp(new Point(minx, miny));   // å·¦ä¸Šè§’ç‚¹ä½
 		
 		ArrayList<Point> right = piece.getApRight();
 		for(int i=0; i<right.size(); i++){
@@ -303,7 +303,7 @@ public class PieceFactory {
 			}
 		}
 		//Log.i("getMinAndMaxPoint", "max point: (" + maxx + ", " + maxy + ")");
-		piece.setMaxp(new Point(maxx, maxy));   // ÓÒÏÂ½ÇµãÎ»
+		piece.setMaxp(new Point(maxx, maxy));   // å³ä¸‹è§’ç‚¹ä½
 		piece.setPieceWidth(maxx-minx);
 		piece.setPieceHeight(maxy-miny);
 		
@@ -312,14 +312,14 @@ public class PieceFactory {
 	private void bitmapCut(){
 		pieceSet();
 		
-		//Í¸Ã÷Ä£°å
+		//é€æ˜æ¨¡æ¿
 		//Bitmap copyBitPic = Bitmap.createBitmap(_imageW, _imageH, Config.ARGB_8888);
 		
 		for(int i=0; i<_row; i++){
 			for(int j=0; j<_line; j++){
 				Piece piece = new Piece();
 				
-				Point id = new Point(i, j);  //±£´æËéÆ¬µÄ¾ØÕóµã
+				Point id = new Point(i, j);  //ä¿å­˜ç¢ç‰‡çš„çŸ©é˜µç‚¹
 				piece.setId(id);
 				
 				Point key = new Point(j*_pieceW, i*_pieceH);  ///
@@ -327,10 +327,10 @@ public class PieceFactory {
 				piece.setLineWidth(_pieceW);
 				piece.setRowHeight(_pieceH);
 
-				//µÃ³öËéÆ¬µÄ¹Ø¼ü±ß½çµã
+				//å¾—å‡ºç¢ç‰‡çš„å…³é”®è¾¹ç•Œç‚¹
 				getAllDotArray(piece);
 				
-				//µÃ³ö×óÉÏ½ÇµãÎ»ºÍÓÒÏÂ½ÇµãÎ»£¬ÓÃÓÚÇĞÈ¡Ğ¡¿éËéÆ¬Í¼Æ¬
+				//å¾—å‡ºå·¦ä¸Šè§’ç‚¹ä½å’Œå³ä¸‹è§’ç‚¹ä½ï¼Œç”¨äºåˆ‡å–å°å—ç¢ç‰‡å›¾ç‰‡
 				getMinAndMaxPoint(piece);
 				int width = piece.getMaxp().x- piece.getMinp().x;
 				int height = piece.getMaxp().y- piece.getMinp().y;
@@ -348,7 +348,7 @@ public class PieceFactory {
 	}
 	
 //	/**
-//	 * ½«±ß¿òÍ¼Æ¬ºÏ³Éµ½ËéÆ¬ÉÏ
+//	 * å°†è¾¹æ¡†å›¾ç‰‡åˆæˆåˆ°ç¢ç‰‡ä¸Š
 //	 * @param piece
 //	 */
 //	private void addEdge(Piece piece){
@@ -359,7 +359,7 @@ public class PieceFactory {
 //		canvas.restore();
 //		
 //		piece.setBmPiece(temppiece);
-//		piece.getBmEdge().recycle();  //»ØÊÕÍ¼Æ¬
+//		piece.getBmEdge().recycle();  //å›æ”¶å›¾ç‰‡
 //	}
 //	
 //	private int changeColorToLight(int color, double contrast, int light){
@@ -393,14 +393,14 @@ public class PieceFactory {
 //	}
 //	
 	/**
-	 * ¸øÃ¿¸öpieceÃÉ°æÌî³äÏñËØ£¬µÃµ½Æ´Í¼ËéÆ¬piece
+	 * ç»™æ¯ä¸ªpieceè’™ç‰ˆå¡«å……åƒç´ ï¼Œå¾—åˆ°æ‹¼å›¾ç¢ç‰‡piece
 	 */
 	private void fillPieceWithBitmap(Piece piece){
 //		Bitmap pieceEdge = piece.getBmEdge();
 		Bitmap pieceBit = piece.getBmPiece();
 //		Point minp = piece.getMinp();
 		
-		//Æ´Í¼ËéÆ¬µÄ¿í¸ß
+		//æ‹¼å›¾ç¢ç‰‡çš„å®½é«˜
 //		int tpieceW = pieceBit.getWidth();
 //		int tpieceH = pieceBit.getHeight();
 		
@@ -421,7 +421,7 @@ public class PieceFactory {
 		piece.setBmPiece(pieceBit);
 	}
 	
-	//»ñÈ¡Ã¿¿éÇĞÆ¬µÄÍ¼ĞÎ
+	//è·å–æ¯å—åˆ‡ç‰‡çš„å›¾å½¢
 	private Point getPieceBitmap(Piece piece){
 		dotPath.reset();
 		
@@ -447,7 +447,7 @@ public class PieceFactory {
 		ArrayList<Point> left = piece.getApLeft();
 		changeDotPath(left, dotPath, diff);
 	 
-		/////¸ù¾İËéÆ¬µÄ´óĞ¡£¬´´½¨Í¸Ã÷Í¼Æ¬£¬ÔÚ»­²¼ÉÏÃ¿´Î»æÖÆÒ»¸öËéÆ¬£¬È»ºó±£´æ
+		/////æ ¹æ®ç¢ç‰‡çš„å¤§å°ï¼Œåˆ›å»ºé€æ˜å›¾ç‰‡ï¼Œåœ¨ç”»å¸ƒä¸Šæ¯æ¬¡ç»˜åˆ¶ä¸€ä¸ªç¢ç‰‡ï¼Œç„¶åä¿å­˜
 		Bitmap pieceBit = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 
 		canvas.setBitmap(pieceBit);
@@ -473,18 +473,18 @@ public class PieceFactory {
 // 		Bitmap shadowImage32 = shadowBitmap.copy(Bitmap.Config.ARGB_8888, true);
 // 		canvas.
 		
-		//»æÖÆËéÆ¬µÄ±ßÔµ
+		//ç»˜åˆ¶ç¢ç‰‡çš„è¾¹ç¼˜
 		Bitmap edge = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		canvas.setBitmap(edge);
 		canvas.drawPath(dotPath, edgePaint);
 		canvas.save(Canvas.ALL_SAVE_FLAG);
 		canvas.restore();
 		piece.setBmEdge(edge);
-		return diff;   //·µ»ØµãÎ»Ïà²î¾àÀë
+		return diff;   //è¿”å›ç‚¹ä½ç›¸å·®è·ç¦»
 		
 	}
 	
-	//¸ù¾İminpµã£¬½«¾ø¶ÔµãÎ»×ª»¯ÎªÏà¶ÔµãÎ»
+	//æ ¹æ®minpç‚¹ï¼Œå°†ç»å¯¹ç‚¹ä½è½¬åŒ–ä¸ºç›¸å¯¹ç‚¹ä½
 	private void changeDotPath(ArrayList<Point> dotList, Path dotPath, Point diff){
 		int len = dotList.size();
 		ArrayList<Point> tempDot = dotList;

@@ -58,7 +58,7 @@ public class MyBitmapFactory {
 	}
 	
 	/**
-	 * ÒÔ×îÊ¡ÄÚ´æµÄ·½Ê½¶ÁÈ¡±¾µØ×ÊÔ´µÄÍ¼Æ¬
+	 * ä»¥æœ€çœå†…å­˜çš„æ–¹å¼è¯»å–æœ¬åœ°èµ„æºçš„å›¾ç‰‡
 	 * @param context
 	 * @param resId
 	 * @return bitmap
@@ -78,27 +78,27 @@ public class MyBitmapFactory {
 		int reflectionGap = 4;
 		
 		Bitmap originalImage = readBitMap(context, resId);
-		int width = originalImage.getWidth();   //Ô­Í¼¿í
-		int height = originalImage.getHeight();   //Ô­Í¼¸ß
+		int width = originalImage.getWidth();   //åŸå›¾å®½
+		int height = originalImage.getHeight();   //åŸå›¾é«˜
 		
 		Matrix matrix = new Matrix();
 		matrix.preScale(1, -1);
 		
-		//»ñÈ¡Ô­Í¼ÏÂ°ëÕÅÍ¼Æ¬
+		//è·å–åŸå›¾ä¸‹åŠå¼ å›¾ç‰‡
 		Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0, height / 2, width, height / 2, matrix, false);
 
-		//´´½¨1.5±¶¸ßµÄÍ¸Ã÷Í¼Æ¬
+		//åˆ›å»º1.5å€é«˜çš„é€æ˜å›¾ç‰‡
 		Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + height / 2), Config.ARGB_8888);
 		
 		Canvas canvas = new Canvas(bitmapWithReflection);
-		//»æÖÆÔ­Í¼
+		//ç»˜åˆ¶åŸå›¾
 		canvas.drawBitmap(originalImage, 0, 0, null);
 		
 		Paint paint = new Paint();
-		//»æÖÆÔ­Í¼ºÍË®Ó¡µÄ¼äÏ¶
+		//ç»˜åˆ¶åŸå›¾å’Œæ°´å°çš„é—´éš™
 		canvas.drawRect(0, height, width, height + reflectionGap, paint);
 
-		//»æÖÆÏÂ°ëÕÅÍ¼Æ¬µ¹Ó°
+		//ç»˜åˆ¶ä¸‹åŠå¼ å›¾ç‰‡å€’å½±
 		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
 		
 		LinearGradient shader = new LinearGradient(0, height, 0, (height + height/2) + reflectionGap, 0x70ffffff, 0x00ffffff, TileMode.CLAMP);
