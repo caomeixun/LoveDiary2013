@@ -7,11 +7,11 @@ import android.app.Application;
 public class DairyApplication extends Application{
 
 	/**
-	 * ÓÃÓÚActivityÖ®¼ä»º´æÊı¾İ
+	 * ç”¨äºActivityä¹‹é—´ç¼“å­˜æ•°æ®
 	 */
 	public HashMap<String, Object> activityBundle = new HashMap<String, Object>();
 	/**
-	 * Ò»¼¶»º´æ
+	 * ä¸€çº§ç¼“å­˜
 	 */
 	public HashMap<String, Object> dataCache = new HashMap<String, Object>();
 	

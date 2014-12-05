@@ -18,17 +18,14 @@ public class BaseActivity extends Activity {
 		return sp.getString(key, null);
 	}
 	
-	// 数据恢复
-
+	// 鏁版嵁鎭㈠
 	public void dataRecover() {
 
 
 		new BackupTask(this).execute("restroeDatabase");
 
 	}
-
-	// 数据备份
-
+	// 鏁版嵁澶囦唤
 	public void dataBackup() {
 
 

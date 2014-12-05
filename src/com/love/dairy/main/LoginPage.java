@@ -78,7 +78,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			String etContent = ((EditText)(findViewById(R.id.etContent))).getText().toString();
 			ImageInfo info = new ImageInfo();
 			info.content = etContent;
-			info.ivDate = "一年前";
+			info.ivDate = "涓�骞村墠";
 			info.title = etTitle;
 			LoveApplication application = (LoveApplication) this.getApplication();
 			info.path =MainActivity.path + application.photoIds.get(imagePosition);
@@ -86,9 +86,9 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			DataHelper dh = new DataHelper(getApplicationContext());
 			long result =  dh.addUserInfo(info);
 			if(result > 0){
-				Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "娣诲姞鎴愬姛", Toast.LENGTH_SHORT).show();
 			}else{
-				Toast.makeText(getApplicationContext(), "添加失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "娣诲姞澶辫触", Toast.LENGTH_SHORT).show();
 			}
 			dh.close();
 			finish();
@@ -127,7 +127,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		}
 	}
 	/**
-	 * 选择日期
+	 * 閫夋嫨鏃ユ湡
 	 */
 	private void chooseDate() {
 		String recordTime = getSharedPreferencesData("recordTime");
@@ -180,7 +180,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	/**
-	 * 获取歌曲文件路径
+	 * 鑾峰彇姝屾洸鏂囦欢璺緞
 	 * @return
 	 */
 	public void getPicPath(){

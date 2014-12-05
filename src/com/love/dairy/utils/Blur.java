@@ -10,7 +10,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 /**
- * Ã«²£Á§Ð§¹û
+ * æ¯›çŽ»ç’ƒæ•ˆæžœ
  * @author cqli
  *
  */

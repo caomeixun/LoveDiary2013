@@ -27,7 +27,7 @@ import com.love.dairy.widget.FlipViewGroup;
 import com.love.dairy.widget.MyView;
 
 /**
- * ·ÂflipboardÌØĞ§
+ * ä»¿flipboardç‰¹æ•ˆ
  * 
  * @author cqli qq:530746075
  * 
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity{
 	public static String path = null;
 	private Dialog dialog = null;
 //	/**
-//	 * ±êÌâÀ¸¸ß¶È
+//	 * æ ‡é¢˜æ é«˜åº¦
 //	 */
 //	public static int contentTop = -1;
 //	public static int[] photoIds = new int[]{R.drawable.zzz0,R.drawable.zzz1,R.drawable.zzz2,R.drawable.zzz3,R.drawable.zzz4
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity{
 		loadMenuSize();
 	}
 	/**
-	 * ÌáÊ¾ÓÃ»§Ñ¡ÔñÍ¼Æ¬
+	 * æç¤ºç”¨æˆ·é€‰æ‹©å›¾ç‰‡
 	 */
 	private void choosePhotoPath(){
 		if(dialog == null){
