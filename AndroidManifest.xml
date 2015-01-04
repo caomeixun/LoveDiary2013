@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.love.dairy.main"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.1" >
 
     <uses-sdk android:minSdkVersion="8" />
 	<supports-screens
@@ -84,6 +84,33 @@
 		    android:theme="@android:style/Theme.NoTitleBar" ></activity>
 		<activity android:name="com.renren.api.connect.android.pay.view.PayRepairActivity"></activity>
 	
-    </application>
 
+       <activity
+            android:name="com.love.dairy.match.LianlianKanChoosePic"
+            android:label="@string/app_name"
+                        android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+	>
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+                <activity
+            android:name="com.love.dairy.match.LianlianKanMainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+	/>
+                
+                <activity
+            android:name="com.love.dairy.match.RecordsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+	/>
+                    </application>
 </manifest>

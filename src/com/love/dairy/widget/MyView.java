@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +28,7 @@ public class MyView extends RelativeLayout{
 	public String imageName = null;
 	public String imagePosition = null;
 	private LinearLayout titleBg = null;
+	private int reId = -1;
 	public MyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		inflate(getContext(), R.layout.myview, this);
@@ -37,17 +39,22 @@ public class MyView extends RelativeLayout{
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 	}
 	public void setImage(Bitmap bitmap){
-		iv.setImageBitmap(bitmap);
-		setTitleBg(bitmap);
+		if(bitmap != null && !bitmap.isRecycled()){
+			iv.setImageBitmap(bitmap);
+			setTitleBg(bitmap);
+		}else{
+			Log.e("Leon", "rsid"+reId);
+		}
 	}
 	public void setImage(int rsId){
+		reId = rsId;
 		Bitmap  bitmap = FlipCards.dateCache.get(rsId);
 		if(bitmap!=null && !bitmap.isRecycled()){
 			iv.setImageBitmap(bitmap);
 			setTitleBg(bitmap);
 		}
 		else{
-			LDLog.e("TAG", "去加载图片了");
+			LDLog.e("去加载图片了");
 			BitmapWorkerTask task = new BitmapWorkerTask(context,BitmapWorkerTask.FULL_TYPE,this);
 			task.execute(rsId);
 		}

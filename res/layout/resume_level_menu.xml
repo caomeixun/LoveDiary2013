@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/dialogbg2"
+    >
+    
+        
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/dialogbg"
+    android:layout_margin="3sp"
+    android:id="@+id/resumelayout"
+    >
+    <ImageView
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="3sp"
+	/>
+         <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_marginBottom="20sp"
+    >
+    <TextView
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+	/>  
+            <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnapp1"
+      android:layout_marginRight="1sp"
+      android:layout_weight="1"
+	/>
+            
+            <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnapp2"
+      android:layout_weight="1"
+      android:layout_marginRight="1sp"
+	/>
+            
+            <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnapp3"
+	  android:layout_marginRight="1sp"
+      android:layout_weight="1"
+	/>
+          <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnapp4"
+	  android:layout_marginRight="1sp"
+      android:layout_weight="1"
+	/>
+          <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnapp5"
+	  android:layout_marginLeft="1sp"
+      android:layout_weight="1"
+	/>  
+	
+           <TextView
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+	/>  
+        
+            
+            </LinearLayout>
+    <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Resume"
+      android:textSize="22sp"
+      android:id="@+id/btnresume"
+      android:textStyle="bold"
+      android:layout_marginTop="5sp"
+      android:background="@drawable/menu_button_select"
+      android:textColor="#EEEEEE"
+	/>
+   </LinearLayout>
+   
+    </LinearLayout>
+
+      

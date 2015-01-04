@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/dialogbg2"
+    >
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/dialogbg"
+    android:layout_margin="3sp"
+    android:id="@+id/resumelayout"
+    >
+    
+            <TextView
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Are you sure to give up playing?"
+      android:textSize="25sp"
+      android:textStyle="bold"
+      android:layout_marginBottom="20sp"
+      android:id="@+id/levelinfotv"
+	/>
+      
+            <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    
+    <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Yes"
+      android:textSize="25sp"
+      android:id="@+id/btnyes"
+      android:textStyle="bold"
+      android:layout_marginTop="5sp"
+      android:layout_marginRight="5sp"
+      android:background="@drawable/menu_button_select"
+      android:textColor="#EEEEEE"
+	/>
+    <Button
+	  android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="No"
+      android:textSize="25sp"
+      android:id="@+id/btnno"
+      android:textStyle="bold"
+      android:layout_marginTop="5sp"
+      android:layout_marginLeft="5sp"
+      android:background="@drawable/menu_button_select"
+      android:textColor="#EEEEEE"
+	/>
+    </LinearLayout>
+   </LinearLayout>
+   
+    </LinearLayout>
+
+      

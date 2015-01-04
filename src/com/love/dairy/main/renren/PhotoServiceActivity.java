@@ -3,7 +3,6 @@ package com.love.dairy.main.renren;
 import java.io.File;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.love.dairy.main.R;
+import com.love.dairy.utils.HPDialog;
 import com.renn.rennsdk.RennClient;
 import com.renn.rennsdk.RennExecutor.CallBack;
 import com.renn.rennsdk.RennResponse;
@@ -62,13 +62,12 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
 
     private RennClient rennClient;
 
-    private ProgressDialog mProgressDialog;
+    private HPDialog mProgressDialog;
     
     private int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photoservice);
         initView();
@@ -210,12 +209,7 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
                     }catch(Exception e){                   	
                     }                   
                     if (mProgressDialog == null) {
-                        mProgressDialog = new ProgressDialog(PhotoServiceActivity.this);
-                        mProgressDialog.setCancelable(true);
-                        mProgressDialog.setTitle("请等待");
-                        mProgressDialog.setIcon(android.R.drawable.ic_dialog_info);
-                        mProgressDialog.setMessage("正在获取信息");
-                        mProgressDialog.show();
+                        mProgressDialog = new HPDialog(PhotoServiceActivity.this);
                     }
                     try {
                         rennClient.getRennService().sendAsynRequest(param, new CallBack() {    
@@ -243,7 +237,6 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
                             }
                         });
                     } catch (RennException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }else if(flag == 3){
@@ -255,12 +248,7 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
                     	
                     }
                     if (mProgressDialog == null) {
-                        mProgressDialog = new ProgressDialog(PhotoServiceActivity.this);
-                        mProgressDialog.setCancelable(true);
-                        mProgressDialog.setTitle("请等待");
-                        mProgressDialog.setIcon(android.R.drawable.ic_dialog_info);
-                        mProgressDialog.setMessage("正在获取信息");
-                        mProgressDialog.show();
+                        mProgressDialog = new HPDialog(PhotoServiceActivity.this);
                     }
                     try {
                         rennClient.getRennService().sendAsynRequest(param, new CallBack() {    
@@ -288,7 +276,6 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
                             }
                         });
                     } catch (RennException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }                
@@ -304,12 +291,7 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
                 }catch(Exception e){                	
                 }              
                 if (mProgressDialog == null) {
-                    mProgressDialog = new ProgressDialog(PhotoServiceActivity.this);
-                    mProgressDialog.setCancelable(true);
-                    mProgressDialog.setTitle("请等待");
-                    mProgressDialog.setIcon(android.R.drawable.ic_dialog_info);
-                    mProgressDialog.setMessage("正在获取信息");
-                    mProgressDialog.show();
+                    mProgressDialog = new HPDialog(PhotoServiceActivity.this);
                 }
                 try {
                     rennClient.getRennService().sendAsynRequest(param, new CallBack() {    
@@ -337,7 +319,6 @@ public class PhotoServiceActivity extends Activity implements OnClickListener {
                         }
                     });
                 } catch (RennException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 break;

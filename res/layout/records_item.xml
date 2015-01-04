@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+    
+    <TextView
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text=""
+    	android:textColor="#80EE80"
+    	android:textSize="26sp"
+    	android:id="@+id/recordidtv"
+    	android:gravity="center"
+        />
+    
+        <TextView
+        android:layout_width="150sp"
+    	android:layout_height="wrap_content"
+    	android:text="10000"
+    	android:textColor="#EEEEEE"
+    	android:textSize="26sp"
+    	android:id="@+id/recordscoretv"
+    	android:gravity="center"
+        />
+        
+                <TextView
+        android:layout_width="150sp"
+    	android:layout_height="wrap_content"
+    	android:text="10/08/2013"
+    	android:textColor="#EEEEEE"
+    	android:textSize="26sp"
+    	android:id="@+id/recorddatetv"
+    	android:gravity="center"
+        />
+      
+</LinearLayout>

@@ -77,7 +77,7 @@ public class FlipCards {
 				
 				@Override
 				public void run() {
-					BitmapWorkerTask task = new BitmapWorkerTask(FlipCards.this.context,BitmapWorkerTask.HALF_TYPE);
+					BitmapWorkerTask task = new BitmapWorkerTask(FlipCards.this.context,BitmapWorkerTask.FULL_TYPE);
 					task.execute(postion);
 				}
 			});

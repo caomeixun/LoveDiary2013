@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,15 +15,76 @@ import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PointF;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Drawable;
+import android.media.FaceDetector;
 
 public class ImageUtil {
 	
+	
+	/**
+	* 获取压缩后的图片
+	* @param res
+	* @param resId
+	* @param reqWidth            所需图片压缩尺寸最小宽度
+	* @param reqHeight           所需图片压缩尺寸最小高度
+	* @return
+	*/
+	public static Bitmap decodeBitmapFromResourceForWidth(Resources res, String resId,
+	        int reqWidth, int reqHeight) {
+	   
+	    // 首先不加载图片,仅获取图片尺寸
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    // 当inJustDecodeBounds设为true时,不会加载图片仅获取图片尺寸信息
+	    options.inJustDecodeBounds = true;
+	    // 此时仅会将图片信息会保存至options对象内,decode方法不会返回bitmap对象
+	    BitmapFactory.decodeFile(resId, options);
+
+	    // 计算压缩比例,如inSampleSize=4时,图片会压缩成原图的1/4
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // 当inJustDecodeBounds设为false时,BitmapFactory.decode...就会返回图片对象了
+	    options. inJustDecodeBounds = false;
+	    // 利用计算的比例值获取压缩后的图片对象
+	    return BitmapFactory.decodeFile(resId, options);
+	}
+    
+    /**
+    * 计算压缩比例值
+    * @param options       解析图片的配置信息
+    * @param reqWidth            所需图片压缩尺寸最小宽度
+    * @param reqHeight           所需图片压缩尺寸最小高度
+    * @return
+    */
+    public static int calculateInSampleSizeDefault(BitmapFactory.Options options,
+                 int reqWidth, int reqHeight) {
+           // 保存图片原宽高值
+           final int height = options. outHeight;
+           final int width = options. outWidth;
+           // 初始化压缩比例为1
+           int inSampleSize = 1;
+
+           // 当图片宽高值任何一个大于所需压缩图片宽高值时,进入循环计算系统
+           if (height > reqHeight || width > reqWidth) {
+
+                 final int halfHeight = height / 2;
+                 final int halfWidth = width / 2;
+
+                 // 压缩比例值每次循环两倍增加,
+                 // 直到原图宽高值的一半除以压缩值后都~大于所需宽高值为止
+                 while ((halfHeight / inSampleSize) >= reqHeight
+                            && (halfWidth / inSampleSize) >= reqWidth) {
+                      inSampleSize *= 2;
+                }
+          }
+
+           return inSampleSize;
+    }
 	public static Bitmap decodeSampledBitmapFromResource(Resources res,
 			String pathName, int reqWidth, int reqHeight) {
 //		Log.e("TAG", "options.inSampleSize"+reqWidth+"--"+reqHeight);
@@ -37,7 +97,7 @@ public class ImageUtil {
 				reqHeight);
 		// Decode bitmap with inSampleSize set
 		options.inJustDecodeBounds = false;
-		//options.inPreferredConfig = Bitmap.Config.RGB_565; 
+//		options.inPreferredConfig = Bitmap.Config.RGB_565; 
 		SoftReference<Bitmap> map = null;
 		try{
 		map = new SoftReference<Bitmap>(BitmapFactory.decodeFile(pathName, options));
@@ -46,15 +106,49 @@ public class ImageUtil {
 			options.inSampleSize+=1;
 			map = new SoftReference<Bitmap>(BitmapFactory.decodeFile(pathName, options));
 		}
+//		Bitmap faceBitmap =  setFace(map.get());
 		Bitmap newMap = zoomBitmapByPhoto(map.get(),reqWidth,reqHeight);
-		if(map.get()!=null && !map.get().isRecycled()){
-			map.get().recycle();
-			map.clear();
-			map = null;
-			System.gc();
-		}
+		
 		return newMap;
 	}
+	/**
+	 * 脸部检测
+	 */
+	private static int setFace(Bitmap mFaceBitmap) {
+				FaceDetector fd;
+				FaceDetector.Face [] faces = new FaceDetector.Face[1];
+				PointF midpoint = new PointF();
+				int [] fpx = null;
+				int [] fpy = null;
+				int count = 0;
+				try {
+					fd = new FaceDetector(mFaceBitmap.getWidth(), mFaceBitmap.getHeight(), 1);        
+					count = fd.findFaces(mFaceBitmap, faces);
+					LDLog.e("FaceDetactorCount："+count);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return 0;
+				}
+		
+				// check if we detect any faces
+				if (count > 0) {
+					fpx = new int[count];
+					fpy = new int[count];
+		
+					for (int i = 0; i < count; i++) { 
+						try {                 
+							faces[i].getMidPoint(midpoint);                  
+		
+							fpx[i] = (int)midpoint.x;
+							fpy[i] = (int)midpoint.y;
+							return fpx[i];
+						} catch (Exception e) { 
+							 e.printStackTrace();
+						}            
+					}      
+				}
+		return 0;
+	} 
 	/**
 	 * 检查是否保存过图盘
 	 * @param pathName
@@ -70,7 +164,13 @@ public class ImageUtil {
 			return pathName;
 		}
 	}
-
+	/**
+	 * 修改为，专为主页图片使用
+	 * @param options
+	 * @param reqWidth
+	 * @param reqHeight
+	 * @return
+	 */
 	private static int calculateInSampleSize(BitmapFactory.Options options,
 			int reqWidth, int reqHeight) {
 		// Raw height and width of image
@@ -101,7 +201,9 @@ public class ImageUtil {
 	private static Bitmap zoomBitmapByPhoto(Bitmap bitmap, int w, int h) {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
-
+		if(width - w == 0 && height - h ==0){
+			return bitmap;
+		}
 		Matrix matrix = new Matrix();
 		float scaleWidht = ((float) w / width);
 		float scaleHeight = ((float) h / height);
@@ -118,13 +220,26 @@ public class ImageUtil {
 		
 		//matrix.postTranslate(newW, newH);
 		Bitmap newbmp = null;
-		if(height*scaleSize==h){
+		if(Math.abs(height*scaleSize - h) < 10){
 			float w1 =  (w/scaleSize);
 			float sui = w/Float.parseFloat(Math.round(w1)+"");
 			w1=w1<=width?w1:width;
-			int x = (int) ((width-w1)/2);
+//			int x = (int) ((width-w1)/2);
 			matrix.postScale(sui, scaleSize);
-			newbmp = Bitmap.createBitmap(bitmap, x, 0, Math.round(w1), height, matrix, true);
+			int xStart = 0;
+			if(width > w1*1.5){
+				Bitmap bitToFace = bitmap.copy(Bitmap.Config.RGB_565, true); 
+				xStart  = setFace(bitToFace);
+				bitToFace.recycle();
+				bitToFace = null;
+				xStart-=Math.round(w1)/2;
+				if(xStart<0){
+					xStart = 0;
+				}else if(xStart+Math.round(w1)>bitmap.getWidth()){
+					xStart = bitmap.getWidth() - Math.round(w1) ;
+				}
+			}
+			newbmp = Bitmap.createBitmap(bitmap, xStart, 0, Math.round(w1), height, matrix, true);
 		}else{
 			float h1 =  (h/scaleSize);
 			float sui = h/Float.parseFloat(Math.round(h1)+"");
@@ -133,9 +248,12 @@ public class ImageUtil {
 			int y = (int) ((height-h1)/2);
 			newbmp = Bitmap.createBitmap(bitmap, 0, y, width, Math.round(h1), matrix, true);
 		}
-		LDLog.e("zoomBitmapByPhoto","--新图getWidth--size"+ newbmp.getWidth()+"--"+newbmp.getHeight()+"----原图：getWidth----"+ width+"--"+height);
-//		bitmap.recycle();
-//		bitmap = null;
+		LDLog.e("新图getWidth--size"+ newbmp.getWidth()+"--"+newbmp.getHeight()+"----原图：getWidth----"+ width+"--"+height);
+		if(bitmap!=null && !bitmap.isRecycled()){
+			bitmap.recycle();
+			bitmap = null;
+			System.gc();
+		}
 		return newbmp;
 	}
 	

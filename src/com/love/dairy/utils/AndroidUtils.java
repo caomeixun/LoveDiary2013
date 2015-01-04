@@ -2,6 +2,10 @@ package com.love.dairy.utils;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -24,5 +28,49 @@ public class AndroidUtils {
 			arr[1] -= ((Integer) list.get(-3+ list.size())).intValue();
 		}
 		return arr;
+	}
+	
+	/**
+	 * String型资源名称转int型资源ID R.string.ok/android.R.string.ok
+	 * 
+	 * @param id
+	 *            ok/android.R.string.ok
+	 * @param type
+	 *            string/string
+	 * @return
+	 */
+	@SuppressLint("DefaultLocale")
+	public int getResourcesID(Context mContext,String id, String type)
+	{
+		
+		try
+		{
+			Resources res;
+			String defPackage = null;
+			if (id.startsWith("android.R."))
+			{
+				res = Resources.getSystem();
+				int lastIndex = id.lastIndexOf(".");
+				id = id.substring(lastIndex + 1);
+				defPackage = "android";
+			}
+			else
+			{
+				res = mContext.getResources();
+				defPackage = mContext.getPackageName();
+			}
+			
+			int rid = res.getIdentifier(id, type, defPackage);
+			if (rid <= 0)
+			{
+				rid = res.getIdentifier(id.toLowerCase(), type, defPackage);
+			}
+			return rid;
+		}
+		catch (Exception e)
+		{
+			Log.e("getResourcesID", e.toString() + "id" + id);
+		}
+		return -1;
 	}
 }

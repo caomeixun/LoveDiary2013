@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -18,16 +19,19 @@ public class AutoFitImageView extends ImageView{
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		Matrix m = new Matrix();
-		Bitmap  bm = ((BitmapDrawable)getDrawable()).getBitmap();
-		if(bm!=null && !bm.isRecycled()){
-			if(bm.getWidth()  <  MainActivity.screenWidth){
-				m.postScale(2.0f, 2.0f);
-				canvas.drawBitmap(bm , m, null);
-			}
-			else{
-				m.postScale(1.0f, 1.0f);
-				canvas.drawBitmap(bm , m, null);
+		Drawable awable =  getDrawable();
+		if(awable!=null){
+			Matrix m = new Matrix();
+			Bitmap  bm = ((BitmapDrawable)awable).getBitmap();
+			if(bm!=null && !bm.isRecycled()){
+				if(bm.getWidth()  <  MainActivity.screenWidth){
+					m.postScale(2.0f, 2.0f);
+					canvas.drawBitmap(bm , m, null);
+				}
+				else{
+					m.postScale(1.0f, 1.0f);
+					canvas.drawBitmap(bm , m, null);
+				}
 			}
 		}
 	}

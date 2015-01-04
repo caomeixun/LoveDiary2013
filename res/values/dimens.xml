@@ -92,4 +92,6 @@
     <dimen name="read_later_sign_out_username">22.0dip</dimen>
     <dimen name="read_later_sign_out_button">24.0dip</dimen>
     <dimen name="game_btn_size">40.0dip</dimen>
+    <dimen name="match_game_pic_width">28sp</dimen>
+    <dimen name="match_game_menu_width">100dp</dimen>
 </resources>

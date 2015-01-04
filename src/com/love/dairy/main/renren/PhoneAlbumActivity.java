@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,6 +30,7 @@ import com.love.dairy.main.BaseActivity;
 import com.love.dairy.main.R;
 import com.love.dairy.main.renren.AsyncImageLoader.ImageCallback;
 import com.love.dairy.utils.FileDownload;
+import com.love.dairy.utils.HPDialog;
 import com.love.dairy.utils.ImageUtil;
 import com.love.dairy.utils.LDLog;
 import com.renn.rennsdk.RennClient;
@@ -51,7 +51,7 @@ public class PhoneAlbumActivity extends BaseActivity {
 	private Button mCancel;
 	private ListView mDisplay;
 	private RennClient rennClient;
-	private ProgressDialog mProgressDialog = null;
+	private HPDialog mProgressDialog = null;
 	private List<AlbumPojo> lists = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,12 +101,7 @@ public class PhoneAlbumActivity extends BaseActivity {
         param.setAlbumId(lists.get(position).id);
         param.setOwnerId(rennClient.getUid());
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setTitle("请等待");
-            mProgressDialog.setIcon(android.R.drawable.ic_dialog_info);
-            mProgressDialog.setMessage("正在下载图片中");
-            mProgressDialog.show();
+            mProgressDialog = new HPDialog(this);
         }
         try {
             rennClient.getRennService().sendAsynRequest(param, new CallBack() {    
@@ -165,25 +160,17 @@ public class PhoneAlbumActivity extends BaseActivity {
 		// 获取手机里的图片内容
         ListAlbumParam param3 = new ListAlbumParam();
         param3.setOwnerId(rennClient.getUid());
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setTitle("请等待");
-            mProgressDialog.setIcon(android.R.drawable.ic_dialog_info);
-            mProgressDialog.setMessage("正在获取信息");
-            mProgressDialog.show();
-        }
         try {
             rennClient.getRennService().sendAsynRequest(param3, new CallBack() {    
                 
                 @Override
                 public void onSuccess(RennResponse response) {
-                    if (mProgressDialog != null) {
-                        mProgressDialog.dismiss();
-                        mProgressDialog = null;
-                    }  
-                    parseData(response);
-                  mDisplay.setAdapter(new PhoneAlnumAdapter());
+	                  if (mProgressDialog != null) {
+	                        mProgressDialog.dismiss();
+	                        mProgressDialog = null;
+	                  }  
+	                  parseData(response);
+	                  mDisplay.setAdapter(new PhoneAlnumAdapter());
                 }
 
 				private void parseData(RennResponse response) {

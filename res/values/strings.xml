@@ -983,6 +983,7 @@ https://github.com/openaphid/Demos is also updated with two new demos: touch_tes
    <string name="love_record">记录照片心情</string>
    <string name="love_renren">人人</string>
    <string name="love_game">拼图游戏</string>
+   <string name="match_game">连连看</string>
    <string name="love_auth">关注作者</string>
    <string name="love_photo_cut">照片裁剪</string>
    <string name="love_photo_turn_left">左旋转</string>

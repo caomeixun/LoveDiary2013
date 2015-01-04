@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp" 
+        android:layout_weight="1"/>
+
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="40dp">
+		            <TextView 
+		            android:id="@+id/tvNum"
+				    android:layout_width="wrap_content"
+				    android:layout_height="match_parent"
+				    android:gravity="center"
+				    android:textColor="#ffffff"
+				    android:layout_alignParentLeft="true"
+				    />
+		            <Button 
+		                android:id="@+id/tvStart"
+				    android:layout_width="wrap_content"
+				    android:layout_height="match_parent"
+				    android:gravity="center"
+				    android:background="@drawable/menu_button_select"
+				    android:textColor="#EEEEEE"
+				    android:text="立即开始"
+				    android:layout_centerHorizontal="true"
+				    />
+		            <TextView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="match_parent"
+				    android:gravity="center"
+				    android:textColor="#ffffff"
+				    android:text="滑动选择"
+				    android:layout_alignParentRight="true"
+				    />
+	    </RelativeLayout>
+
+</LinearLayout>

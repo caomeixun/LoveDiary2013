@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.love.dairy.LoveApplication;
 import com.love.dairy.cutimage.ImageFilterActivity;
 import com.love.dairy.game.Game;
+import com.love.dairy.match.LianlianKanChoosePic;
 import com.love.dairy.pojo.ImageInfo;
 import com.love.dairy.sql.DataHelper;
 import com.love.dairy.utils.Blur;
@@ -33,6 +35,7 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 	public static String OPEN_TYPE_PATH = "OPEN_TYPE_PATH"; 
 	private int request_code_path = 123;
 	private int imagePosition = -1;
+	private View title = null;
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle save){
 		super.onCreate(save);
@@ -46,20 +49,34 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 		findViewById(R.id.btnBack).setOnClickListener(this);
 		findViewById(R.id.btnDate).setOnClickListener(this);
 		findViewById(R.id.btnAuthor).setOnClickListener(this);
-		
+		findViewById(R.id.btnMatch).setOnClickListener(this);
+		title = findViewById(R.id.topRl);
 		if(getIntent().getIntExtra(OPEN_TYPE_PATH, -1)!=-1){
 			getPicPath();
 		}else{
-			Bitmap bitmap = FlipCards.dateCache.get(imagePosition);
-			if(bitmap != null){
-				double scaleSize = MainActivity.screenWidth / bitmap.getWidth();
-				bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), (int) (getResources().getDimensionPixelSize(R.dimen.title_height)/scaleSize));
-				bitmap = Blur.fastblur(getApplicationContext(), bitmap, 12);
-				findViewById(R.id.topRl).setBackgroundDrawable(new BitmapDrawable(bitmap));
-			}
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						Bitmap bitmap = FlipCards.dateCache.get(imagePosition);
+						if(bitmap != null){
+							double scaleSize = MainActivity.screenWidth / bitmap.getWidth();
+							bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), (int) (getResources().getDimensionPixelSize(R.dimen.title_height)/scaleSize));
+							bitmap = Blur.fastblur(getApplicationContext(), bitmap, 12);
+							final Bitmap bit = bitmap;
+							LoginPage.this.runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									title.setBackgroundDrawable(new BitmapDrawable(bit));;
+									
+								}
+							});
+						}
+					}
+				}).start();
 		}
 	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode==KeyEvent.KEYCODE_BACK){
@@ -101,6 +118,12 @@ public class LoginPage extends BaseActivity implements OnClickListener{
 			getPicPath();
 		}else if(v.getId() == R.id.btnDate){
 			chooseDate(); 
+		}else if(v.getId() == R.id.btnMatch){
+			Intent intent = new Intent(this, LianlianKanChoosePic.class);
+			intent.putExtra("path",imagePosition);
+			startActivity(intent);
+			finish();
+			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		}else if(v.getId() == R.id.btnBack){
 			finish();
 			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

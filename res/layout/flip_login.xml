@@ -128,6 +128,14 @@
     	    android:textColor="@color/black"
             android:layout_height="0dp"/>
     	<Button 
+    	    android:id="@+id/btnMatch"
+    	    android:layout_width="match_parent"
+    	    android:background="@drawable/menu_btn" 
+    	    android:text="连连看"
+    	    android:layout_weight="1"
+    	    android:textColor="@color/black"
+            android:layout_height="0dp"/>
+    	<Button 
     	    android:id="@+id/btnDate"
     	    android:layout_width="match_parent"
     	    android:background="@drawable/menu_btn" 

@@ -1,19 +1,15 @@
 package com.love.dairy.sql;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.love.dairy.pojo.ImageInfo;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
+
+import com.love.dairy.pojo.ImageInfo;
 
 /**
  * 增删改主类
